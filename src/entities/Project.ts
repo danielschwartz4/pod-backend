@@ -43,7 +43,7 @@ export class Project extends BaseEntity {
 
   @Field(() => Int)
   @Column()
-  groupSize!: number;
+  groupSize?: number;
 
   @ManyToOne(() => User, (user) => user.project)
   user: User;

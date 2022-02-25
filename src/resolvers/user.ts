@@ -124,6 +124,7 @@ export class UserResolver {
         groupSize: projectOptions.groupSize,
       }).save();
     } catch (err) {
+      console.log("ERROR");
       console.log(err);
       return {
         errors: [

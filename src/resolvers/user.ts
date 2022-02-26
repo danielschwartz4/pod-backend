@@ -1,52 +1,15 @@
 import argon2 from "argon2";
+import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql";
 import { COOKIE_NAME } from "../constants";
-import {
-  Arg,
-  Ctx,
-  Field,
-  Mutation,
-  ObjectType,
-  Query,
-  Resolver,
-} from "type-graphql";
-import { Project } from "../entities/Project";
 import { User } from "../entities/User";
-import { MyContext } from "../types";
+import { MyContext, UserResponse } from "../types";
 import { validateRegister } from "../utils/validateRegister";
-import { ProjectInput } from "./ProjectInput";
 import { UsernamePasswordInput } from "./UsernamePasswordInput";
 
 declare module "express-session" {
   interface SessionData {
     userId: any;
   }
-}
-
-@ObjectType()
-class FieldError {
-  @Field()
-  field: string;
-
-  @Field()
-  message: string;
-}
-
-@ObjectType()
-class UserResponse {
-  @Field(() => [FieldError], { nullable: true })
-  errors?: FieldError[];
-
-  @Field(() => User, { nullable: true })
-  user?: User;
-}
-
-@ObjectType()
-class ProjectResponse {
-  @Field(() => [FieldError], { nullable: true })
-  errors?: FieldError[];
-
-  @Field(() => Project, { nullable: true })
-  project?: Project;
 }
 
 @Resolver()
@@ -93,59 +56,6 @@ export class UserResolver {
     }
     req.session!.userId = user?.id;
     return { user };
-  }
-
-  @Mutation(() => ProjectResponse)
-  async addProjectInfo(
-    // @Arg("overview") overview: string,
-    // @Arg("timeline") timeline: string,
-    // @Arg("groupSize") groupSize: number,
-    @Arg("projectOptions") projectOptions: ProjectInput,
-    @Ctx() { req }: MyContext
-  ) {
-    if (projectOptions.groupSize < 0 || projectOptions.groupSize > 4) {
-      return {
-        errors: [
-          {
-            field: "groupSize",
-            message: "group size must be between 0 and 4",
-          },
-        ],
-      };
-    }
-    let project;
-    try {
-      project = await Project.create({
-        userId: req.session.userId,
-        projectName: projectOptions.projectName,
-        overview: projectOptions.overview,
-        milestones: projectOptions.milestones,
-        milestoneDates: projectOptions.milestoneDates,
-        groupSize: projectOptions.groupSize,
-      }).save();
-    } catch (err) {
-      console.log("ERROR");
-      console.log(err);
-      return {
-        errors: [
-          {
-            field: "unknown",
-            message: "unknown",
-          },
-        ],
-      };
-    }
-    return { project };
-
-    // const result = await getConnection()
-    //   .createQueryBuilder()
-    //   .update(User)
-    //   .set({ overview: overview, timeline: timeline, groupSize: groupSize })
-    //   .where("id = :id", { id: id })
-    //   .returning("*")
-    //   .execute();
-
-    // const user = result.raw[0];
   }
 
   @Mutation(() => UserResponse)
@@ -197,5 +107,10 @@ export class UserResolver {
         resolve(true);
       })
     );
+  }
+
+  @Query(() => String)
+  heyo() {
+    return "hello world";
   }
 }

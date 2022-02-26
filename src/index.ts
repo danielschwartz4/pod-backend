@@ -13,6 +13,7 @@ import Redis from "ioredis";
 import { COOKIE_NAME, __prod__ } from "./constants";
 import { Project } from "./entities/Project";
 import { Pod } from "./entities/Pod";
+import { ProjectResolver } from "./resolvers/project";
 
 const main = async () => {
   const conn = await createConnection({
@@ -25,7 +26,7 @@ const main = async () => {
     synchronize: true,
     entities: [User, Project, Pod],
   });
-  // await conn.runMigrations();
+  await conn.runMigrations();
 
   const app = express();
 
@@ -38,6 +39,7 @@ const main = async () => {
       credentials: true,
     })
   );
+
   app.use(
     session({
       name: COOKIE_NAME,
@@ -62,7 +64,7 @@ const main = async () => {
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [HelloResolver, UserResolver],
+      resolvers: [HelloResolver, UserResolver, ProjectResolver],
       validate: false,
     }),
     context: ({ req, res }) => ({ req, res, redis }),

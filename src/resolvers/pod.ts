@@ -1,6 +1,7 @@
+import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql";
+import { getConnection } from "typeorm";
 import { Pod } from "../entities/Pod";
-import { Arg, Mutation, Query, Resolver } from "type-graphql";
-import { PodResponse } from "../types";
+import { MyContext, PodResponse } from "../types";
 import removeItem from "../utils/removeItem";
 
 @Resolver()
@@ -27,8 +28,10 @@ export class PodResolver {
   async addProjectToPod(
     @Arg("id") id: number,
     @Arg("projectId") projectId: number,
-    @Arg("userId") userId: number
+    // @Arg("userId") userId: number
+    @Ctx() { req }: MyContext
   ) {
+    const userId = req.session.userId;
     const pod = await Pod.findOne(id);
     if (!pod) {
       return { errors: "pod does not exist" };
@@ -57,9 +60,7 @@ export class PodResolver {
       return "pod does not exist";
     }
     let newProjectIds = pod.projectIds;
-
     newProjectIds = removeItem(newProjectIds, projectId);
-
     Pod.update({ id }, { projectIds: newProjectIds });
     return { pod };
   }
@@ -67,5 +68,27 @@ export class PodResolver {
   @Query(() => Pod, { nullable: true })
   pod(@Arg("id") id: number): Promise<Pod | undefined> {
     return Pod.findOne(id);
+  }
+
+  @Query(() => PodResponse)
+  async findPod(
+    @Arg("cap") cap: number,
+    @Arg("projectId") projectId: number,
+    // @Arg("userId") userId: number,
+    @Ctx() { req }: MyContext
+  ) {
+    const userId = req.session.userId;
+    const pods = await getConnection().query(
+      `select * from public.pod 
+			where ${userId} != ANY(pod."userIds") and 
+						${cap} = pod.cap and 
+						${projectId} != ANY(pod."projectIds")
+			`
+    );
+    if (pods.length == 0) {
+      return { errors: "no available pods at the moment" };
+    }
+
+    return { pod: pods[0] };
   }
 }

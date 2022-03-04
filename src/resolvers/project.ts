@@ -1,6 +1,6 @@
 import { Arg, Ctx, Int, Mutation, Query, Resolver } from "type-graphql";
 import { Project } from "../entities/Project";
-import { MyContext, ProjectResponse } from "../types";
+import { MyContext, ProjectInfoResponse, ProjectResponse } from "../types";
 import { ProjectInput } from "./ProjectInput";
 
 @Resolver()
@@ -19,8 +19,10 @@ export class ProjectResolver {
   @Query(() => [Project], { nullable: true })
   // !! Add errors
   async projects(
-    @Arg("userId", () => Int) userId: number
+    // @Arg("userId", () => Int) userId: number,
+    @Ctx() { req }: MyContext
   ): Promise<Project[] | undefined> {
+    const userId = req.session.userId;
     const projects = await Project.find({ where: { userId: userId } });
     console.log(projects);
     // if (!projects) {
@@ -29,7 +31,7 @@ export class ProjectResolver {
     return projects;
   }
 
-  @Mutation(() => ProjectResponse)
+  @Mutation(() => ProjectInfoResponse)
   async addProjectInfo(
     @Arg("projectOptions") projectOptions: ProjectInput,
     @Ctx() { req }: MyContext
@@ -47,6 +49,7 @@ export class ProjectResolver {
     let project;
     try {
       project = await Project.create({
+        podId: 0,
         userId: req.session.userId,
         projectName: projectOptions.projectName,
         overview: projectOptions.overview,
@@ -57,15 +60,14 @@ export class ProjectResolver {
     } catch (err) {
       console.log("ERROR");
       console.log(err);
-      return "Cannot create project";
-      // return {
-      //   errors: [
-      //     {
-      //       field: "unknown",
-      //       message: "unknown",
-      //     },
-      //   ],
-      // };
+      return {
+        errors: [
+          {
+            field: "unknown",
+            message: "unknown",
+          },
+        ],
+      };
     }
     return { project };
   }

@@ -37,6 +37,15 @@ export class ProjectResponse {
 }
 
 @ObjectType()
+export class ProjectInfoResponse {
+  @Field(() => [FieldError], { nullable: true })
+  errors?: FieldError[];
+
+  @Field(() => Project, { nullable: true })
+  project?: Project;
+}
+
+@ObjectType()
 export class PodResponse {
   @Field(() => String, { nullable: true })
   errors?: string;

@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { ObjectType, Field } from "type-graphql";
+import { Pod } from "./entities/Pod";
 import { Project } from "./entities/Project";
 import { User } from "./entities/User";
 
@@ -28,9 +29,18 @@ export class UserResponse {
 
 @ObjectType()
 export class ProjectResponse {
-  // @Field(() => String, { nullable: true })
-  // errors?: string;
+  @Field(() => String, { nullable: true })
+  errors?: string;
 
   @Field(() => Project, { nullable: true })
   project?: Project;
+}
+
+@ObjectType()
+export class PodResponse {
+  @Field(() => String, { nullable: true })
+  errors?: string;
+
+  @Field(() => Pod, { nullable: true })
+  pod?: Pod;
 }

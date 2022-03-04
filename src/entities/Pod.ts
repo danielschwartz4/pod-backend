@@ -16,12 +16,16 @@ export class Pod extends BaseEntity {
   id!: number;
 
   @Field(() => [Int])
-  @Column("text", { array: true })
+  @Column("integer", { array: true, nullable: true })
+  projectIds!: number[];
+
+  @Field(() => [Int])
+  @Column("integer", { array: true, nullable: true })
   userIds!: number[];
 
   @Field()
   @Column()
-  isLive!: boolean;
+  cap!: number;
 
   @Field()
   @CreateDateColumn()

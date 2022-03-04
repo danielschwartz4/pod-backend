@@ -5,23 +5,19 @@ import { ProjectInput } from "./ProjectInput";
 
 @Resolver()
 export class ProjectResolver {
-  @Query(() => String)
-  heyo() {
-    return "hello world";
-  }
-
   @Query(() => ProjectResponse, { nullable: true })
   async project(
     @Arg("id", () => Int) id: number
   ): Promise<ProjectResponse | undefined> {
     const project = await Project.findOne({ where: { id: id } });
-    // if (!project) {
-    //   return { errors: "No project with this ID" };
-    // }
+    if (!project) {
+      return { errors: "No project with this ID" };
+    }
     return { project };
   }
 
   @Query(() => [Project], { nullable: true })
+  // !! Add errors
   async projects(
     @Arg("userId", () => Int) userId: number
   ): Promise<Project[] | undefined> {
@@ -61,15 +57,36 @@ export class ProjectResolver {
     } catch (err) {
       console.log("ERROR");
       console.log(err);
-      return {
-        errors: [
-          {
-            field: "unknown",
-            message: "unknown",
-          },
-        ],
-      };
+      return "Cannot create project";
+      // return {
+      //   errors: [
+      //     {
+      //       field: "unknown",
+      //       message: "unknown",
+      //     },
+      //   ],
+      // };
     }
+    return { project };
+  }
+
+  @Mutation(() => ProjectResponse)
+  async updateProject(
+    @Arg("id") id: number,
+    // @Arg("podId") podId: number | null
+    @Arg("podId") podId: number
+  ) {
+    const project = await Project.findOne(id);
+    if (!project) {
+      return "project does not exist";
+    }
+    // if (typeof podId == null) {
+    //   project.podId = null;
+    //   project.save();
+    //   return project;
+    // }
+
+    Project.update({ id }, { podId });
     return { project };
   }
 }

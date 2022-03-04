@@ -10,6 +10,11 @@ import {
 } from "typeorm";
 import { User } from "./User";
 
+// @ObjectType()
+// class Test {
+//   test: number | null;
+// }
+
 @ObjectType()
 @Entity()
 export class Project extends BaseEntity {
@@ -18,7 +23,9 @@ export class Project extends BaseEntity {
   id!: number;
 
   @Field(() => Int, { nullable: true })
-  @Column({ nullable: true })
+  // @Column({ nullable: true })
+  @Column({ type: "integer", nullable: true })
+  // podId?: number | null;
   podId?: number;
 
   @Field(() => Int)

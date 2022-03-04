@@ -14,6 +14,7 @@ import { COOKIE_NAME, __prod__ } from "./constants";
 import { Project } from "./entities/Project";
 import { Pod } from "./entities/Pod";
 import { ProjectResolver } from "./resolvers/project";
+import { PodResolver } from "./resolvers/pod";
 
 const main = async () => {
   const conn = await createConnection({
@@ -64,7 +65,7 @@ const main = async () => {
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [HelloResolver, UserResolver, ProjectResolver],
+      resolvers: [HelloResolver, UserResolver, ProjectResolver, PodResolver],
       validate: false,
     }),
     context: ({ req, res }) => ({ req, res, redis }),

@@ -73,22 +73,13 @@ export class ProjectResolver {
   }
 
   @Mutation(() => ProjectResponse)
-  async updateProject(
-    @Arg("id") id: number,
-    // @Arg("podId") podId: number | null
-    @Arg("podId") podId: number
-  ) {
+  async updateProjectPod(@Arg("id") id: number, @Arg("podId") podId: number) {
     const project = await Project.findOne(id);
     if (!project) {
-      return "project does not exist";
+      console.log("project does not exist");
+      return { errors: "project does not exist" };
     }
-    // if (typeof podId == null) {
-    //   project.podId = null;
-    //   project.save();
-    //   return project;
-    // }
-
-    Project.update({ id }, { podId });
+    await Project.update({ id }, { podId });
     return { project };
   }
 }

@@ -9,13 +9,16 @@ export class PodResolver {
   @Mutation(() => Pod)
   async createPod(
     @Arg("projectId") projectId: number,
-    @Arg("cap") cap: number
+    @Arg("cap") cap: number,
+    @Ctx() { req }: MyContext
   ) {
     let pod;
+    const userId = req.session.userId;
     try {
       pod = await Pod.create({
         cap: cap,
         projectIds: [projectId],
+        userIds: [userId],
       }).save();
     } catch (err) {
       console.log("POD CREATION ERROR");
@@ -37,37 +40,51 @@ export class PodResolver {
       return { errors: "pod does not exist" };
     }
     if (pod.projectIds.length + 1 > pod.cap) {
-      return "cannot join pod since pod is full";
+      return { errors: "cannot join pod since pod is full" };
     }
     // Add project
     const newProjectIds = pod.projectIds;
     newProjectIds.push(projectId);
-    Pod.update({ id }, { projectIds: newProjectIds });
+    await Pod.update({ id }, { projectIds: newProjectIds });
     // Add user
     const newUserIds = pod.userIds;
     newUserIds.push(userId);
-    Pod.update({ id }, { projectIds: newProjectIds });
+    await Pod.update({ id }, { userIds: newUserIds });
     return { pod };
   }
 
   @Mutation(() => PodResponse)
   async removeProjectFromPod(
     @Arg("id") id: number,
-    @Arg("projectId") projectId: number
+    @Arg("projectId") projectId: number,
+    @Ctx() { req }: MyContext
   ) {
+    const userId = req.session.userId;
     const pod = await Pod.findOne(id);
     if (!pod) {
-      return "pod does not exist";
+      return { errors: "pod does not exist" };
     }
+    // Remove project
     let newProjectIds = pod.projectIds;
     newProjectIds = removeItem(newProjectIds, projectId);
     Pod.update({ id }, { projectIds: newProjectIds });
+    // Add project
+    let newUserIds = pod.userIds;
+    newUserIds = removeItem(newUserIds, userId);
+    Pod.update({ id }, { userIds: newUserIds });
     return { pod };
   }
 
-  @Query(() => Pod, { nullable: true })
-  pod(@Arg("id") id: number): Promise<Pod | undefined> {
-    return Pod.findOne(id);
+  @Query(() => PodResponse, { nullable: true })
+  async pod(@Arg("id") id: number): Promise<PodResponse> {
+    if (id == undefined) {
+      return { errors: "no pod" };
+    }
+    const pod = await Pod.findOne(id);
+    if (!pod) {
+      return { errors: "no pod with this id" };
+    }
+    return { pod };
   }
 
   @Query(() => PodResponse)

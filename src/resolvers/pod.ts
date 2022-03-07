@@ -8,17 +8,15 @@ import removeItem from "../utils/removeItem";
 export class PodResolver {
   @Mutation(() => Pod)
   async createPod(
-    @Arg("projectId") projectId: number,
     @Arg("cap") cap: number,
     @Ctx() { req }: MyContext
-  ) {
+  ): Promise<Pod | undefined> {
     let pod;
-    const userId = req.session.userId;
     try {
       pod = await Pod.create({
         cap: cap,
-        projectIds: [projectId],
-        userIds: [userId],
+        projectIds: [],
+        userIds: [],
       }).save();
     } catch (err) {
       console.log("POD CREATION ERROR");
@@ -87,6 +85,7 @@ export class PodResolver {
     return { pod };
   }
 
+  // !! Make it so if project already in a pod it can't be in another one
   @Query(() => PodResponse)
   async findPod(
     @Arg("cap") cap: number,
@@ -99,7 +98,9 @@ export class PodResolver {
       `select * from public.pod 
 			where ${userId} != ANY(pod."userIds") and 
 						${cap} = pod.cap and 
-						${projectId} != ANY(pod."projectIds")
+						${projectId} != ANY(pod."projectIds") or
+            cardinality(pod."projectIds") = 0 and 
+            cardinality(pod."userIds") = 0
 			`
     );
     if (pods.length == 0) {

@@ -25,6 +25,11 @@ export class PodResolver {
     return pod;
   }
 
+  @Query(() => [Pod])
+  pods() {
+    return Pod.find();
+  }
+
   @Mutation(() => PodResponse)
   async addProjectToPod(
     @Arg("id") id: number,
@@ -78,7 +83,8 @@ export class PodResolver {
     if (id == undefined) {
       return { errors: "no pod" };
     }
-    const pod = await Pod.findOne(id);
+    const pod = await Pod.findOne(id, { relations: ["project"] });
+
     if (!pod) {
       return { errors: "no pod with this id" };
     }
@@ -96,13 +102,16 @@ export class PodResolver {
     const userId = req.session.userId;
     const pods = await getConnection().query(
       `select * from public.pod 
-			where ${userId} != ANY(pod."userIds") and 
+			where (${userId} != ANY(pod."userIds") and 
 						${cap} = pod.cap and 
-						${projectId} != ANY(pod."projectIds") or
-            cardinality(pod."projectIds") = 0 and 
-            cardinality(pod."userIds") = 0
+						${projectId} != ANY(pod."projectIds") and
+						cardinality(pod."projectIds") < 2) or
+            (cardinality(pod."projectIds") = 0 and 
+            cardinality(pod."userIds") = 0) and
+            cardinality(pod."projectIds") < ${cap}
 			`
     );
+
     if (pods.length == 0) {
       return { errors: "no available pods at the moment" };
     }

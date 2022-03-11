@@ -14,8 +14,6 @@ export class ProjectInput {
   @Field(() => [String])
   milestones!: string[];
 
-  // @Field(() => [Date])
-  // milestoneDates!: Date[];
   @Field(() => [String])
   milestoneDates!: String[];
 

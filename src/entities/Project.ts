@@ -8,6 +8,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
+import { Pod } from "./Pod";
 import { User } from "./User";
 
 @ObjectType()
@@ -18,7 +19,7 @@ export class Project extends BaseEntity {
   id!: number;
 
   @Field(() => Int, { nullable: true })
-  @Column({ nullable: true })
+  @Column({ nullable: true, default: 0 })
   podId!: number;
 
   @Field(() => Int)
@@ -47,6 +48,9 @@ export class Project extends BaseEntity {
 
   @ManyToOne(() => User, (user) => user.project)
   user: User;
+
+  @ManyToOne(() => Pod, (pod) => pod.projects, { nullable: true })
+  pod: Pod;
 
   @Field()
   @CreateDateColumn()

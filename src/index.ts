@@ -23,11 +23,11 @@ const main = async () => {
     username: "postgres",
     password: "Cessnap1",
     migrations: [path.join(__dirname, "./migrations/*")],
-    logging: true,
+    logging: false,
     synchronize: true,
     entities: [User, Project, Pod],
   });
-  await conn.runMigrations();
+  // await conn.runMi grations();
 
   const app = express();
 

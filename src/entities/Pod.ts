@@ -4,9 +4,11 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
+import { Project } from "./Project";
 
 @ObjectType()
 @Entity()
@@ -26,6 +28,9 @@ export class Pod extends BaseEntity {
   @Field()
   @Column()
   cap!: number;
+
+  @OneToMany(() => Project, (project) => project.pod, { nullable: true })
+  projects: Project[];
 
   @Field()
   @CreateDateColumn()

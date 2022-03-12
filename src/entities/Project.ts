@@ -49,8 +49,8 @@ export class Project extends BaseEntity {
   @ManyToOne(() => User, (user) => user.project)
   user: User;
 
-  @ManyToOne(() => Pod, (pod) => pod.projects, { nullable: true })
-  pod: Pod;
+  // @ManyToOne(() => Pod, (pod) => pod.project, { nullable: true })
+  // pod: Pod;
 
   @Field()
   @CreateDateColumn()

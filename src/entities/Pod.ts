@@ -29,8 +29,8 @@ export class Pod extends BaseEntity {
   @Column()
   cap!: number;
 
-  @OneToMany(() => Project, (project) => project.pod, { nullable: true })
-  projects: Project[];
+  // @OneToMany(() => Project, (project) => project.pod, { nullable: true })
+  // project: Project[];
 
   @Field()
   @CreateDateColumn()

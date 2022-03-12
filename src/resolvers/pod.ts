@@ -38,7 +38,7 @@ export class PodResolver {
     @Ctx() { req }: MyContext
   ) {
     const userId = req.session.userId;
-    const pod = await Pod.findOne(id);
+    const pod = await Pod.findOne({ id });
     if (!pod) {
       return { errors: "pod does not exist" };
     }
@@ -83,7 +83,7 @@ export class PodResolver {
     if (id == undefined) {
       return { errors: "no pod" };
     }
-    const pod = await Pod.findOne(id, { relations: ["project"] });
+    const pod = await Pod.findOne(id);
 
     if (!pod) {
       return { errors: "no pod with this id" };

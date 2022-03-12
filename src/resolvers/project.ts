@@ -31,6 +31,15 @@ export class ProjectResolver {
     return projects;
   }
 
+  @Query(() => [Project], { nullable: true })
+  // !! Add errors
+  async podProjects(
+    @Arg("podId", () => Int) podId: number
+  ): Promise<Project[] | undefined> {
+    const projects = await Project.find({ where: { podId: podId } });
+    return projects;
+  }
+
   @Mutation(() => ProjectInfoResponse)
   async addProjectInfo(
     @Arg("projectOptions") projectOptions: ProjectInput,

@@ -91,4 +91,18 @@ export class ProjectResolver {
     await Project.update({ id }, { podId });
     return { project };
   }
+
+  @Mutation(() => ProjectResponse)
+  async updateProjectGroupSize(
+    @Arg("id") id: number,
+    @Arg("groupSize") groupSize: number
+  ) {
+    const project = await Project.findOne(id);
+    if (!project) {
+      console.log("project does not exist");
+      return { errors: "project does not exist" };
+    }
+    await Project.update({ id }, { groupSize });
+    return { project };
+  }
 }

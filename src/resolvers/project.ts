@@ -64,6 +64,7 @@ export class ProjectResolver {
         overview: projectOptions.overview,
         milestones: projectOptions.milestones,
         milestoneDates: projectOptions.milestoneDates,
+        milestoneProgress: projectOptions.milestoneProgress,
         groupSize: projectOptions.groupSize,
       }).save();
     } catch (err) {

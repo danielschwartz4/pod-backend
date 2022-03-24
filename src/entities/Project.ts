@@ -42,6 +42,10 @@ export class Project extends BaseEntity {
   @Column("text", { array: true, nullable: true })
   milestoneDates!: String[];
 
+  @Field(() => [Int])
+  @Column("int", { array: true, nullable: true })
+  milestoneProgress!: number[];
+
   @Field(() => Int)
   @Column()
   groupSize?: number;

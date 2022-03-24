@@ -1,4 +1,4 @@
-import { Field, InputType } from "type-graphql";
+import { Field, InputType, Int } from "type-graphql";
 
 @InputType()
 export class ProjectInput {
@@ -16,6 +16,9 @@ export class ProjectInput {
 
   @Field(() => [String])
   milestoneDates!: String[];
+
+  @Field(() => [Int])
+  milestoneProgress!: number[];
 
   @Field()
   groupSize!: number;

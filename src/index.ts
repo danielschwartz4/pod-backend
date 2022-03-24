@@ -24,7 +24,7 @@ const main = async () => {
     password: "Cessnap1",
     migrations: [path.join(__dirname, "./migrations/*")],
     logging: true,
-    synchronize: false,
+    synchronize: true,
     entities: [User, Project, Pod],
   });
   // await conn.runMigrations();

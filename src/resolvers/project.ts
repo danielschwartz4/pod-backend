@@ -24,7 +24,7 @@ export class ProjectResolver {
   ): Promise<Project[] | undefined> {
     const userId = req.session.userId;
     const projects = await Project.find({ where: { userId: userId } });
-    console.log(projects);
+
     // if (!projects) {
     //   return { errors: "No project with this ID" };
     // }
@@ -104,6 +104,20 @@ export class ProjectResolver {
       return { errors: "project does not exist" };
     }
     await Project.update({ id }, { groupSize });
+    return { project };
+  }
+
+  @Mutation(() => ProjectResponse)
+  async updateProjectProgress(
+    @Arg("id") id: number,
+    @Arg("milestoneProgress", () => [Int]) milestoneProgress: number[]
+  ) {
+    const project = await Project.findOne(id);
+    if (!project) {
+      console.log("project does not exist");
+      return { errors: "project does not exist" };
+    }
+    await Project.update({ id }, { milestoneProgress });
     return { project };
   }
 }

@@ -105,7 +105,7 @@ export class PodResolver {
 			where (${userId} != ANY(pod."userIds") and 
 						${cap} = pod.cap and 
 						${projectId} != ANY(pod."projectIds") and
-						cardinality(pod."projectIds") < 2) or
+						cardinality(pod."projectIds") < ${cap}) or
             (cardinality(pod."projectIds") = 0 and 
             cardinality(pod."userIds") = 0) and
             cardinality(pod."projectIds") < ${cap}
@@ -115,6 +115,7 @@ export class PodResolver {
     if (pods.length == 0) {
       return { errors: "no available pods at the moment" };
     }
+    console.log(pods);
 
     return { pod: pods[0] };
   }

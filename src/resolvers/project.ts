@@ -18,10 +18,7 @@ export class ProjectResolver {
 
   @Query(() => [Project], { nullable: true })
   // !! Add errors
-  async projects(
-    // @Arg("userId", () => Int) userId: number,
-    @Ctx() { req }: MyContext
-  ): Promise<Project[] | undefined> {
+  async projects(@Ctx() { req }: MyContext): Promise<Project[] | undefined> {
     const userId = req.session.userId;
     const projects = await Project.find({ where: { userId: userId } });
 

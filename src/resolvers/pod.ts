@@ -7,10 +7,7 @@ import removeItem from "../utils/removeItem";
 @Resolver()
 export class PodResolver {
   @Mutation(() => Pod)
-  async createPod(
-    @Arg("cap") cap: number,
-    @Ctx() { req }: MyContext
-  ): Promise<Pod | undefined> {
+  async createPod(@Arg("cap") cap: number): Promise<Pod | undefined> {
     let pod;
     try {
       pod = await Pod.create({

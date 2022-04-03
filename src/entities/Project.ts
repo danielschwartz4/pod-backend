@@ -8,7 +8,6 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { Pod } from "./Pod";
 import { User } from "./User";
 
 @ObjectType()

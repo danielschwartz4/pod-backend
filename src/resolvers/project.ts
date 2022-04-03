@@ -117,4 +117,10 @@ export class ProjectResolver {
     await Project.update({ id }, { milestoneProgress });
     return { project };
   }
+
+  @Mutation(() => Boolean)
+  async deleteProject(@Arg("id") id: number): Promise<boolean> {
+    Project.delete(id);
+    return true;
+  }
 }

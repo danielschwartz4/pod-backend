@@ -118,6 +118,20 @@ export class ProjectResolver {
     return { project };
   }
 
+  @Mutation(() => ProjectResponse)
+  async updateProjectName(
+    @Arg("id") id: number,
+    @Arg("projectName", () => String) projectName: string
+  ) {
+    const project = await Project.findOne(id);
+    if (!project) {
+      console.log("project does not exist");
+      return { errors: "project does not exist" };
+    }
+    await Project.update({ id }, { projectName });
+    return { project };
+  }
+
   @Mutation(() => Boolean)
   async deleteProject(@Arg("id") id: number): Promise<boolean> {
     Project.delete(id);

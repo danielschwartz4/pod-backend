@@ -16,6 +16,7 @@ import { Pod } from "./entities/Pod";
 import { ProjectResolver } from "./resolvers/project";
 import { PodResolver } from "./resolvers/pod";
 
+// Typeorm connection
 const main = async () => {
   const conn = await createConnection({
     type: "postgres",
@@ -29,11 +30,13 @@ const main = async () => {
   });
   // await conn.runMigrations();
 
-  const app = express();
-
   const RedisStore = connectRedis(session);
   const redis = new Redis();
 
+  // Express server
+  const app = express();
+
+  // Add cors
   app.use(
     cors({
       origin: ["https://studio.apollographql.com", "http://localhost:3000"],
@@ -41,6 +44,7 @@ const main = async () => {
     })
   );
 
+  // Add redis
   app.use(
     session({
       name: COOKIE_NAME,
@@ -63,6 +67,7 @@ const main = async () => {
     })
   );
 
+  // Apollo Server
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
       resolvers: [HelloResolver, UserResolver, ProjectResolver, PodResolver],

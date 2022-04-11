@@ -19,6 +19,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(pino);
 
+app.set("port", 4001);
+
 app.post("/api/messages", (req, res) => {
   res.header("Content-Type", "application/json");
   twilioClient.messages
@@ -35,6 +37,8 @@ app.post("/api/messages", (req, res) => {
       res.send(JSON.stringify({ success: false }));
     });
 });
+
+app.listen(app.get("port"));
 
 // fetch("/api/messages", {
 //   method: "POST",

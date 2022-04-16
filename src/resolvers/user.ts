@@ -109,8 +109,14 @@ export class UserResolver {
     );
   }
 
-  @Query(() => String)
-  heyo() {
-    return "hello world";
+  @Mutation(() => UserResponse, { nullable: true })
+  async updatePhone(@Arg("id") id: number, @Arg("phone") phone: string) {
+    const user = await User.findOne(id);
+    if (!user) {
+      console.log("phone number already being used");
+      return { errors: "phone number already being used" };
+    }
+    await User.update({ id }, { phone });
+    return { user };
   }
 }

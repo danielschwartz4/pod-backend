@@ -41,9 +41,6 @@ const getOptions = async () => {
   if (process.env.DATABASE_URL) {
     Object.assign(connectionOptions, { url: process.env.DATABASE_URL });
   } else {
-    // gets your default configuration
-    // you could get a specific config by name getConnectionOptions('production')
-    // or getConnectionOptions(process.env.NODE_ENV)
     connectionOptions = await getConnectionOptions();
   }
   return connectionOptions;
@@ -70,7 +67,11 @@ const main = async () => {
   // Add cors
   app.use(
     cors({
-      origin: ["https://studio.apollographql.com", "http://localhost:3000"],
+      origin: [
+        process.env.LOCALHOST_FRONTEND as string,
+        // process.env.LOCALHOST_BACKEND as string,
+        process.env.VERCEL_APP as string,
+      ],
       credentials: true,
     })
   );
@@ -81,16 +82,15 @@ const main = async () => {
       name: COOKIE_NAME,
       store: new RedisStore({
         client: redis,
-        disableTTL: true,
+        // disableTTL: true,
+        url: process.env.REDIS_URL,
         disableTouch: true,
       }),
       cookie: {
         maxAge: 1000 * 60 * 60 * 24 * 365 * 10, // 10 years
         httpOnly: true,
         sameSite: "lax", //csrg
-        // sameSite: "none",
         secure: __prod__, // cookie only works in https
-        // secure: true,
       },
       saveUninitialized: false,
       secret: "randomstring",
@@ -113,7 +113,7 @@ const main = async () => {
     cors: false,
   });
 
-  app.listen(4000, () => {
+  app.listen(parseInt(process.env.PORT as string), () => {
     console.log("server started on port 4000");
   });
 };

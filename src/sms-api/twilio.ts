@@ -18,7 +18,10 @@ const app = express();
 
 app.use(
   cors({
-    origin: ["http://localhost:3000", process.env.VERCEL_APP as string],
+    origin: [
+      process.env.LOCALHOST_FRONTEND as string,
+      process.env.VERCEL_APP as string,
+    ],
     // credentials: true,
   })
 );

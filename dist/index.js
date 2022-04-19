@@ -56,14 +56,17 @@ const main = async () => {
     const redis = new ioredis_1.default();
     const app = (0, express_1.default)();
     app.use((0, cors_1.default)({
-        origin: ["https://studio.apollographql.com", "http://localhost:3000"],
+        origin: [
+            process.env.LOCALHOST_FRONTEND,
+            process.env.VERCEL_APP,
+        ],
         credentials: true,
     }));
     app.use((0, express_session_1.default)({
         name: constants_1.COOKIE_NAME,
         store: new RedisStore({
             client: redis,
-            disableTTL: true,
+            url: process.env.REDIS_URL,
             disableTouch: true,
         }),
         cookie: {
@@ -88,7 +91,7 @@ const main = async () => {
         app,
         cors: false,
     });
-    app.listen(4000, () => {
+    app.listen(parseInt(process.env.PORT), () => {
         console.log("server started on port 4000");
     });
 };

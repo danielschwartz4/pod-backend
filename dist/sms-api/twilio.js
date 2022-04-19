@@ -15,7 +15,7 @@ if (process.env.TWILIO_ACCOUNT_SID && process.env.TWILIO_AUTH_TOKEN) {
 }
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)({
-    origin: process.env.VERCEL_APP,
+    origin: ["http://localhost:3000", process.env.VERCEL_APP],
 }));
 app.use(body_parser_1.default.urlencoded({ extended: false }));
 app.use(body_parser_1.default.json());

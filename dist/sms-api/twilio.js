@@ -7,7 +7,8 @@ const body_parser_1 = __importDefault(require("body-parser"));
 const cors_1 = __importDefault(require("cors"));
 const express_1 = __importDefault(require("express"));
 const twilio_1 = require("twilio");
-require("dotenv").config();
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
 let twilioClient;
 if (process.env.TWILIO_ACCOUNT_SID && process.env.TWILIO_AUTH_TOKEN) {
     twilioClient = new twilio_1.Twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
@@ -19,8 +20,6 @@ app.use((0, cors_1.default)({
 app.use(body_parser_1.default.urlencoded({ extended: false }));
 app.use(body_parser_1.default.json());
 app.post("/api/messages", (req, res) => {
-    console.log("text message");
-    console.log(req.body);
     res.header("Content-Type", "application/json");
     twilioClient.messages
         .create({
@@ -36,7 +35,7 @@ app.post("/api/messages", (req, res) => {
         res.send(JSON.stringify({ success: false }));
     });
 });
-app.get("/api/hello", (req, res) => {
+app.get("/api/hello", (_, res) => {
     console.log("hello");
     res.send({ "Hello World": "Hello World" });
 });

@@ -1,32 +1,63 @@
-import path from "path";
-import { createConnection } from "typeorm";
-import { User } from "./entities/User";
-import { buildSchema } from "type-graphql";
-import express from "express";
 import { ApolloServer } from "apollo-server-express";
-import { UserResolver } from "./resolvers/user";
-import { HelloResolver } from "./resolvers/hello";
-import cors from "cors";
-import session from "express-session";
 import connectRedis from "connect-redis";
+import cors from "cors";
+import dotenv from "dotenv";
+import express from "express";
+import session from "express-session";
 import Redis from "ioredis";
+import path from "path";
+import { buildSchema } from "type-graphql";
+import {
+  ConnectionOptions,
+  createConnection,
+  getConnectionOptions,
+} from "typeorm";
 import { COOKIE_NAME, __prod__ } from "./constants";
-import { Project } from "./entities/Project";
 import { Pod } from "./entities/Pod";
-import { ProjectResolver } from "./resolvers/project";
+import { Project } from "./entities/Project";
+import { User } from "./entities/User";
+import { HelloResolver } from "./resolvers/hello";
 import { PodResolver } from "./resolvers/pod";
+import { ProjectResolver } from "./resolvers/project";
+import { UserResolver } from "./resolvers/user";
+dotenv.config();
+
+const getOptions = async () => {
+  let connectionOptions: ConnectionOptions;
+  connectionOptions = {
+    type: "postgres",
+    synchronize: true,
+    logging: true,
+    migrations: [path.join(__dirname, "./migrations/*")],
+    extra: {
+      ssl: {
+        rejectUnauthorized: false,
+      },
+    },
+    entities: [User, Project, Pod],
+    // entities: ["dist/entities/*.*"],
+  };
+
+  if (process.env.DATABASE_URL) {
+    Object.assign(connectionOptions, { url: process.env.DATABASE_URL });
+  } else {
+    // gets your default configuration
+    // you could get a specific config by name getConnectionOptions('production')
+    // or getConnectionOptions(process.env.NODE_ENV)
+    connectionOptions = await getConnectionOptions();
+  }
+  return connectionOptions;
+};
+
+const connect2Database = async (): Promise<void> => {
+  const typeormconfig = await getOptions();
+  await createConnection(typeormconfig);
+};
 
 // Typeorm connection
 const main = async () => {
-  const conn = await createConnection({
-    type: "postgres",
-    database: "project-planner",
-    username: "postgres",
-    password: "Cessnap1",
-    migrations: [path.join(__dirname, "./migrations/*")],
-    logging: true,
-    synchronize: true,
-    entities: [User, Project, Pod],
+  connect2Database().then(async () => {
+    console.log("Connected to database");
   });
   // await conn.runMigrations();
 

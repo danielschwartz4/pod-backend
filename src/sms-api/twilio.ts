@@ -2,7 +2,8 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import express from "express";
 import { Twilio } from "twilio";
-require("dotenv").config();
+import dotenv from "dotenv";
+dotenv.config();
 
 // Twilio client
 let twilioClient: Twilio;
@@ -27,8 +28,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.post("/api/messages", (req, res) => {
-  console.log("text message");
-  console.log(req.body);
   res.header("Content-Type", "application/json");
   twilioClient.messages
     .create({
@@ -45,7 +44,7 @@ app.post("/api/messages", (req, res) => {
     });
 });
 
-app.get("/api/hello", (req, res) => {
+app.get("/api/hello", (_, res) => {
   console.log("hello");
   res.send({ "Hello World": "Hello World" });
 });

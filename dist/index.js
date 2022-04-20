@@ -66,12 +66,18 @@ const main = async () => {
     console.log(constants_1.__prod__);
     app.use((0, express_session_1.default)({
         name: constants_1.COOKIE_NAME,
-        store: new RedisStore({
-            client: redis,
-            disableTTL: true,
-            url: process.env.REDIS_URL,
-            disableTouch: true,
-        }),
+        store: constants_1.__prod__
+            ? new RedisStore({
+                client: redis,
+                disableTTL: true,
+                url: process.env.REDIS_URL,
+                disableTouch: true,
+            })
+            : new RedisStore({
+                client: redis,
+                disableTTL: true,
+                disableTouch: true,
+            }),
         cookie: {
             maxAge: 1000 * 60 * 60 * 24 * 365 * 10,
             httpOnly: true,

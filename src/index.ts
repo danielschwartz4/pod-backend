@@ -83,19 +83,18 @@ const main = async () => {
   app.use(
     session({
       name: COOKIE_NAME,
-      store:
-        // __prod__ ?
-        new RedisStore({
-          client: redis,
-          disableTTL: true,
-          url: process.env.REDIS_URL,
-          disableTouch: true,
-        }),
-      // : new RedisStore({
-      //     client: redis,
-      //     disableTTL: true,
-      //     disableTouch: true,
-      //   }),
+      store: __prod__
+        ? new RedisStore({
+            client: redis,
+            disableTTL: true,
+            url: process.env.REDIS_URL,
+            disableTouch: true,
+          })
+        : new RedisStore({
+            client: redis,
+            disableTTL: true,
+            disableTouch: true,
+          }),
       cookie: {
         maxAge: 1000 * 60 * 60 * 24 * 365 * 10, // 10 years
         httpOnly: true,

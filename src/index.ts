@@ -80,19 +80,24 @@ const main = async () => {
   app.use(
     session({
       name: COOKIE_NAME,
-      store: new RedisStore({
-        client: redis,
-        // disableTTL: true,
-        url: process.env.REDIS_URL,
-        disableTouch: true,
-      }),
+      store: __prod__
+        ? new RedisStore({
+            client: redis,
+            disableTTL: true,
+            url: process.env.REDIS_URL,
+            disableTouch: true,
+          })
+        : new RedisStore({
+            client: redis,
+            disableTTL: true,
+            disableTouch: true,
+          }),
       cookie: {
         maxAge: 1000 * 60 * 60 * 24 * 365 * 10, // 10 years
         httpOnly: true,
-        // sameSite: "lax", //csrg
-        // secure: __prod__, // cookie only works in https
-        sameSite: "none",
-        secure: true,
+        sameSite: "lax",
+        secure: __prod__, // cookie only works in https
+        // domain: __prod__ ? ".codeponder.com" : undefined,
       },
       saveUninitialized: false,
       secret: "randomstring",

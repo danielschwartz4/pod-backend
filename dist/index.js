@@ -62,8 +62,6 @@ const main = async () => {
         ],
         credentials: true,
     }));
-    console.log("HELLO");
-    console.log(constants_1.__prod__);
     app.use((0, express_session_1.default)({
         name: constants_1.COOKIE_NAME,
         store: constants_1.__prod__

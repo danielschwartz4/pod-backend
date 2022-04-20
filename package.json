@@ -12,7 +12,6 @@
     "start2": "ts-node src/index.ts",
     "twilio2": "nodemon src/sms-api/twilio.ts"
   },
-  "proxy": "http://localhost:4001",
   "keywords": [],
   "author": "",
   "license": "ISC",

@@ -86,6 +86,7 @@ let UserResolver = class UserResolver {
                 ],
             };
         }
+        console.log(req);
         req.session.userId = user.id;
         return { user };
     }

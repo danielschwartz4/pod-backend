@@ -76,6 +76,9 @@ const main = async () => {
     })
   );
 
+  console.log("HELLO");
+  console.log(__prod__);
+
   // Add redis
   app.use(
     session({

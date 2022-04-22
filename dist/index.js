@@ -55,13 +55,15 @@ const main = async () => {
     const RedisStore = (0, connect_redis_1.default)(express_session_1.default);
     const redis = new ioredis_1.default();
     const app = (0, express_1.default)();
-    app.use((0, cors_1.default)({
+    const corsOptions = {
         origin: [
             process.env.LOCALHOST_FRONTEND,
             process.env.VERCEL_APP,
+            process.env.DATABASE_URL,
         ],
         credentials: true,
-    }));
+    };
+    app.use((0, cors_1.default)(corsOptions));
     app.use((0, express_session_1.default)({
         name: constants_1.COOKIE_NAME,
         store: constants_1.__prod__
@@ -86,6 +88,7 @@ const main = async () => {
         secret: "randomstring",
         resave: false,
     }));
+    console.log(app);
     const apolloServer = new apollo_server_express_1.ApolloServer({
         schema: await (0, type_graphql_1.buildSchema)({
             resolvers: [hello_1.HelloResolver, user_1.UserResolver, project_1.ProjectResolver, pod_1.PodResolver],
@@ -96,7 +99,7 @@ const main = async () => {
     await apolloServer.start();
     apolloServer.applyMiddleware({
         app,
-        cors: false,
+        cors: corsOptions,
     });
     app.listen(parseInt(process.env.PORT), () => {
         console.log("server started on port 4000");

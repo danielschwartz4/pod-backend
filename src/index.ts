@@ -64,17 +64,17 @@ const main = async () => {
   // Express server
   const app = express();
 
+  const corsOptions = {
+    origin: [
+      process.env.LOCALHOST_FRONTEND as string,
+      process.env.VERCEL_APP as string,
+      process.env.DATABASE_URL as string,
+    ],
+    credentials: true,
+  };
+
   // Add cors
-  app.use(
-    cors({
-      origin: [
-        process.env.LOCALHOST_FRONTEND as string,
-        // process.env.LOCALHOST_BACKEND as string,
-        process.env.VERCEL_APP as string,
-      ],
-      credentials: true,
-    })
-  );
+  app.use(cors(corsOptions));
 
   // Add redis
   app.use(
@@ -97,13 +97,14 @@ const main = async () => {
         httpOnly: true,
         sameSite: "lax",
         secure: __prod__, // cookie only works in https
-        // domain: __prod__ ? ".codeponder.com" : undefined,
       },
       saveUninitialized: false,
       secret: "randomstring",
       resave: false,
     })
   );
+
+  console.log(app);
 
   // Apollo Server
   const apolloServer = new ApolloServer({
@@ -117,7 +118,7 @@ const main = async () => {
 
   apolloServer.applyMiddleware({
     app,
-    cors: false,
+    cors: corsOptions,
   });
 
   app.listen(parseInt(process.env.PORT as string), () => {

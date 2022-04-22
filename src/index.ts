@@ -75,7 +75,6 @@ const main = async () => {
 
   // Add cors
   app.use(cors(corsOptions));
-  console.log(process.env.NODE_ENV);
 
   // Add redis
   app.use(
@@ -98,7 +97,7 @@ const main = async () => {
         httpOnly: true,
         sameSite: "lax",
         secure: __prod__, // cookie only works in https
-        domain: __prod__ ? "." + process.env.VERCEL_APP : undefined,
+        domain: __prod__ ? process.env.VERCEL_APP : undefined,
       },
       saveUninitialized: false,
       secret: "randomstring",

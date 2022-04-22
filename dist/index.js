@@ -48,7 +48,6 @@ const connect2Database = async () => {
     const typeormconfig = await getOptions();
     await (0, typeorm_1.createConnection)(typeormconfig);
 };
-console.log("HELOOOOOO");
 const main = async () => {
     connect2Database().then(async () => {
         console.log("Connected to database");
@@ -84,7 +83,7 @@ const main = async () => {
             httpOnly: true,
             sameSite: "lax",
             secure: constants_1.__prod__,
-            domain: constants_1.__prod__ ? process.env.VERCEL_APP : undefined,
+            domain: process.env.VERCEL_APP,
         },
         saveUninitialized: false,
         secret: "randomstring",

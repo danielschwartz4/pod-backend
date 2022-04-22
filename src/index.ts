@@ -51,8 +51,6 @@ const connect2Database = async (): Promise<void> => {
   await createConnection(typeormconfig);
 };
 
-console.log("HELOOOOOO");
-
 // Typeorm connection
 const main = async () => {
   connect2Database().then(async () => {
@@ -99,7 +97,7 @@ const main = async () => {
         httpOnly: true,
         sameSite: "lax",
         secure: __prod__, // cookie only works in https
-        domain: __prod__ ? process.env.VERCEL_APP : undefined,
+        domain: process.env.VERCEL_APP,
       },
       saveUninitialized: false,
       secret: "randomstring",

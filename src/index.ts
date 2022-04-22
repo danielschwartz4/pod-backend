@@ -51,6 +51,8 @@ const connect2Database = async (): Promise<void> => {
   await createConnection(typeormconfig);
 };
 
+console.log("HELOOOOOO");
+
 // Typeorm connection
 const main = async () => {
   connect2Database().then(async () => {

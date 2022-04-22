@@ -48,6 +48,7 @@ const connect2Database = async () => {
     const typeormconfig = await getOptions();
     await (0, typeorm_1.createConnection)(typeormconfig);
 };
+console.log("HELOOOOOO");
 const main = async () => {
     connect2Database().then(async () => {
         console.log("Connected to database");

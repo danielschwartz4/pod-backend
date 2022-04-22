@@ -27,6 +27,8 @@ let ProjectResolver = class ProjectResolver {
     }
     async projects({ req }) {
         const userId = req.session.userId;
+        console.log("IN PROJECTS");
+        console.log(req.session);
         const projects = await Project_1.Project.find({ where: { userId: userId } });
         return projects;
     }

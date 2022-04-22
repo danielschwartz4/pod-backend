@@ -58,23 +58,24 @@ const main = async () => {
   });
   // await conn.runMigrations();
 
-  const RedisStore = connectRedis(session);
-  const redis = new Redis();
-
   // Express server
   const app = express();
+
+  const RedisStore = connectRedis(session);
+  const redis = new Redis();
+  app.set("proxy", 1);
 
   const corsOptions = {
     origin: [
       process.env.LOCALHOST_FRONTEND as string,
       process.env.VERCEL_APP as string,
-      process.env.DATABASE_URL as string,
     ],
     credentials: true,
   };
 
   // Add cors
   app.use(cors(corsOptions));
+  console.log(process.env.NODE_ENV);
 
   // Add redis
   app.use(
@@ -97,14 +98,13 @@ const main = async () => {
         httpOnly: true,
         sameSite: "lax",
         secure: __prod__, // cookie only works in https
+        domain: __prod__ ? "." + process.env.VERCEL_APP : undefined,
       },
       saveUninitialized: false,
       secret: "randomstring",
       resave: false,
     })
   );
-
-  console.log(app);
 
   // Apollo Server
   const apolloServer = new ApolloServer({
@@ -118,7 +118,8 @@ const main = async () => {
 
   apolloServer.applyMiddleware({
     app,
-    cors: corsOptions,
+    cors: false,
+    // cors: corsOptions,
   });
 
   app.listen(parseInt(process.env.PORT as string), () => {

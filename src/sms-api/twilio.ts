@@ -22,7 +22,7 @@ app.use(
       process.env.LOCALHOST_FRONTEND as string,
       process.env.VERCEL_APP as string,
     ],
-    // credentials: true,
+    credentials: true,
   })
 );
 

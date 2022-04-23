@@ -55,7 +55,7 @@ const main = async () => {
     const app = (0, express_1.default)();
     const RedisStore = (0, connect_redis_1.default)(express_session_1.default);
     const redis = new ioredis_1.default();
-    app.set("proxy", 1);
+    app.set("trust proxy", 1);
     const corsOptions = {
         origin: [
             process.env.LOCALHOST_FRONTEND,
@@ -83,10 +83,6 @@ const main = async () => {
             httpOnly: true,
             sameSite: "lax",
             secure: constants_1.__prod__,
-            domain: constants_1.__prod__
-                ? ".pod-frontend-erht5uzkw-danielschwartz4.vercel.app"
-                :
-                    "localhost",
         },
         saveUninitialized: false,
         secret: "randomstring",

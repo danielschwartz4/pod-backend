@@ -63,7 +63,7 @@ const main = async () => {
 
   const RedisStore = connectRedis(session);
   const redis = new Redis();
-  app.set("proxy", 1);
+  app.set("trust proxy", 1);
 
   const corsOptions = {
     origin: [
@@ -97,11 +97,11 @@ const main = async () => {
         httpOnly: true,
         sameSite: "lax",
         secure: __prod__,
-        domain: __prod__
-          ? ".pod-frontend-erht5uzkw-danielschwartz4.vercel.app"
-          : // ? process.env.VERCEL_APP
-            // : undefined
-            "localhost",
+        // domain: __prod__
+        //   ? ".pod-frontend-erht5uzkw-danielschwartz4.vercel.app"
+        //   : // ? process.env.VERCEL_APP
+        //     // : undefined
+        //     "localhost",
       },
       saveUninitialized: false,
       secret: "randomstring",

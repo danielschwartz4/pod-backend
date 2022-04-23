@@ -83,7 +83,10 @@ const main = async () => {
             httpOnly: true,
             sameSite: "lax",
             secure: constants_1.__prod__,
-            domain: process.env.VERCEL_APP,
+            domain: constants_1.__prod__
+                ? "pod-frontend-erht5uzkw-danielschwartz4"
+                :
+                    "localhost",
         },
         saveUninitialized: false,
         secret: "randomstring",

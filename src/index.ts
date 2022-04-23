@@ -98,10 +98,10 @@ const main = async () => {
         sameSite: "lax",
         secure: __prod__,
         domain: __prod__
-          ? "pod-frontend-erht5uzkw-danielschwartz4"
+          ? ".pod-frontend-erht5uzkw-danielschwartz4.vercel.app"
           : // ? process.env.VERCEL_APP
             // : undefined
-            "pod-frontend-erht5uzkw-danielschwartz4",
+            "localhost",
       },
       saveUninitialized: false,
       secret: "randomstring",

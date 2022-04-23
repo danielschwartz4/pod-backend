@@ -84,7 +84,7 @@ const main = async () => {
             sameSite: "lax",
             secure: constants_1.__prod__,
             domain: constants_1.__prod__
-                ? "pod-frontend-erht5uzkw-danielschwartz4"
+                ? "pod-frontend-erht5uzkw-danielschwartz4.vercel.app"
                 :
                     "localhost",
         },

@@ -64,6 +64,7 @@ const main = async () => {
         credentials: true,
     };
     app.use((0, cors_1.default)(corsOptions));
+    console.log("zion williamson");
     app.use((0, express_session_1.default)({
         name: constants_1.COOKIE_NAME,
         store: constants_1.__prod__
@@ -85,7 +86,7 @@ const main = async () => {
             secure: constants_1.__prod__,
         },
         saveUninitialized: false,
-        secret: "randomstring",
+        secret: "p3c0720680a27105ab93070f20b3c0bd92bfdb3bccbc7f0dc491a39ce221aeb10",
         resave: false,
     }));
     const apolloServer = new apollo_server_express_1.ApolloServer({

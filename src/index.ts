@@ -76,6 +76,8 @@ const main = async () => {
   // Add cors
   app.use(cors(corsOptions));
 
+  console.log("zion williamson");
+
   // Add redis
   app.use(
     session({
@@ -104,7 +106,8 @@ const main = async () => {
         //     "localhost",
       },
       saveUninitialized: false,
-      secret: "randomstring",
+      secret:
+        "p3c0720680a27105ab93070f20b3c0bd92bfdb3bccbc7f0dc491a39ce221aeb10",
       resave: false,
     })
   );

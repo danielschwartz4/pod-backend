@@ -57,9 +57,7 @@ const main = async () => {
     const RedisStore = (0, connect_redis_1.default)(express_session_1.default);
     const redis = new ioredis_1.default();
     const corsOptions = {
-        origin: constants_1.__prod__
-            ? process.env.VERCEL_APP
-            : process.env.LOCALHOST_FRONTEND,
+        origin: process.env.LOCALHOST_FRONTEND,
         credentials: true,
     };
     console.log("IN PROD????");

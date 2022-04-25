@@ -66,9 +66,10 @@ const main = async () => {
   const redis = new Redis();
 
   const corsOptions = {
-    origin: __prod__
-      ? (process.env.VERCEL_APP as string)
-      : (process.env.LOCALHOST_FRONTEND as string),
+    origin: process.env.LOCALHOST_FRONTEND as string,
+    // __prod__
+    // ? (process.env.VERCEL_APP as string)
+    // : (process.env.LOCALHOST_FRONTEND as string),
     // origin: [
     //   process.env.VERCEL_APP as string,
     //   process.env.LOCALHOST_FRONTEND as string,

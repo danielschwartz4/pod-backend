@@ -98,11 +98,7 @@ const main = async () => {
         httpOnly: true,
         sameSite: "lax",
         secure: __prod__,
-        // domain: __prod__
-        //   ? "podapi.herokuapp.com"
-        //   : // ? process.env.VERCEL_APP
-        //     // : undefined
-        //     "localhost",
+        domain: __prod__ ? "podapi.herokuapp.com" : "localhost",
       },
       saveUninitialized: false,
       secret:

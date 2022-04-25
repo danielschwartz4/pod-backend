@@ -66,15 +66,17 @@ const main = async () => {
   const redis = new Redis();
 
   const corsOptions = {
-    // origin: __prod__
-    //   ? (process.env.VERCEL_APP as string)
-    //   : (process.env.LOCALHOST_FRONTEND as string),
-    origin: [
-      process.env.VERCEL_APP as string,
-      process.env.LOCALHOST_FRONTEND as string,
-    ],
+    origin: __prod__
+      ? (process.env.VERCEL_APP as string)
+      : (process.env.LOCALHOST_FRONTEND as string),
+    // origin: [
+    //   process.env.VERCEL_APP as string,
+    //   process.env.LOCALHOST_FRONTEND as string,
+    // ],
     credentials: true,
   };
+
+  // !! CORS error when setting origin to vercel app
 
   console.log("IN PROD????");
   console.log(__prod__);
@@ -95,12 +97,12 @@ const main = async () => {
         maxAge: 1000 * 60 * 60 * 24 * 365 * 10, // 10 years
         httpOnly: true,
         sameSite: "lax",
-        secure: true,
-        // domain: __prod__
-        //   ? ".pod-frontend-erht5uzkw-danielschwartz4.vercel.app"
-        //   : // ? process.env.VERCEL_APP
-        //     // : undefined
-        //     "localhost",
+        secure: __prod__,
+        domain: __prod__
+          ? "podapi.herokuapp.com"
+          : // ? process.env.VERCEL_APP
+            // : undefined
+            "localhost",
       },
       saveUninitialized: false,
       secret:

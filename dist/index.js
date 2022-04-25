@@ -57,10 +57,9 @@ const main = async () => {
     const RedisStore = (0, connect_redis_1.default)(express_session_1.default);
     const redis = new ioredis_1.default();
     const corsOptions = {
-        origin: [
-            process.env.VERCEL_APP,
-            process.env.LOCALHOST_FRONTEND,
-        ],
+        origin: constants_1.__prod__
+            ? process.env.VERCEL_APP
+            : process.env.LOCALHOST_FRONTEND,
         credentials: true,
     };
     console.log("IN PROD????");
@@ -78,7 +77,11 @@ const main = async () => {
             maxAge: 1000 * 60 * 60 * 24 * 365 * 10,
             httpOnly: true,
             sameSite: "lax",
-            secure: true,
+            secure: constants_1.__prod__,
+            domain: constants_1.__prod__
+                ? "podapi.herokuapp.com"
+                :
+                    "localhost",
         },
         saveUninitialized: false,
         secret: "p3c0720680a27105ab93070f20b3c0bd92bfdb3bccbc7f0dc491a39ce221aeb10",

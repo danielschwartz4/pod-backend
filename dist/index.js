@@ -53,37 +53,29 @@ const main = async () => {
         console.log("Connected to database");
     });
     const app = (0, express_1.default)();
+    app.set("trust proxy", 1);
     const RedisStore = (0, connect_redis_1.default)(express_session_1.default);
     const redis = new ioredis_1.default();
-    app.set("trust proxy", 1);
     const corsOptions = {
-        origin: [
-            process.env.LOCALHOST_FRONTEND,
-            process.env.VERCEL_APP,
-        ],
+        origin: constants_1.__prod__
+            ? process.env.VERCEL_APP
+            : process.env.LOCALHOST_FRONTEND,
         credentials: true,
     };
     app.use((0, cors_1.default)(corsOptions));
-    console.log("zion williamson");
     app.use((0, express_session_1.default)({
         name: constants_1.COOKIE_NAME,
-        store: constants_1.__prod__
-            ? new RedisStore({
-                client: redis,
-                disableTTL: true,
-                url: process.env.REDIS_URL,
-                disableTouch: true,
-            })
-            : new RedisStore({
-                client: redis,
-                disableTTL: true,
-                disableTouch: true,
-            }),
+        store: new RedisStore({
+            client: redis,
+            disableTTL: true,
+            url: constants_1.__prod__ ? process.env.REDIS_URL : undefined,
+            disableTouch: true,
+        }),
         cookie: {
             maxAge: 1000 * 60 * 60 * 24 * 365 * 10,
             httpOnly: true,
             sameSite: "lax",
-            secure: constants_1.__prod__,
+            secure: true,
         },
         saveUninitialized: false,
         secret: "p3c0720680a27105ab93070f20b3c0bd92bfdb3bccbc7f0dc491a39ce221aeb10",

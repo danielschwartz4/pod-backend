@@ -60,45 +60,36 @@ const main = async () => {
 
   // Express server
   const app = express();
+  app.set("trust proxy", 1);
 
   const RedisStore = connectRedis(session);
   const redis = new Redis();
-  app.set("trust proxy", 1);
 
   const corsOptions = {
-    origin: [
-      process.env.LOCALHOST_FRONTEND as string,
-      process.env.VERCEL_APP as string,
-    ],
+    origin: __prod__
+      ? (process.env.VERCEL_APP as string)
+      : (process.env.LOCALHOST_FRONTEND as string),
     credentials: true,
   };
 
   // Add cors
   app.use(cors(corsOptions));
 
-  console.log("zion williamson");
-
   // Add redis
   app.use(
     session({
       name: COOKIE_NAME,
-      store: __prod__
-        ? new RedisStore({
-            client: redis,
-            disableTTL: true,
-            url: process.env.REDIS_URL,
-            disableTouch: true,
-          })
-        : new RedisStore({
-            client: redis,
-            disableTTL: true,
-            disableTouch: true,
-          }),
+      store: new RedisStore({
+        client: redis,
+        disableTTL: true,
+        url: __prod__ ? process.env.REDIS_URL : undefined,
+        disableTouch: true,
+      }),
       cookie: {
         maxAge: 1000 * 60 * 60 * 24 * 365 * 10, // 10 years
         httpOnly: true,
         sameSite: "lax",
-        secure: __prod__,
+        secure: true,
         // domain: __prod__
         //   ? ".pod-frontend-erht5uzkw-danielschwartz4.vercel.app"
         //   : // ? process.env.VERCEL_APP

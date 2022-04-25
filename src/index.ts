@@ -64,12 +64,11 @@ const main = async () => {
 
   const RedisStore = connectRedis(session);
   const redis = new Redis();
-  // helo
+
   const corsOptions = {
-    origin: process.env.VERCEL_APP as string,
-    // __prod__
-    // ? (process.env.VERCEL_APP as string)
-    // : (process.env.LOCALHOST_FRONTEND as string),
+    origin: __prod__
+      ? (process.env.VERCEL_APP as string)
+      : (process.env.LOCALHOST_FRONTEND as string),
     // origin: [
     //   process.env.VERCEL_APP as string,
     //   process.env.LOCALHOST_FRONTEND as string,

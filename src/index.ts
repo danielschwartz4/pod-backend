@@ -58,7 +58,7 @@ const main = async () => {
   });
   // await conn.runMigrations();
 
-  // Express server
+  // Express serverr
   const app = express();
   app.set("trust proxy", 1);
 

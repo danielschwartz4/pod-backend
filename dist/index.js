@@ -76,7 +76,7 @@ const main = async () => {
         cookie: {
             maxAge: 1000 * 60 * 60 * 24 * 365 * 10,
             httpOnly: true,
-            sameSite: "lax",
+            sameSite: constants_1.__prod__ ? "none" : "lax",
             secure: constants_1.__prod__,
         },
         saveUninitialized: false,

@@ -63,7 +63,7 @@ const main = async () => {
   app.set("trust proxy", 1);
 
   const RedisStore = connectRedis(session);
-  const redis = new Redis();
+  const redis = new Redis(process.env.REDIS_URL);
 
   // !! not actually in production
 
@@ -86,7 +86,7 @@ const main = async () => {
       store: new RedisStore({
         client: redis,
         disableTTL: true,
-        url: __prod__ ? process.env.REDIS_URL : undefined,
+        url: __prod__ ? process.env.REDIS_URL : process.env.REDIS_URL,
         disableTouch: true,
       }),
       cookie: {

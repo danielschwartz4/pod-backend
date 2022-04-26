@@ -55,7 +55,7 @@ const main = async () => {
     const app = (0, express_1.default)();
     app.set("trust proxy", 1);
     const RedisStore = (0, connect_redis_1.default)(express_session_1.default);
-    const redis = new ioredis_1.default();
+    const redis = new ioredis_1.default(process.env.REDIS_URL);
     const corsOptions = {
         origin: constants_1.__prod__
             ? process.env.VERCEL_APP
@@ -70,7 +70,7 @@ const main = async () => {
         store: new RedisStore({
             client: redis,
             disableTTL: true,
-            url: constants_1.__prod__ ? process.env.REDIS_URL : undefined,
+            url: constants_1.__prod__ ? process.env.REDIS_URL : process.env.REDIS_URL,
             disableTouch: true,
         }),
         cookie: {

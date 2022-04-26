@@ -98,7 +98,7 @@ const main = async () => {
         httpOnly: true,
         sameSite: __prod__ ? "none" : "lax",
         secure: __prod__,
-        // domain: __prod__ ? "podapi.herokuapp.com" : "localhost",
+        domain: __prod__ ? "podapi.herokuapp.com" : "localhost",
       },
       saveUninitialized: false,
       secret: "mySecret",

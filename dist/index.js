@@ -70,7 +70,6 @@ const main = async () => {
         store: new RedisStore({
             client: redis,
             disableTTL: true,
-            url: constants_1.__prod__ ? process.env.REDIS_URL : process.env.REDIS_URL,
             disableTouch: true,
         }),
         cookie: {

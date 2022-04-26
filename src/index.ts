@@ -71,10 +71,6 @@ const main = async () => {
     origin: __prod__
       ? (process.env.VERCEL_APP as string)
       : (process.env.LOCALHOST_FRONTEND as string),
-    // origin: [
-    //   process.env.VERCEL_APP as string,
-    //   process.env.LOCALHOST_FRONTEND as string,
-    // ],
     credentials: true,
   };
 
@@ -98,7 +94,7 @@ const main = async () => {
         httpOnly: true,
         sameSite: __prod__ ? "none" : "lax",
         secure: __prod__,
-        domain: __prod__ ? "podapi.herokuapp.com" : "localhost",
+        // domain: __prod__ ? "podapi.herokuapp.com" : "localhost",
       },
       saveUninitialized: false,
       secret: "mySecret",

@@ -78,10 +78,9 @@ const main = async () => {
             httpOnly: true,
             sameSite: "lax",
             secure: constants_1.__prod__,
-            domain: constants_1.__prod__ ? "podapi.herokuapp.com" : "localhost",
         },
         saveUninitialized: false,
-        secret: "p3c0720680a27105ab93070f20b3c0bd92bfdb3bccbc7f0dc491a39ce221aeb10",
+        secret: "mySecret",
         resave: false,
     }));
     const apolloServer = new apollo_server_express_1.ApolloServer({

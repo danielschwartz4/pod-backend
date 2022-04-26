@@ -65,6 +65,8 @@ const main = async () => {
   const RedisStore = connectRedis(session);
   const redis = new Redis();
 
+  // !! not actually in production
+
   const corsOptions = {
     origin: __prod__
       ? (process.env.VERCEL_APP as string)
@@ -75,8 +77,6 @@ const main = async () => {
     // ],
     credentials: true,
   };
-
-  // !! CORS error when setting origin to vercel app
 
   console.log("IN PROD????");
   console.log(__prod__);
@@ -98,11 +98,10 @@ const main = async () => {
         httpOnly: true,
         sameSite: "lax",
         secure: __prod__,
-        domain: __prod__ ? "podapi.herokuapp.com" : "localhost",
+        // domain: __prod__ ? "podapi.herokuapp.com" : "localhost",
       },
       saveUninitialized: false,
-      secret:
-        "p3c0720680a27105ab93070f20b3c0bd92bfdb3bccbc7f0dc491a39ce221aeb10",
+      secret: "mySecret",
       resave: false,
     })
   );

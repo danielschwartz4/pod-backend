@@ -75,11 +75,8 @@ const main = async () => {
         cookie: {
             maxAge: 1000 * 60 * 60 * 24 * 365 * 10,
             httpOnly: true,
-            sameSite: constants_1.__prod__ ? "none" : "lax",
+            sameSite: constants_1.__prod__ ? false : "lax",
             secure: constants_1.__prod__,
-            domain: constants_1.__prod__
-                ? "pod-frontend-erht5uzkw-danielschwartz4.vercel.app"
-                : "localhost",
         },
         saveUninitialized: false,
         secret: "mySecret",

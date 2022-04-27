@@ -77,6 +77,7 @@ const main = async () => {
             httpOnly: true,
             sameSite: constants_1.__prod__ ? "none" : "lax",
             secure: constants_1.__prod__,
+            domain: constants_1.__prod__ ? "herokuapp.com" : "localhost",
         },
         saveUninitialized: false,
         secret: "mySecret",

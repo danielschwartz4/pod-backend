@@ -86,7 +86,7 @@ const main = async () => {
       store: new RedisStore({
         client: redis,
         disableTTL: true,
-        // url: __prod__ ? process.env.REDIS_URL : process.env.REDIS_URL,
+        // url: process.env.REDIS_URL,
         disableTouch: true,
       }),
       cookie: {
@@ -94,7 +94,7 @@ const main = async () => {
         httpOnly: true,
         sameSite: __prod__ ? "none" : "lax",
         secure: __prod__,
-        // domain: __prod__ ? "podapi.herokuapp.com" : "localhost",
+        domain: __prod__ ? "herokuapp.com" : "localhost",
       },
       saveUninitialized: false,
       secret: "mySecret",

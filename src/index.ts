@@ -51,21 +51,17 @@ const connect2Database = async (): Promise<void> => {
   await createConnection(typeormconfig);
 };
 
-// Typeorm connection
 const main = async () => {
   connect2Database().then(async () => {
     console.log("Connected to database");
   });
   // await conn.runMigrations();
 
-  // Express serverr
   const app = express();
   app.set("trust proxy", 1);
 
   const RedisStore = connectRedis(session);
   const redis = new Redis(process.env.REDIS_URL);
-
-  // !! not actually in production
 
   const corsOptions = {
     origin: __prod__
@@ -92,14 +88,14 @@ const main = async () => {
       cookie: {
         maxAge: 1000 * 60 * 60 * 24 * 365 * 10, // 10 years
         httpOnly: true,
-        sameSite: __prod__ ? false : "lax",
+        sameSite: __prod__ ? "none" : "lax",
         secure: __prod__,
         // domain: __prod__
         //   ? "pod-frontend-erht5uzkw-danielschwartz4.vercel.app"
         //   : "localhost",
       },
       saveUninitialized: false,
-      secret: "mySecret",
+      secret: process.env.SESSION_SECRET as string,
       resave: false,
     })
   );

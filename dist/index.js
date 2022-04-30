@@ -75,11 +75,11 @@ const main = async () => {
         cookie: {
             maxAge: 1000 * 60 * 60 * 24 * 365 * 10,
             httpOnly: true,
-            sameSite: constants_1.__prod__ ? false : "lax",
+            sameSite: constants_1.__prod__ ? "none" : "lax",
             secure: constants_1.__prod__,
         },
         saveUninitialized: false,
-        secret: "mySecret",
+        secret: process.env.SESSION_SECRET,
         resave: false,
     }));
     const apolloServer = new apollo_server_express_1.ApolloServer({

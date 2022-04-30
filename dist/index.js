@@ -80,7 +80,6 @@ const main = async () => {
             httpOnly: true,
             sameSite: constants_1.__prod__ ? "none" : "lax",
             secure: constants_1.__prod__,
-            domain: constants_1.__prod__ ? ".poddds.com" : undefined,
         },
         saveUninitialized: false,
         secret: process.env.SESSION_SECRET,

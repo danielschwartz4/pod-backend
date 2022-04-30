@@ -58,10 +58,7 @@ const main = async () => {
     const RedisStore = (0, connect_redis_1.default)(express_session_1.default);
     const redis = new ioredis_1.default(process.env.REDIS_URL);
     const corsOptions = {
-        origin: constants_1.__prod__
-            ?
-                "https://www.poddds.com"
-            : process.env.LOCALHOST_FRONTEND,
+        origin: "https://www.poddds.com",
         credentials: true,
     };
     console.log("IN PROD????");
@@ -80,6 +77,7 @@ const main = async () => {
             httpOnly: true,
             sameSite: constants_1.__prod__ ? "none" : "lax",
             secure: constants_1.__prod__,
+            domain: constants_1.__prod__ ? ".poddds.com" : undefined,
         },
         saveUninitialized: false,
         secret: process.env.SESSION_SECRET,

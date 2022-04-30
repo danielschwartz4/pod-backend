@@ -3,7 +3,7 @@ import cors from "cors";
 import express from "express";
 import { Twilio } from "twilio";
 import dotenv from "dotenv";
-import { __prod__ } from "src/constants";
+import { __prod__ } from "../constants";
 dotenv.config();
 
 // Twilio client
@@ -52,6 +52,6 @@ app.get("/api/hello", (_, res) => {
   res.send({ "Hello World": "Hello World" });
 });
 
-app.listen(parseInt(process.env.PORT as string), () => {
+app.listen(parseInt(process.env.TWILIO_PORT as string), () => {
   console.log("server started on port 4001");
 });

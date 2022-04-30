@@ -8,7 +8,7 @@ const cors_1 = __importDefault(require("cors"));
 const express_1 = __importDefault(require("express"));
 const twilio_1 = require("twilio");
 const dotenv_1 = __importDefault(require("dotenv"));
-const constants_1 = require("src/constants");
+const constants_1 = require("../constants");
 dotenv_1.default.config();
 let twilioClient;
 if (process.env.TWILIO_ACCOUNT_SID && process.env.TWILIO_AUTH_TOKEN) {
@@ -43,7 +43,7 @@ app.get("/api/hello", (_, res) => {
     console.log("hello");
     res.send({ "Hello World": "Hello World" });
 });
-app.listen(parseInt(process.env.PORT), () => {
+app.listen(parseInt(process.env.TWILIO_PORT), () => {
     console.log("server started on port 4001");
 });
 //# sourceMappingURL=twilio.js.map

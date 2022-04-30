@@ -90,9 +90,7 @@ const main = async () => {
         httpOnly: true,
         sameSite: __prod__ ? "none" : "lax",
         secure: __prod__,
-        // domain: __prod__
-        //   ? "pod-frontend-erht5uzkw-danielschwartz4.vercel.app"
-        //   : "localhost",
+        domain: __prod__ ? ".poddds.com" : undefined,
       },
       saveUninitialized: false,
       secret: process.env.SESSION_SECRET as string,

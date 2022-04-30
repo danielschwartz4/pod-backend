@@ -66,7 +66,8 @@ const main = async () => {
 
   const corsOptions = {
     origin: __prod__
-      ? (process.env.VERCEL_APP as string)
+      ? // ? (process.env.VERCEL_APP as string)
+        "https://www.poddds.com"
       : (process.env.LOCALHOST_FRONTEND as string),
     credentials: true,
   };
@@ -76,7 +77,7 @@ const main = async () => {
   // Add cors
   app.use(cors(corsOptions));
 
-  app.use(cookieParser(process.env.SESSION_SECRET));
+  app.use(cookieParser());
 
   // Add redis
   app.use(

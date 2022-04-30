@@ -59,14 +59,15 @@ const main = async () => {
     const redis = new ioredis_1.default(process.env.REDIS_URL);
     const corsOptions = {
         origin: constants_1.__prod__
-            ? process.env.VERCEL_APP
+            ?
+                "https://www.poddds.com"
             : process.env.LOCALHOST_FRONTEND,
         credentials: true,
     };
     console.log("IN PROD????");
     console.log(constants_1.__prod__);
     app.use((0, cors_1.default)(corsOptions));
-    app.use((0, cookie_parser_1.default)(process.env.SESSION_SECRET));
+    app.use((0, cookie_parser_1.default)());
     app.use((0, express_session_1.default)({
         name: constants_1.COOKIE_NAME,
         store: new RedisStore({

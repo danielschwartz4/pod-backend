@@ -3,6 +3,7 @@ import connectRedis from "connect-redis";
 import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
+import cookieParser from "cookie-parser";
 import session from "express-session";
 import Redis from "ioredis";
 import path from "path";
@@ -74,6 +75,8 @@ const main = async () => {
   console.log(__prod__);
   // Add cors
   app.use(cors(corsOptions));
+
+  app.use(cookieParser(process.env.SESSION_SECRET));
 
   // Add redis
   app.use(

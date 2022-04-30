@@ -8,6 +8,7 @@ const connect_redis_1 = __importDefault(require("connect-redis"));
 const cors_1 = __importDefault(require("cors"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const express_1 = __importDefault(require("express"));
+const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const express_session_1 = __importDefault(require("express-session"));
 const ioredis_1 = __importDefault(require("ioredis"));
 const path_1 = __importDefault(require("path"));
@@ -65,6 +66,7 @@ const main = async () => {
     console.log("IN PROD????");
     console.log(constants_1.__prod__);
     app.use((0, cors_1.default)(corsOptions));
+    app.use((0, cookie_parser_1.default)(process.env.SESSION_SECRET));
     app.use((0, express_session_1.default)({
         name: constants_1.COOKIE_NAME,
         store: new RedisStore({

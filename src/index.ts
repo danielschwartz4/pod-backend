@@ -65,11 +65,9 @@ const main = async () => {
   const redis = new Redis(process.env.REDIS_URL);
 
   const corsOptions = {
-    origin:
-      // __prod__
-      // ? // ? (process.env.VERCEL_APP as string)
-      "https://www.poddds.com",
-    // : (process.env.LOCALHOST_FRONTEND as string),
+    origin: __prod__
+      ? (process.env.VERCEL_APP as string)
+      : (process.env.LOCALHOST_FRONTEND as string),
     credentials: true,
   };
 

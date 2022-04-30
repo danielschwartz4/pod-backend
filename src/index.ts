@@ -3,7 +3,7 @@ import connectRedis from "connect-redis";
 import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
-// import cookieParser from "cookie-parser";
+import cookieParser from "cookie-parser";
 import session from "express-session";
 import Redis from "ioredis";
 import path from "path";
@@ -76,7 +76,7 @@ const main = async () => {
   // Add cors
   app.use(cors(corsOptions));
 
-  // app.use(cookieParser(process.env.SESSION_SECRET));
+  app.use(cookieParser(process.env.SESSION_SECRET));
 
   // Add redis
   app.use(
@@ -95,9 +95,9 @@ const main = async () => {
         secure: __prod__,
         domain: __prod__ ? ".poddds.com" : undefined,
       },
-      saveUninitialized: true,
+      saveUninitialized: false,
       secret: process.env.SESSION_SECRET as string,
-      resave: true,
+      resave: false,
     })
   );
 

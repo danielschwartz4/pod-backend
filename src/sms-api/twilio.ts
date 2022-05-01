@@ -17,6 +17,8 @@ if (process.env.TWILIO_ACCOUNT_SID && process.env.TWILIO_AUTH_TOKEN) {
 
 const app = express();
 
+app.set("trust proxy", 1);
+
 app.use(
   cors({
     origin: __prod__

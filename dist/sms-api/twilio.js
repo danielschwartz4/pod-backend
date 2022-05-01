@@ -23,6 +23,9 @@ app.use((0, cors_1.default)({
 }));
 app.use(body_parser_1.default.urlencoded({ extended: false }));
 app.use(body_parser_1.default.json());
+if (process.env.NODE_ENV === "production") {
+    app.use(express_1.default.static("client/build"));
+}
 app.post("/api/messages", (req, res) => {
     res.header("Content-Type", "application/json");
     twilioClient.messages

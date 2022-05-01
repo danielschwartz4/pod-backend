@@ -15,7 +15,6 @@ if (process.env.TWILIO_ACCOUNT_SID && process.env.TWILIO_AUTH_TOKEN) {
     twilioClient = new twilio_1.Twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 }
 const app = (0, express_1.default)();
-app.set("trust proxy", 1);
 app.use((0, cors_1.default)({
     origin: constants_1.__prod__
         ? process.env.VERCEL_APP

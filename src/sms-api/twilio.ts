@@ -4,6 +4,7 @@ import express from "express";
 import { Twilio } from "twilio";
 import dotenv from "dotenv";
 import { __prod__ } from "../constants";
+
 dotenv.config();
 
 // Twilio client
@@ -31,10 +32,6 @@ app.use(
 // Add body parser for Twilio
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static("client/build"));
-}
 
 app.post("/api/messages", (req, res) => {
   res.header("Content-Type", "application/json");

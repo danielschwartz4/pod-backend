@@ -4,7 +4,7 @@ import express from "express";
 import { Twilio } from "twilio";
 import dotenv from "dotenv";
 import { __prod__ } from "../constants";
-import path from "path";
+// import path from "path";
 dotenv.config();
 
 // Twilio client

@@ -133,12 +133,12 @@ const main = async () => {
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(bodyParser.json());
 
-  if (process.env.NODE_ENV === "production") {
-    app.use(express.static("client/build"));
-    app.get("*", (_, res) => {
-      res.sendFile(path.join(__dirname, "client/build", "index.html"));
-    });
-  }
+  // if (process.env.NODE_ENV === "production") {
+  //   app.use(express.static("client/build"));
+  //   app.get("*", (_, res) => {
+  //     res.sendFile(path.join(__dirname, "client/build", "index.html"));
+  //   });
+  // }
 
   app.post("/api/messages", (req, res) => {
     res.header("Content-Type", "application/json");
@@ -155,10 +155,6 @@ const main = async () => {
         console.log(err);
         res.send(JSON.stringify({ success: false }));
       });
-  });
-
-  app.get("/api/hello", (_, res) => {
-    res.send({ "Hello World": "Hello World" });
   });
 
   app.listen(parseInt(process.env.PORT as string) || 4000, () => {

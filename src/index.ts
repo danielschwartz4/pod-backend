@@ -21,6 +21,8 @@ import { HelloResolver } from "./resolvers/hello";
 import { PodResolver } from "./resolvers/pod";
 import { ProjectResolver } from "./resolvers/project";
 import { UserResolver } from "./resolvers/user";
+import bodyParser from "body-parser";
+import { Twilio } from "twilio";
 dotenv.config();
 
 const getOptions = async () => {
@@ -116,7 +118,50 @@ const main = async () => {
     // cors: corsOptions,
   });
 
-  app.listen(parseInt(process.env.PORT as string), () => {
+  // -------------Twilio---------------------------------------------
+
+  // Twilio client
+  let twilioClient: Twilio;
+  if (process.env.TWILIO_ACCOUNT_SID && process.env.TWILIO_AUTH_TOKEN) {
+    twilioClient = new Twilio(
+      process.env.TWILIO_ACCOUNT_SID,
+      process.env.TWILIO_AUTH_TOKEN
+    );
+  }
+
+  // Add body parser for Twilio
+  app.use(bodyParser.urlencoded({ extended: false }));
+  app.use(bodyParser.json());
+
+  if (process.env.NODE_ENV === "production") {
+    app.use(express.static("client/build"));
+    app.get("*", (_, res) => {
+      res.sendFile(path.join(__dirname, "client/build", "index.html"));
+    });
+  }
+
+  app.post("/api/messages", (req, res) => {
+    res.header("Content-Type", "application/json");
+    twilioClient.messages
+      .create({
+        from: process.env.TWILIO_PHONE_NUMBER,
+        to: req.body.to,
+        body: req.body.body,
+      })
+      .then(() => {
+        res.send(JSON.stringify({ success: true }));
+      })
+      .catch((err) => {
+        console.log(err);
+        res.send(JSON.stringify({ success: false }));
+      });
+  });
+
+  app.get("/api/hello", (_, res) => {
+    res.send({ "Hello World": "Hello World" });
+  });
+
+  app.listen(parseInt(process.env.PORT as string) || 4000, () => {
     console.log("server started on port 4000");
   });
 };

@@ -9,7 +9,6 @@ const express_1 = __importDefault(require("express"));
 const twilio_1 = require("twilio");
 const dotenv_1 = __importDefault(require("dotenv"));
 const constants_1 = require("../constants");
-const path_1 = __importDefault(require("path"));
 dotenv_1.default.config();
 let twilioClient;
 if (process.env.TWILIO_ACCOUNT_SID && process.env.TWILIO_AUTH_TOKEN) {
@@ -24,12 +23,6 @@ app.use((0, cors_1.default)({
 }));
 app.use(body_parser_1.default.urlencoded({ extended: false }));
 app.use(body_parser_1.default.json());
-if (process.env.NODE_ENV === "production") {
-    app.use(express_1.default.static("client/build"));
-    app.get("*", (_, res) => {
-        res.sendFile(path_1.default.join(__dirname, "client/build", "index.html"));
-    });
-}
 app.post("/api/messages", (req, res) => {
     res.header("Content-Type", "application/json");
     twilioClient.messages
@@ -50,7 +43,7 @@ app.get("/api/hello", (_, res) => {
     console.log("hello");
     res.send({ "Hello World": "Hello World" });
 });
-app.listen(parseInt(process.env.TWILIO_PORT), () => {
+app.listen(parseInt(process.env.PORT) || 4001, () => {
     console.log("server started on port 4001");
 });
 //# sourceMappingURL=twilio.js.map

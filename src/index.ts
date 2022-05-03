@@ -37,8 +37,8 @@ const getOptions = async () => {
         rejectUnauthorized: false,
       },
     },
-    entities: [User, Project, Pod],
-    // entities: ["dist/entities/*.*"],
+    // entities: [User, Project, Pod],
+    entities: ["dist/entities/*.*"],
   };
 
   if (process.env.DATABASE_URL) {

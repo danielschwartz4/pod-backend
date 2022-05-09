@@ -20,8 +20,6 @@ export class ProjectResolver {
   // !! Add errors
   async projects(@Ctx() { req }: MyContext): Promise<Project[] | undefined> {
     const userId = req.session.userId;
-    console.log("IN PROJECTS");
-    console.log(req.session);
     const projects = await Project.find({ where: { userId: userId } });
 
     // if (!projects) {

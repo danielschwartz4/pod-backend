@@ -99,6 +99,24 @@ let ProjectResolver = class ProjectResolver {
         await Project_1.Project.update({ id }, { milestoneProgress });
         return { project };
     }
+    async updateProjectMilestones(id, milestones) {
+        const project = await Project_1.Project.findOne(id);
+        if (!project) {
+            console.log("project does not exist");
+            return { errors: "project does not exist" };
+        }
+        await Project_1.Project.update({ id }, { milestones });
+        return { project };
+    }
+    async updateProjectMilestoneDates(id, milestoneDates) {
+        const project = await Project_1.Project.findOne(id);
+        if (!project) {
+            console.log("project does not exist");
+            return { errors: "project does not exist" };
+        }
+        await Project_1.Project.update({ id }, { milestoneDates });
+        return { project };
+    }
     async updateProjectName(id, projectName) {
         const project = await Project_1.Project.findOne(id);
         if (!project) {
@@ -166,6 +184,22 @@ __decorate([
     __metadata("design:paramtypes", [Number, Array]),
     __metadata("design:returntype", Promise)
 ], ProjectResolver.prototype, "updateProjectProgress", null);
+__decorate([
+    (0, type_graphql_1.Mutation)(() => types_1.ProjectResponse),
+    __param(0, (0, type_graphql_1.Arg)("id")),
+    __param(1, (0, type_graphql_1.Arg)("milestones", () => [String])),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, Array]),
+    __metadata("design:returntype", Promise)
+], ProjectResolver.prototype, "updateProjectMilestones", null);
+__decorate([
+    (0, type_graphql_1.Mutation)(() => types_1.ProjectResponse),
+    __param(0, (0, type_graphql_1.Arg)("id")),
+    __param(1, (0, type_graphql_1.Arg)("milestoneDates", () => [String])),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, Array]),
+    __metadata("design:returntype", Promise)
+], ProjectResolver.prototype, "updateProjectMilestoneDates", null);
 __decorate([
     (0, type_graphql_1.Mutation)(() => types_1.ProjectResponse),
     __param(0, (0, type_graphql_1.Arg)("id")),

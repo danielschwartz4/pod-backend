@@ -119,6 +119,34 @@ export class ProjectResolver {
   }
 
   @Mutation(() => ProjectResponse)
+  async updateProjectMilestones(
+    @Arg("id") id: number,
+    @Arg("milestones", () => [String]) milestones: string[]
+  ) {
+    const project = await Project.findOne(id);
+    if (!project) {
+      console.log("project does not exist");
+      return { errors: "project does not exist" };
+    }
+    await Project.update({ id }, { milestones });
+    return { project };
+  }
+
+  @Mutation(() => ProjectResponse)
+  async updateProjectMilestoneDates(
+    @Arg("id") id: number,
+    @Arg("milestoneDates", () => [String]) milestoneDates: string[]
+  ) {
+    const project = await Project.findOne(id);
+    if (!project) {
+      console.log("project does not exist");
+      return { errors: "project does not exist" };
+    }
+    await Project.update({ id }, { milestoneDates });
+    return { project };
+  }
+
+  @Mutation(() => ProjectResponse)
   async updateProjectName(
     @Arg("id") id: number,
     @Arg("projectName", () => String) projectName: string

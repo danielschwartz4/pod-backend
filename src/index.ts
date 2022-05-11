@@ -1,18 +1,16 @@
 import { ApolloServer } from "apollo-server-express";
+import bodyParser from "body-parser";
 import connectRedis from "connect-redis";
+import cookieParser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
-import cookieParser from "cookie-parser";
 import session from "express-session";
 import Redis from "ioredis";
 import path from "path";
+import { Twilio } from "twilio";
 import { buildSchema } from "type-graphql";
-import {
-  ConnectionOptions,
-  createConnection,
-  getConnectionOptions,
-} from "typeorm";
+import { ConnectionOptions, createConnection } from "typeorm";
 import { COOKIE_NAME, __prod__ } from "./constants";
 import { Pod } from "./entities/Pod";
 import { Project } from "./entities/Project";
@@ -21,31 +19,35 @@ import { HelloResolver } from "./resolvers/hello";
 import { PodResolver } from "./resolvers/pod";
 import { ProjectResolver } from "./resolvers/project";
 import { UserResolver } from "./resolvers/user";
-import bodyParser from "body-parser";
-import { Twilio } from "twilio";
 dotenv.config();
 
 const getOptions = async () => {
   let connectionOptions: ConnectionOptions;
   connectionOptions = {
     type: "postgres",
-    synchronize: true,
+    synchronize: __prod__ ? false : true,
     logging: true,
     migrations: [path.join(__dirname, "./migrations/*")],
     extra: {
-      ssl: {
-        rejectUnauthorized: false,
-      },
+      ssl: __prod__ ? true : false,
+      // {
+      //   rejectUnauthorized: __prod__ ? false : true,
+      // },
     },
     entities: [User, Project, Pod],
     // entities: ["dist/entities/*.*"],
   };
 
-  if (process.env.DATABASE_URL) {
+  if (process.env.DATABASE_URL && __prod__) {
     Object.assign(connectionOptions, { url: process.env.DATABASE_URL });
   } else {
-    connectionOptions = await getConnectionOptions();
+    Object.assign(connectionOptions, {
+      database: "project-planner",
+      username: "postgres",
+      password: "Cessnap1",
+    });
   }
+  console.log(connectionOptions);
   return connectionOptions;
 };
 

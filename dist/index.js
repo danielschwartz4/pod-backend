@@ -4,14 +4,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const apollo_server_express_1 = require("apollo-server-express");
+const body_parser_1 = __importDefault(require("body-parser"));
 const connect_redis_1 = __importDefault(require("connect-redis"));
+const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const cors_1 = __importDefault(require("cors"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const express_1 = __importDefault(require("express"));
-const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const express_session_1 = __importDefault(require("express-session"));
 const ioredis_1 = __importDefault(require("ioredis"));
 const path_1 = __importDefault(require("path"));
+const twilio_1 = require("twilio");
 const type_graphql_1 = require("type-graphql");
 const typeorm_1 = require("typeorm");
 const constants_1 = require("./constants");
@@ -22,29 +24,30 @@ const hello_1 = require("./resolvers/hello");
 const pod_1 = require("./resolvers/pod");
 const project_1 = require("./resolvers/project");
 const user_1 = require("./resolvers/user");
-const body_parser_1 = __importDefault(require("body-parser"));
-const twilio_1 = require("twilio");
 dotenv_1.default.config();
 const getOptions = async () => {
     let connectionOptions;
     connectionOptions = {
         type: "postgres",
-        synchronize: true,
+        synchronize: constants_1.__prod__ ? false : true,
         logging: true,
         migrations: [path_1.default.join(__dirname, "./migrations/*")],
         extra: {
-            ssl: {
-                rejectUnauthorized: false,
-            },
+            ssl: constants_1.__prod__ ? true : false,
         },
         entities: [User_1.User, Project_1.Project, Pod_1.Pod],
     };
-    if (process.env.DATABASE_URL) {
+    if (process.env.DATABASE_URL && constants_1.__prod__) {
         Object.assign(connectionOptions, { url: process.env.DATABASE_URL });
     }
     else {
-        connectionOptions = await (0, typeorm_1.getConnectionOptions)();
+        Object.assign(connectionOptions, {
+            database: "project-planner",
+            username: "postgres",
+            password: "Cessnap1",
+        });
     }
+    console.log(connectionOptions);
     return connectionOptions;
 };
 const connect2Database = async () => {

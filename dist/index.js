@@ -32,12 +32,17 @@ const getOptions = async () => {
         synchronize: constants_1.__prod__ ? false : true,
         logging: true,
         migrations: [path_1.default.join(__dirname, "./migrations/*")],
-        extra: {
-            rejectUnauthorized: constants_1.__prod__ ? true : false,
-        },
         entities: [User_1.User, Project_1.Project, Pod_1.Pod],
     };
     if (process.env.DATABASE_URL && constants_1.__prod__) {
+        Object.assign(connectionOptions, {
+            url: process.env.DATABASE_URL,
+            extra: {
+                ssl: {
+                    rejectUnauthorized: false,
+                },
+            },
+        });
         Object.assign(connectionOptions, { url: process.env.DATABASE_URL });
     }
     else {
@@ -45,6 +50,10 @@ const getOptions = async () => {
             database: "project-planner",
             username: "postgres",
             password: "Cessnap1",
+            extra: {
+                ssl: constants_1.__prod__ ? true : false,
+                rejectUnauthorized: constants_1.__prod__ ? true : false,
+            },
         });
     }
     return connectionOptions;
@@ -67,8 +76,6 @@ const main = async () => {
             : process.env.LOCALHOST_FRONTEND,
         credentials: true,
     };
-    console.log("IN PROD????");
-    console.log(constants_1.__prod__);
     app.use((0, cors_1.default)(corsOptions));
     app.use((0, cookie_parser_1.default)());
     app.use((0, express_session_1.default)({

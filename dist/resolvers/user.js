@@ -87,10 +87,7 @@ let UserResolver = class UserResolver {
                 ],
             };
         }
-        console.log("IN USER");
-        console.log(req.session);
         req.session.userId = user.id;
-        console.log(req.session);
         return { user };
     }
     logout({ req, res }) {

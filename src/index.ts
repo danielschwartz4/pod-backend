@@ -28,27 +28,57 @@ const getOptions = async () => {
     synchronize: __prod__ ? false : true,
     logging: true,
     migrations: [path.join(__dirname, "./migrations/*")],
-    extra: {
-      // ssl: __prod__ ? true : false,
-      // {
-      rejectUnauthorized: __prod__ ? true : false,
-      // },
-    },
     entities: [User, Project, Pod],
     // entities: ["dist/entities/*.*"],
   };
 
   if (process.env.DATABASE_URL && __prod__) {
+    Object.assign(connectionOptions, {
+      url: process.env.DATABASE_URL,
+      extra: {
+        ssl: {
+          rejectUnauthorized: false,
+        },
+      },
+    });
     Object.assign(connectionOptions, { url: process.env.DATABASE_URL });
   } else {
     Object.assign(connectionOptions, {
       database: "project-planner",
       username: "postgres",
       password: "Cessnap1",
+      extra: {
+        ssl: __prod__ ? true : false,
+        rejectUnauthorized: __prod__ ? true : false,
+      },
     });
   }
   return connectionOptions;
 };
+
+// const getOptions = async () => {
+//   let connectionOptions: ConnectionOptions;
+//   connectionOptions = {
+//     type: "postgres",
+//     synchronize: true,
+//     logging: true,
+//     migrations: [path.join(__dirname, "./migrations/*")],
+//     extra: {
+//       ssl: {
+//         rejectUnauthorized: false,
+//       },
+//     },
+//     entities: [User, Project, Pod],
+//     // entities: ["dist/entities/*.*"],
+//   };
+
+//   if (process.env.DATABASE_URL) {
+//     Object.assign(connectionOptions, { url: process.env.DATABASE_URL });
+//   } else {
+//     connectionOptions = await getConnectionOptions();
+//   }
+//   return connectionOptions;
+// };
 
 const connect2Database = async (): Promise<void> => {
   const typeormconfig = await getOptions();
@@ -74,8 +104,6 @@ const main = async () => {
     credentials: true,
   };
 
-  console.log("IN PROD????");
-  console.log(__prod__);
   // Add cors
   app.use(cors(corsOptions));
 

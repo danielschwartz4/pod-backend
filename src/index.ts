@@ -6,7 +6,6 @@ import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
 import session from "express-session";
-import { truncate } from "fs";
 import Redis from "ioredis";
 import path from "path";
 import { Twilio } from "twilio";

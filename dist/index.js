@@ -33,7 +33,7 @@ const getOptions = async () => {
         logging: true,
         migrations: [path_1.default.join(__dirname, "./migrations/*")],
         extra: {
-            ssl: constants_1.__prod__ ? true : false,
+            rejectUnauthorized: constants_1.__prod__ ? true : false,
         },
         entities: [User_1.User, Project_1.Project, Pod_1.Pod],
     };
@@ -47,7 +47,6 @@ const getOptions = async () => {
             password: "Cessnap1",
         });
     }
-    console.log(connectionOptions);
     return connectionOptions;
 };
 const connect2Database = async () => {

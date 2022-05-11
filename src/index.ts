@@ -6,6 +6,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
 import session from "express-session";
+import { truncate } from "fs";
 import Redis from "ioredis";
 import path from "path";
 import { Twilio } from "twilio";
@@ -29,9 +30,9 @@ const getOptions = async () => {
     logging: true,
     migrations: [path.join(__dirname, "./migrations/*")],
     extra: {
-      ssl: __prod__ ? true : false,
+      // ssl: __prod__ ? true : false,
       // {
-      //   rejectUnauthorized: __prod__ ? false : true,
+      rejectUnauthorized: __prod__ ? true : false,
       // },
     },
     entities: [User, Project, Pod],
@@ -47,7 +48,6 @@ const getOptions = async () => {
       password: "Cessnap1",
     });
   }
-  console.log(connectionOptions);
   return connectionOptions;
 };
 

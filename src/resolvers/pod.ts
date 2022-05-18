@@ -2,7 +2,7 @@ import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql";
 import { getConnection } from "typeorm";
 import { Pod } from "../entities/Pod";
 import { MyContext, PodResponse } from "../types";
-import removeItem from "../utils/removeItem";
+import { removeItemByValue } from "../utils/removeItem";
 
 @Resolver()
 export class PodResolver {
@@ -66,11 +66,11 @@ export class PodResolver {
     }
     // Remove project
     let newProjectIds = pod.projectIds;
-    newProjectIds = removeItem(newProjectIds, projectId);
+    newProjectIds = removeItemByValue(newProjectIds, projectId);
     Pod.update({ id }, { projectIds: newProjectIds });
     // Add project
     let newUserIds = pod.userIds;
-    newUserIds = removeItem(newUserIds, userId);
+    newUserIds = removeItemByValue(newUserIds, userId);
     Pod.update({ id }, { userIds: newUserIds });
     return { pod };
   }

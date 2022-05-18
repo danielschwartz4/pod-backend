@@ -11,16 +11,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PodResolver = void 0;
 const type_graphql_1 = require("type-graphql");
 const typeorm_1 = require("typeorm");
 const Pod_1 = require("../entities/Pod");
 const types_1 = require("../types");
-const removeItem_1 = __importDefault(require("../utils/removeItem"));
+const removeItem_1 = require("../utils/removeItem");
 let PodResolver = class PodResolver {
     async createPod(cap) {
         let pod;
@@ -64,10 +61,10 @@ let PodResolver = class PodResolver {
             return { errors: "pod does not exist" };
         }
         let newProjectIds = pod.projectIds;
-        newProjectIds = (0, removeItem_1.default)(newProjectIds, projectId);
+        newProjectIds = (0, removeItem_1.removeItemByValue)(newProjectIds, projectId);
         Pod_1.Pod.update({ id }, { projectIds: newProjectIds });
         let newUserIds = pod.userIds;
-        newUserIds = (0, removeItem_1.default)(newUserIds, userId);
+        newUserIds = (0, removeItem_1.removeItemByValue)(newUserIds, userId);
         Pod_1.Pod.update({ id }, { userIds: newUserIds });
         return { pod };
     }

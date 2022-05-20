@@ -1,5 +1,6 @@
 import argon2 from "argon2";
-import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql";
+import { Arg, Ctx, Int, Mutation, Query, Resolver } from "type-graphql";
+import { getConnection, In } from "typeorm";
 import { COOKIE_NAME } from "../constants";
 import { User } from "../entities/User";
 import { MyContext, UserResponse } from "../types";
@@ -21,6 +22,15 @@ export class UserResolver {
     }
     const user = await User.findOne({ id: req.session.userId });
     return user;
+  }
+
+  @Query(() => [User], { nullable: true })
+  // !! Add errors
+  async podUsers(
+    @Arg("ids", () => [Int]) ids: number[]
+  ): Promise<User[] | undefined> {
+    const users = await User.find({ where: { id: In(ids) } });
+    return users;
   }
 
   @Mutation(() => UserResponse)

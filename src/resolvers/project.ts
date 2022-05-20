@@ -21,10 +21,6 @@ export class ProjectResolver {
   async projects(@Ctx() { req }: MyContext): Promise<Project[] | undefined> {
     const userId = req.session.userId;
     const projects = await Project.find({ where: { userId: userId } });
-
-    // if (!projects) {
-    //   return { errors: "No project with this ID" };
-    // }
     return projects;
   }
 

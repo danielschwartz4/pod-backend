@@ -19,13 +19,14 @@ const Pod_1 = require("../entities/Pod");
 const types_1 = require("../types");
 const removeItem_1 = require("../utils/removeItem");
 let PodResolver = class PodResolver {
-    async createPod(cap) {
+    async createPod(isPrivate, cap) {
         let pod;
         try {
             pod = await Pod_1.Pod.create({
                 cap: cap,
                 projectIds: [],
                 userIds: [],
+                isPrivate: isPrivate,
             }).save();
         }
         catch (err) {
@@ -78,16 +79,17 @@ let PodResolver = class PodResolver {
         }
         return { pod };
     }
-    async findPod(cap, projectId, { req }) {
+    async findPublicPod(cap, projectId, { req }) {
         const userId = req.session.userId;
         const pods = await (0, typeorm_1.getConnection)().query(`SELECT * FROM public.pod 
 			WHERE (${userId} != ANY(pod."userIds") AND
             ${projectId} != ANY(pod."projectIds") AND 
 						${cap} = pod.cap AND
+            pod."isPrivate" = false AND
 						cardinality(pod."projectIds") < ${cap}) OR
-            ${cap} = pod.cap AND
+            (${cap} = pod.cap AND
             cardinality(pod."projectIds") = 0 AND
-            cardinality(pod."userIds") = 0
+            cardinality(pod."userIds") = 0)
             ORDER BY cardinality(pod."projectIds") DESC
             LIMIT 1
 			`);
@@ -100,9 +102,10 @@ let PodResolver = class PodResolver {
 };
 __decorate([
     (0, type_graphql_1.Mutation)(() => Pod_1.Pod),
-    __param(0, (0, type_graphql_1.Arg)("cap")),
+    __param(0, (0, type_graphql_1.Arg)("isPrivate")),
+    __param(1, (0, type_graphql_1.Arg)("cap")),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
+    __metadata("design:paramtypes", [Boolean, Number]),
     __metadata("design:returntype", Promise)
 ], PodResolver.prototype, "createPod", null);
 __decorate([
@@ -144,7 +147,7 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number, Number, Object]),
     __metadata("design:returntype", Promise)
-], PodResolver.prototype, "findPod", null);
+], PodResolver.prototype, "findPublicPod", null);
 PodResolver = __decorate([
     (0, type_graphql_1.Resolver)()
 ], PodResolver);

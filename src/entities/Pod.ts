@@ -31,6 +31,10 @@ export class Pod extends BaseEntity {
   // project: Project[];
 
   @Field()
+  @Column("boolean", { nullable: true })
+  isPrivate!: boolean;
+
+  @Field()
   @CreateDateColumn()
   createdAt: Date;
 

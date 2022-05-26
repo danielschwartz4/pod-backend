@@ -7,13 +7,17 @@ import { removeItemByValue } from "../utils/removeItem";
 @Resolver()
 export class PodResolver {
   @Mutation(() => Pod)
-  async createPod(@Arg("cap") cap: number): Promise<Pod | undefined> {
+  async createPod(
+    @Arg("isPrivate") isPrivate: boolean,
+    @Arg("cap") cap: number
+  ): Promise<Pod | undefined> {
     let pod;
     try {
       pod = await Pod.create({
         cap: cap,
         projectIds: [],
         userIds: [],
+        isPrivate: isPrivate,
       }).save();
     } catch (err) {
       console.log("POD CREATION ERROR");
@@ -90,7 +94,7 @@ export class PodResolver {
 
   // !! Make it so if project already in a pod it can't be in another one
   @Query(() => PodResponse)
-  async findPod(
+  async findPublicPod(
     @Arg("cap") cap: number,
     @Arg("projectId") projectId: number,
     // @Arg("userId") userId: number,
@@ -102,10 +106,11 @@ export class PodResolver {
 			WHERE (${userId} != ANY(pod."userIds") AND
             ${projectId} != ANY(pod."projectIds") AND 
 						${cap} = pod.cap AND
+            pod."isPrivate" = false AND
 						cardinality(pod."projectIds") < ${cap}) OR
-            ${cap} = pod.cap AND
+            (${cap} = pod.cap AND
             cardinality(pod."projectIds") = 0 AND
-            cardinality(pod."userIds") = 0
+            cardinality(pod."userIds") = 0)
             ORDER BY cardinality(pod."projectIds") DESC
             LIMIT 1
 			`

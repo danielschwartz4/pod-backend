@@ -36,6 +36,11 @@ __decorate([
 ], Pod.prototype, "cap", void 0);
 __decorate([
     (0, type_graphql_1.Field)(),
+    (0, typeorm_1.Column)("boolean", { nullable: true }),
+    __metadata("design:type", Boolean)
+], Pod.prototype, "isPrivate", void 0);
+__decorate([
+    (0, type_graphql_1.Field)(),
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)
 ], Pod.prototype, "createdAt", void 0);

@@ -133,18 +133,26 @@ export class UserResolver {
 
   @Mutation(() => UserResponse)
   async updateUserFriendRequests(
-    @Arg("id") id: number,
-    @Arg("friendRequests", () => [String]) friendRequests: string[]
+    // @Arg("id") id: number,
+    @Arg("usernameOrEmail") usernameOrEmail: string,
+    @Arg("friendRequests", () => [Int]) friendRequests: number[]
   ) {
     if (friendRequests.length > 4) {
       return { errors: "too many friend requests" };
     }
-    const user = await User.findOne(id);
+    const user = await User.findOne(
+      usernameOrEmail.includes("@")
+        ? { where: { email: usernameOrEmail } }
+        : { where: { username: usernameOrEmail } }
+    );
     if (!user) {
       console.log("project does not exist");
       return { errors: "project does not exist" };
     }
-    await User.update({ id }, { friendRequests });
+    usernameOrEmail.includes("@")
+      ? await User.update({ email: usernameOrEmail }, { friendRequests })
+      : await User.update({ username: usernameOrEmail }, { friendRequests });
+
     return { user };
   }
 }

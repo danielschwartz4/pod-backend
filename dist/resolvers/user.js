@@ -115,16 +115,20 @@ let UserResolver = class UserResolver {
         await User_1.User.update({ id }, { phone });
         return { user };
     }
-    async updateUserFriendRequests(id, friendRequests) {
+    async updateUserFriendRequests(usernameOrEmail, friendRequests) {
         if (friendRequests.length > 4) {
             return { errors: "too many friend requests" };
         }
-        const user = await User_1.User.findOne(id);
+        const user = await User_1.User.findOne(usernameOrEmail.includes("@")
+            ? { where: { email: usernameOrEmail } }
+            : { where: { username: usernameOrEmail } });
         if (!user) {
             console.log("project does not exist");
             return { errors: "project does not exist" };
         }
-        await User_1.User.update({ id }, { friendRequests });
+        usernameOrEmail.includes("@")
+            ? await User_1.User.update({ email: usernameOrEmail }, { friendRequests })
+            : await User_1.User.update({ username: usernameOrEmail }, { friendRequests });
         return { user };
     }
 };
@@ -176,10 +180,10 @@ __decorate([
 ], UserResolver.prototype, "updatePhone", null);
 __decorate([
     (0, type_graphql_1.Mutation)(() => types_1.UserResponse),
-    __param(0, (0, type_graphql_1.Arg)("id")),
-    __param(1, (0, type_graphql_1.Arg)("friendRequests", () => [String])),
+    __param(0, (0, type_graphql_1.Arg)("usernameOrEmail")),
+    __param(1, (0, type_graphql_1.Arg)("friendRequests", () => [type_graphql_1.Int])),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number, Array]),
+    __metadata("design:paramtypes", [String, Array]),
     __metadata("design:returntype", Promise)
 ], UserResolver.prototype, "updateUserFriendRequests", null);
 UserResolver = __decorate([

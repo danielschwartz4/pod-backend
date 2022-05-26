@@ -180,7 +180,7 @@ export class ProjectResolver {
   //   return { project };
   // }
 
-  @Mutation(() => ProjectResponse)
+  @Mutation(() => ProjectResponse, { nullable: true })
   async updateProjectFriendProposals(
     @Arg("id") id: number,
     @Arg("friendProposals", () => [String]) friendProposals: string[]

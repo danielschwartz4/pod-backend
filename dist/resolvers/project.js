@@ -228,7 +228,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], ProjectResolver.prototype, "deleteProject", null);
 __decorate([
-    (0, type_graphql_1.Mutation)(() => types_1.ProjectResponse),
+    (0, type_graphql_1.Mutation)(() => types_1.ProjectResponse, { nullable: true }),
     __param(0, (0, type_graphql_1.Arg)("id")),
     __param(1, (0, type_graphql_1.Arg)("friendProposals", () => [String])),
     __metadata("design:type", Function),

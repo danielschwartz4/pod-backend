@@ -59,7 +59,7 @@ export class Project extends BaseEntity {
   // @Column("text", { array: true, nullable: true })
   // friendRequests!: string[];
 
-  @Field(() => [String])
+  @Field(() => [String], { nullable: true })
   @Column("text", { array: true, nullable: true })
   friendProposals!: string[];
 

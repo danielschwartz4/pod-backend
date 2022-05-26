@@ -85,8 +85,9 @@ let PodResolver = class PodResolver {
             ${projectId} != ANY(pod."projectIds") AND 
 						${cap} = pod.cap AND
 						cardinality(pod."projectIds") < ${cap}) OR
-            (cardinality(pod."projectIds") = 0 AND 
-            cardinality(pod."userIds") = 0)
+            ${cap} = pod.cap AND
+            cardinality(pod."projectIds") = 0 AND
+            cardinality(pod."userIds") = 0
             ORDER BY cardinality(pod."projectIds") DESC
             LIMIT 1
 			`);

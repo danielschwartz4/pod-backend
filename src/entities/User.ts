@@ -35,6 +35,10 @@ export class User extends BaseEntity {
   @OneToMany(() => Project, (project) => project.user, { nullable: true })
   project: Project[];
 
+  @Field(() => [String], { nullable: true })
+  @Column("text", { array: true, nullable: true })
+  friendRequests!: string[];
+
   @Field()
   @CreateDateColumn()
   createdAt: Date;

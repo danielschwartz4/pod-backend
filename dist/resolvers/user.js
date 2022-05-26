@@ -115,6 +115,18 @@ let UserResolver = class UserResolver {
         await User_1.User.update({ id }, { phone });
         return { user };
     }
+    async updateUserFriendRequests(id, friendRequests) {
+        if (friendRequests.length > 4) {
+            return { errors: "too many friend requests" };
+        }
+        const user = await User_1.User.findOne(id);
+        if (!user) {
+            console.log("project does not exist");
+            return { errors: "project does not exist" };
+        }
+        await User_1.User.update({ id }, { friendRequests });
+        return { user };
+    }
 };
 __decorate([
     (0, type_graphql_1.Query)(() => User_1.User, { nullable: true }),
@@ -162,6 +174,14 @@ __decorate([
     __metadata("design:paramtypes", [Number, String]),
     __metadata("design:returntype", Promise)
 ], UserResolver.prototype, "updatePhone", null);
+__decorate([
+    (0, type_graphql_1.Mutation)(() => types_1.UserResponse),
+    __param(0, (0, type_graphql_1.Arg)("id")),
+    __param(1, (0, type_graphql_1.Arg)("friendRequests", () => [String])),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, Array]),
+    __metadata("design:returntype", Promise)
+], UserResolver.prototype, "updateUserFriendRequests", null);
 UserResolver = __decorate([
     (0, type_graphql_1.Resolver)()
 ], UserResolver);

@@ -161,4 +161,41 @@ export class ProjectResolver {
     Project.delete(id);
     return true;
   }
+
+  // // !! Move this to User
+  // @Mutation(() => ProjectResponse)
+  // async updateProjectFriendRequests(
+  //   @Arg("id") id: number,
+  //   @Arg("friendRequests", () => [String]) friendRequests: string[]
+  // ) {
+  //   if (friendRequests.length > 4) {
+  //     return { errors: "too many friend requests" };
+  //   }
+  //   const project = await Project.findOne(id);
+  //   if (!project) {
+  //     console.log("project does not exist");
+  //     return { errors: "project does not exist" };
+  //   }
+  //   await Project.update({ id }, { friendRequests });
+  //   return { project };
+  // }
+
+  @Mutation(() => ProjectResponse)
+  async updateProjectFriendProposals(
+    @Arg("id") id: number,
+    @Arg("friendProposals", () => [String]) friendProposals: string[]
+  ) {
+    if (friendProposals.length > 4) {
+      return { errors: "too many friend proposals" };
+    }
+    const project = await Project.findOne(id);
+    if (!project) {
+      console.log("project does not exist");
+      return { errors: "project does not exist" };
+    }
+
+    console.log(friendProposals);
+    await Project.update({ id }, { friendProposals });
+    return { project };
+  }
 }

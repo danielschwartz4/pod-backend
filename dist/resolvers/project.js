@@ -130,6 +130,19 @@ let ProjectResolver = class ProjectResolver {
         Project_1.Project.delete(id);
         return true;
     }
+    async updateProjectFriendProposals(id, friendProposals) {
+        if (friendProposals.length > 4) {
+            return { errors: "too many friend proposals" };
+        }
+        const project = await Project_1.Project.findOne(id);
+        if (!project) {
+            console.log("project does not exist");
+            return { errors: "project does not exist" };
+        }
+        console.log(friendProposals);
+        await Project_1.Project.update({ id }, { friendProposals });
+        return { project };
+    }
 };
 __decorate([
     (0, type_graphql_1.Query)(() => types_1.ProjectResponse, { nullable: true }),
@@ -215,6 +228,14 @@ __decorate([
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
 ], ProjectResolver.prototype, "deleteProject", null);
+__decorate([
+    (0, type_graphql_1.Mutation)(() => types_1.ProjectResponse),
+    __param(0, (0, type_graphql_1.Arg)("id")),
+    __param(1, (0, type_graphql_1.Arg)("friendProposals", () => [String])),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, Array]),
+    __metadata("design:returntype", Promise)
+], ProjectResolver.prototype, "updateProjectFriendProposals", null);
 ProjectResolver = __decorate([
     (0, type_graphql_1.Resolver)()
 ], ProjectResolver);

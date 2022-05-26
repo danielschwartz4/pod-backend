@@ -130,4 +130,21 @@ export class UserResolver {
     await User.update({ id }, { phone });
     return { user };
   }
+
+  @Mutation(() => UserResponse)
+  async updateUserFriendRequests(
+    @Arg("id") id: number,
+    @Arg("friendRequests", () => [String]) friendRequests: string[]
+  ) {
+    if (friendRequests.length > 4) {
+      return { errors: "too many friend requests" };
+    }
+    const user = await User.findOne(id);
+    if (!user) {
+      console.log("project does not exist");
+      return { errors: "project does not exist" };
+    }
+    await User.update({ id }, { friendRequests });
+    return { user };
+  }
 }

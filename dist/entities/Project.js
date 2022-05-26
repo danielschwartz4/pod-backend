@@ -65,6 +65,11 @@ __decorate([
     __metadata("design:type", User_1.User)
 ], Project.prototype, "user", void 0);
 __decorate([
+    (0, type_graphql_1.Field)(() => [String]),
+    (0, typeorm_1.Column)("text", { array: true, nullable: true }),
+    __metadata("design:type", Array)
+], Project.prototype, "friendProposals", void 0);
+__decorate([
     (0, type_graphql_1.Field)(),
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)

@@ -55,6 +55,14 @@ export class Project extends BaseEntity {
   // @ManyToOne(() => Pod, (pod) => pod.project, { nullable: true })
   // pod: Pod;
 
+  // @Field(() => [String])
+  // @Column("text", { array: true, nullable: true })
+  // friendRequests!: string[];
+
+  @Field(() => [String])
+  @Column("text", { array: true, nullable: true })
+  friendProposals!: string[];
+
   @Field()
   @CreateDateColumn()
   createdAt: Date;

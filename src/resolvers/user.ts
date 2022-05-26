@@ -131,27 +131,57 @@ export class UserResolver {
     return { user };
   }
 
-  @Mutation(() => UserResponse)
+  @Mutation(() => UserResponse, { nullable: true })
   async updateUserFriendRequests(
     // @Arg("id") id: number,
     @Arg("usernameOrEmail") usernameOrEmail: string,
-    @Arg("friendRequests", () => [Int]) friendRequests: number[]
+    @Arg("friendRequest", () => Int) friendRequest: number
   ) {
-    if (friendRequests.length > 4) {
-      return { errors: "too many friend requests" };
-    }
+    console.log("IN MUTATION");
     const user = await User.findOne(
       usernameOrEmail.includes("@")
         ? { where: { email: usernameOrEmail } }
         : { where: { username: usernameOrEmail } }
     );
     if (!user) {
-      console.log("project does not exist");
-      return { errors: "project does not exist" };
+      return {
+        errors: [
+          {
+            field: "user",
+            message: "user does not exist",
+          },
+        ],
+      };
+    }
+
+    let newRequests: number[];
+
+    if (user.friendRequests === null) {
+      newRequests = [friendRequest];
+    } else {
+      newRequests = user.friendRequests;
+      if (newRequests.includes(friendRequest)) {
+        return {
+          errors: [
+            {
+              field: "user",
+              message: "friend request already sent",
+            },
+          ],
+        };
+      } else {
+        newRequests.push(friendRequest);
+      }
     }
     usernameOrEmail.includes("@")
-      ? await User.update({ email: usernameOrEmail }, { friendRequests })
-      : await User.update({ username: usernameOrEmail }, { friendRequests });
+      ? await User.update(
+          { email: usernameOrEmail },
+          { friendRequests: newRequests }
+        )
+      : await User.update(
+          { username: usernameOrEmail },
+          { friendRequests: newRequests }
+        );
 
     return { user };
   }

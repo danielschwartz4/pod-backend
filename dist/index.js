@@ -73,7 +73,10 @@ const main = async () => {
     const corsOptions = {
         origin: constants_1.__prod__
             ? process.env.VERCEL_APP
-            : process.env.LOCALHOST_FRONTEND,
+            : [
+                process.env.LOCALHOST_FRONTEND,
+                "https://studio.apollographql.com",
+            ],
         credentials: true,
     };
     app.use((0, cors_1.default)(corsOptions));

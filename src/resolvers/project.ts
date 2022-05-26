@@ -194,7 +194,6 @@ export class ProjectResolver {
       return { errors: "project does not exist" };
     }
 
-    console.log(friendProposals);
     await Project.update({ id }, { friendProposals });
     return { project };
   }

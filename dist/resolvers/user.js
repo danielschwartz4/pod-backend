@@ -115,20 +115,44 @@ let UserResolver = class UserResolver {
         await User_1.User.update({ id }, { phone });
         return { user };
     }
-    async updateUserFriendRequests(usernameOrEmail, friendRequests) {
-        if (friendRequests.length > 4) {
-            return { errors: "too many friend requests" };
-        }
+    async updateUserFriendRequests(usernameOrEmail, friendRequest) {
+        console.log("IN MUTATION");
         const user = await User_1.User.findOne(usernameOrEmail.includes("@")
             ? { where: { email: usernameOrEmail } }
             : { where: { username: usernameOrEmail } });
         if (!user) {
-            console.log("project does not exist");
-            return { errors: "project does not exist" };
+            return {
+                errors: [
+                    {
+                        field: "user",
+                        message: "user does not exist",
+                    },
+                ],
+            };
+        }
+        let newRequests;
+        if (user.friendRequests === null) {
+            newRequests = [friendRequest];
+        }
+        else {
+            newRequests = user.friendRequests;
+            if (newRequests.includes(friendRequest)) {
+                return {
+                    errors: [
+                        {
+                            field: "user",
+                            message: "friend request already sent",
+                        },
+                    ],
+                };
+            }
+            else {
+                newRequests.push(friendRequest);
+            }
         }
         usernameOrEmail.includes("@")
-            ? await User_1.User.update({ email: usernameOrEmail }, { friendRequests })
-            : await User_1.User.update({ username: usernameOrEmail }, { friendRequests });
+            ? await User_1.User.update({ email: usernameOrEmail }, { friendRequests: newRequests })
+            : await User_1.User.update({ username: usernameOrEmail }, { friendRequests: newRequests });
         return { user };
     }
 };
@@ -179,11 +203,11 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserResolver.prototype, "updatePhone", null);
 __decorate([
-    (0, type_graphql_1.Mutation)(() => types_1.UserResponse),
+    (0, type_graphql_1.Mutation)(() => types_1.UserResponse, { nullable: true }),
     __param(0, (0, type_graphql_1.Arg)("usernameOrEmail")),
-    __param(1, (0, type_graphql_1.Arg)("friendRequests", () => [type_graphql_1.Int])),
+    __param(1, (0, type_graphql_1.Arg)("friendRequest", () => type_graphql_1.Int)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Array]),
+    __metadata("design:paramtypes", [String, Number]),
     __metadata("design:returntype", Promise)
 ], UserResolver.prototype, "updateUserFriendRequests", null);
 UserResolver = __decorate([

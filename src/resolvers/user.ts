@@ -1,6 +1,6 @@
 import argon2 from "argon2";
 import { Arg, Ctx, Int, Mutation, Query, Resolver } from "type-graphql";
-import { getConnection, In } from "typeorm";
+import { In } from "typeorm";
 import { COOKIE_NAME } from "../constants";
 import { User } from "../entities/User";
 import { MyContext, UserResponse } from "../types";

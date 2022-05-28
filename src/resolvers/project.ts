@@ -162,39 +162,65 @@ export class ProjectResolver {
     return true;
   }
 
-  // // !! Move this to User
-  // @Mutation(() => ProjectResponse)
-  // async updateProjectFriendRequests(
-  //   @Arg("id") id: number,
-  //   @Arg("friendRequests", () => [String]) friendRequests: string[]
-  // ) {
-  //   if (friendRequests.length > 4) {
-  //     return { errors: "too many friend requests" };
-  //   }
-  //   const project = await Project.findOne(id);
-  //   if (!project) {
-  //     console.log("project does not exist");
-  //     return { errors: "project does not exist" };
-  //   }
-  //   await Project.update({ id }, { friendRequests });
-  //   return { project };
-  // }
-
   @Mutation(() => ProjectResponse, { nullable: true })
-  async updateProjectFriendProposals(
+  async updateProjectFriendProposals2(
     @Arg("id") id: number,
-    @Arg("friendProposals", () => [String]) friendProposals: string[]
+    @Arg("isAdding", () => Boolean) isAdding: boolean,
+    @Arg("addedFriend", () => String) addedFriend: string,
+    @Arg("deletedFriend", () => String) deletedFriend: string
   ) {
-    if (friendProposals.length > 4) {
-      return { errors: "too many friend proposals" };
-    }
     const project = await Project.findOne(id);
+    // !! Get rid of friendProposals parameter and just do all of
+    // !! that inside the function
     if (!project) {
       console.log("project does not exist");
       return { errors: "project does not exist" };
     }
+    const friendProposals = project.friendProposals;
+    if (isAdding) {
+      friendProposals.push(addedFriend);
+      await Project.update({ id }, { friendProposals });
+    } else {
+      if (friendProposals.includes(deletedFriend)) {
+        const newProposals = friendProposals.filter(
+          (proposal) => proposal !== deletedFriend
+        );
+        await Project.update({ id }, { friendProposals: newProposals });
+      } else {
+        console.log("friend does not exist");
+        return { errors: "friend does not exist" };
+      }
+    }
+    return { project };
+  }
 
-    await Project.update({ id }, { friendProposals });
+  @Mutation(() => ProjectResponse, { nullable: true })
+  async updateProjectFriendProposals(
+    @Arg("id") id: number,
+    @Arg("friendProposals", () => [String]) friendProposals: string[],
+    @Arg("isAdding", () => Boolean) isAdding: boolean,
+    @Arg("deletedFriend", () => String) deletedFriend: string
+  ) {
+    const project = await Project.findOne(id);
+    // !! Get rid of friendProposals parameter and just do all of
+    // !! that inside the function
+    if (!project) {
+      console.log("project does not exist");
+      return { errors: "project does not exist" };
+    }
+    if (isAdding) {
+      await Project.update({ id }, { friendProposals });
+    } else {
+      if (friendProposals.includes(deletedFriend)) {
+        const newProposals = project.friendProposals.filter(
+          (proposal) => proposal !== deletedFriend
+        );
+        await Project.update({ id }, { friendProposals: newProposals });
+      } else {
+        console.log("friend does not exist");
+        return { errors: "friend does not exist" };
+      }
+    }
     return { project };
   }
 }

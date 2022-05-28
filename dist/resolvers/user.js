@@ -115,11 +115,8 @@ let UserResolver = class UserResolver {
         await User_1.User.update({ id }, { phone });
         return { user };
     }
-    async updateUserFriendRequests(usernameOrEmail, friendRequest) {
-        console.log("IN MUTATION");
-        const user = await User_1.User.findOne(usernameOrEmail.includes("@")
-            ? { where: { email: usernameOrEmail } }
-            : { where: { username: usernameOrEmail } });
+    async updateUserFriendRequests(username, friendRequest, isAdding) {
+        const user = await User_1.User.findOne({ where: { username } });
         if (!user) {
             return {
                 errors: [
@@ -130,29 +127,57 @@ let UserResolver = class UserResolver {
                 ],
             };
         }
-        let newRequests;
-        if (user.friendRequests === null) {
-            newRequests = [friendRequest];
+        let newRequests = [];
+        if (isAdding) {
+            if (user.friendRequests === null) {
+                newRequests = [friendRequest];
+            }
+            else {
+                newRequests = user.friendRequests;
+                if (newRequests.includes(friendRequest)) {
+                    return {
+                        errors: [
+                            {
+                                field: "user",
+                                message: "friend request already sent",
+                            },
+                        ],
+                    };
+                }
+                else {
+                    newRequests.push(friendRequest);
+                }
+            }
         }
         else {
-            newRequests = user.friendRequests;
-            if (newRequests.includes(friendRequest)) {
+            if (user.friendRequests === null) {
                 return {
                     errors: [
                         {
                             field: "user",
-                            message: "friend request already sent",
+                            message: "no friend requests",
                         },
                     ],
                 };
             }
             else {
-                newRequests.push(friendRequest);
+                newRequests = user.friendRequests;
+                if (!newRequests.includes(friendRequest)) {
+                    return {
+                        errors: [
+                            {
+                                field: "user",
+                                message: "friend request not sent",
+                            },
+                        ],
+                    };
+                }
+                else {
+                    newRequests = newRequests.filter((id) => id !== friendRequest);
+                }
             }
         }
-        usernameOrEmail.includes("@")
-            ? await User_1.User.update({ email: usernameOrEmail }, { friendRequests: newRequests })
-            : await User_1.User.update({ username: usernameOrEmail }, { friendRequests: newRequests });
+        await User_1.User.update({ username }, { friendRequests: newRequests });
         return { user };
     }
 };
@@ -204,10 +229,11 @@ __decorate([
 ], UserResolver.prototype, "updatePhone", null);
 __decorate([
     (0, type_graphql_1.Mutation)(() => types_1.UserResponse, { nullable: true }),
-    __param(0, (0, type_graphql_1.Arg)("usernameOrEmail")),
+    __param(0, (0, type_graphql_1.Arg)("username")),
     __param(1, (0, type_graphql_1.Arg)("friendRequest", () => type_graphql_1.Int)),
+    __param(2, (0, type_graphql_1.Arg)("isAdding", () => Boolean)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Number]),
+    __metadata("design:paramtypes", [String, Number, Boolean]),
     __metadata("design:returntype", Promise)
 ], UserResolver.prototype, "updateUserFriendRequests", null);
 UserResolver = __decorate([

@@ -134,15 +134,11 @@ export class UserResolver {
   @Mutation(() => UserResponse, { nullable: true })
   async updateUserFriendRequests(
     // @Arg("id") id: number,
-    @Arg("usernameOrEmail") usernameOrEmail: string,
-    @Arg("friendRequest", () => Int) friendRequest: number
+    @Arg("username") username: string,
+    @Arg("friendRequest", () => Int) friendRequest: number,
+    @Arg("isAdding", () => Boolean) isAdding: boolean
   ) {
-    console.log("IN MUTATION");
-    const user = await User.findOne(
-      usernameOrEmail.includes("@")
-        ? { where: { email: usernameOrEmail } }
-        : { where: { username: usernameOrEmail } }
-    );
+    const user = await User.findOne({ where: { username } });
     if (!user) {
       return {
         errors: [
@@ -153,35 +149,54 @@ export class UserResolver {
         ],
       };
     }
+    let newRequests: number[] = [];
 
-    let newRequests: number[];
-
-    if (user.friendRequests === null) {
-      newRequests = [friendRequest];
+    if (isAdding) {
+      if (user.friendRequests === null) {
+        newRequests = [friendRequest];
+      } else {
+        newRequests = user.friendRequests;
+        if (newRequests.includes(friendRequest)) {
+          return {
+            errors: [
+              {
+                field: "user",
+                message: "friend request already sent",
+              },
+            ],
+          };
+        } else {
+          newRequests.push(friendRequest);
+        }
+      }
     } else {
-      newRequests = user.friendRequests;
-      if (newRequests.includes(friendRequest)) {
+      if (user.friendRequests === null) {
         return {
           errors: [
             {
               field: "user",
-              message: "friend request already sent",
+              message: "no friend requests",
             },
           ],
         };
       } else {
-        newRequests.push(friendRequest);
+        newRequests = user.friendRequests;
+        if (!newRequests.includes(friendRequest)) {
+          return {
+            errors: [
+              {
+                field: "user",
+                message: "friend request not sent",
+              },
+            ],
+          };
+        } else {
+          newRequests = newRequests.filter((id) => id !== friendRequest);
+        }
       }
     }
-    usernameOrEmail.includes("@")
-      ? await User.update(
-          { email: usernameOrEmail },
-          { friendRequests: newRequests }
-        )
-      : await User.update(
-          { username: usernameOrEmail },
-          { friendRequests: newRequests }
-        );
+
+    await User.update({ username }, { friendRequests: newRequests });
 
     return { user };
   }

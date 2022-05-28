@@ -130,16 +130,48 @@ let ProjectResolver = class ProjectResolver {
         Project_1.Project.delete(id);
         return true;
     }
-    async updateProjectFriendProposals(id, friendProposals) {
-        if (friendProposals.length > 4) {
-            return { errors: "too many friend proposals" };
-        }
+    async updateProjectFriendProposals2(id, isAdding, addedFriend, deletedFriend) {
         const project = await Project_1.Project.findOne(id);
         if (!project) {
             console.log("project does not exist");
             return { errors: "project does not exist" };
         }
-        await Project_1.Project.update({ id }, { friendProposals });
+        const friendProposals = project.friendProposals;
+        if (isAdding) {
+            friendProposals.push(addedFriend);
+            await Project_1.Project.update({ id }, { friendProposals });
+        }
+        else {
+            if (friendProposals.includes(deletedFriend)) {
+                const newProposals = friendProposals.filter((proposal) => proposal !== deletedFriend);
+                await Project_1.Project.update({ id }, { friendProposals: newProposals });
+            }
+            else {
+                console.log("friend does not exist");
+                return { errors: "friend does not exist" };
+            }
+        }
+        return { project };
+    }
+    async updateProjectFriendProposals(id, friendProposals, isAdding, deletedFriend) {
+        const project = await Project_1.Project.findOne(id);
+        if (!project) {
+            console.log("project does not exist");
+            return { errors: "project does not exist" };
+        }
+        if (isAdding) {
+            await Project_1.Project.update({ id }, { friendProposals });
+        }
+        else {
+            if (friendProposals.includes(deletedFriend)) {
+                const newProposals = project.friendProposals.filter((proposal) => proposal !== deletedFriend);
+                await Project_1.Project.update({ id }, { friendProposals: newProposals });
+            }
+            else {
+                console.log("friend does not exist");
+                return { errors: "friend does not exist" };
+            }
+        }
         return { project };
     }
 };
@@ -230,9 +262,21 @@ __decorate([
 __decorate([
     (0, type_graphql_1.Mutation)(() => types_1.ProjectResponse, { nullable: true }),
     __param(0, (0, type_graphql_1.Arg)("id")),
-    __param(1, (0, type_graphql_1.Arg)("friendProposals", () => [String])),
+    __param(1, (0, type_graphql_1.Arg)("isAdding", () => Boolean)),
+    __param(2, (0, type_graphql_1.Arg)("addedFriend", () => String)),
+    __param(3, (0, type_graphql_1.Arg)("deletedFriend", () => String)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number, Array]),
+    __metadata("design:paramtypes", [Number, Boolean, String, String]),
+    __metadata("design:returntype", Promise)
+], ProjectResolver.prototype, "updateProjectFriendProposals2", null);
+__decorate([
+    (0, type_graphql_1.Mutation)(() => types_1.ProjectResponse, { nullable: true }),
+    __param(0, (0, type_graphql_1.Arg)("id")),
+    __param(1, (0, type_graphql_1.Arg)("friendProposals", () => [String])),
+    __param(2, (0, type_graphql_1.Arg)("isAdding", () => Boolean)),
+    __param(3, (0, type_graphql_1.Arg)("deletedFriend", () => String)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, Array, Boolean, String]),
     __metadata("design:returntype", Promise)
 ], ProjectResolver.prototype, "updateProjectFriendProposals", null);
 ProjectResolver = __decorate([

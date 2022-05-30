@@ -130,15 +130,15 @@ let ProjectResolver = class ProjectResolver {
         Project_1.Project.delete(id);
         return true;
     }
-    async updateProjectFriendProposals2(id, isAdding, addedFriend, deletedFriend) {
+    async updateProjectFriendProposals2(id, isAdding, addedFriends, deletedFriend) {
         const project = await Project_1.Project.findOne(id);
         if (!project) {
             console.log("project does not exist");
             return { errors: "project does not exist" };
         }
-        const friendProposals = project.friendProposals;
+        let friendProposals = project.friendProposals;
         if (isAdding) {
-            friendProposals.push(addedFriend);
+            friendProposals = friendProposals.concat(addedFriends);
             await Project_1.Project.update({ id }, { friendProposals });
         }
         else {
@@ -263,10 +263,10 @@ __decorate([
     (0, type_graphql_1.Mutation)(() => types_1.ProjectResponse, { nullable: true }),
     __param(0, (0, type_graphql_1.Arg)("id")),
     __param(1, (0, type_graphql_1.Arg)("isAdding", () => Boolean)),
-    __param(2, (0, type_graphql_1.Arg)("addedFriend", () => String)),
+    __param(2, (0, type_graphql_1.Arg)("addedFriends", () => [String])),
     __param(3, (0, type_graphql_1.Arg)("deletedFriend", () => String)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number, Boolean, String, String]),
+    __metadata("design:paramtypes", [Number, Boolean, Array, String]),
     __metadata("design:returntype", Promise)
 ], ProjectResolver.prototype, "updateProjectFriendProposals2", null);
 __decorate([

@@ -166,19 +166,18 @@ export class ProjectResolver {
   async updateProjectFriendProposals2(
     @Arg("id") id: number,
     @Arg("isAdding", () => Boolean) isAdding: boolean,
-    @Arg("addedFriend", () => String) addedFriend: string,
+    // !! Make the below an array and fix this it's not that hard
+    @Arg("addedFriends", () => [String]) addedFriends: string[],
     @Arg("deletedFriend", () => String) deletedFriend: string
   ) {
     const project = await Project.findOne(id);
-    // !! Get rid of friendProposals parameter and just do all of
-    // !! that inside the function
     if (!project) {
       console.log("project does not exist");
       return { errors: "project does not exist" };
     }
-    const friendProposals = project.friendProposals;
+    let friendProposals = project.friendProposals;
     if (isAdding) {
-      friendProposals.push(addedFriend);
+      friendProposals = friendProposals.concat(addedFriends);
       await Project.update({ id }, { friendProposals });
     } else {
       if (friendProposals.includes(deletedFriend)) {
@@ -202,8 +201,6 @@ export class ProjectResolver {
     @Arg("deletedFriend", () => String) deletedFriend: string
   ) {
     const project = await Project.findOne(id);
-    // !! Get rid of friendProposals parameter and just do all of
-    // !! that inside the function
     if (!project) {
       console.log("project does not exist");
       return { errors: "project does not exist" };

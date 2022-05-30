@@ -35,16 +35,6 @@ let ProjectResolver = class ProjectResolver {
         return projects;
     }
     async addProjectInfo(projectOptions, { req }) {
-        if (projectOptions.groupSize < 0 || projectOptions.groupSize > 4) {
-            return {
-                errors: [
-                    {
-                        field: "groupSize",
-                        message: "group size must be between 0 and 4",
-                    },
-                ],
-            };
-        }
         let project;
         try {
             project = await Project_1.Project.create({
@@ -55,7 +45,6 @@ let ProjectResolver = class ProjectResolver {
                 milestones: projectOptions.milestones,
                 milestoneDates: projectOptions.milestoneDates,
                 milestoneProgress: projectOptions.milestoneProgress,
-                groupSize: projectOptions.groupSize,
             }).save();
         }
         catch (err) {
@@ -79,15 +68,6 @@ let ProjectResolver = class ProjectResolver {
             return { errors: "project does not exist" };
         }
         await Project_1.Project.update({ id }, { podId });
-        return { project };
-    }
-    async updateProjectGroupSize(id, groupSize) {
-        const project = await Project_1.Project.findOne(id);
-        if (!project) {
-            console.log("project does not exist");
-            return { errors: "project does not exist" };
-        }
-        await Project_1.Project.update({ id }, { groupSize });
         return { project };
     }
     async updateProjectProgress(id, milestoneProgress) {
@@ -193,14 +173,6 @@ __decorate([
     __metadata("design:paramtypes", [Number, Number]),
     __metadata("design:returntype", Promise)
 ], ProjectResolver.prototype, "updateProjectPod", null);
-__decorate([
-    (0, type_graphql_1.Mutation)(() => types_1.ProjectResponse),
-    __param(0, (0, type_graphql_1.Arg)("id")),
-    __param(1, (0, type_graphql_1.Arg)("groupSize")),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number, Number]),
-    __metadata("design:returntype", Promise)
-], ProjectResolver.prototype, "updateProjectGroupSize", null);
 __decorate([
     (0, type_graphql_1.Mutation)(() => types_1.ProjectResponse),
     __param(0, (0, type_graphql_1.Arg)("id")),

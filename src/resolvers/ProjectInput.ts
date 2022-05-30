@@ -19,7 +19,4 @@ export class ProjectInput {
 
   @Field(() => [Int])
   milestoneProgress!: number[];
-
-  @Field()
-  groupSize!: number;
 }

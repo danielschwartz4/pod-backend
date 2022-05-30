@@ -38,16 +38,6 @@ export class ProjectResolver {
     @Arg("projectOptions") projectOptions: ProjectInput,
     @Ctx() { req }: MyContext
   ) {
-    if (projectOptions.groupSize < 0 || projectOptions.groupSize > 4) {
-      return {
-        errors: [
-          {
-            field: "groupSize",
-            message: "group size must be between 0 and 4",
-          },
-        ],
-      };
-    }
     let project;
     try {
       project = await Project.create({
@@ -58,7 +48,6 @@ export class ProjectResolver {
         milestones: projectOptions.milestones,
         milestoneDates: projectOptions.milestoneDates,
         milestoneProgress: projectOptions.milestoneProgress,
-        groupSize: projectOptions.groupSize,
       }).save();
     } catch (err) {
       console.log("ERROR");
@@ -83,20 +72,6 @@ export class ProjectResolver {
       return { errors: "project does not exist" };
     }
     await Project.update({ id }, { podId });
-    return { project };
-  }
-
-  @Mutation(() => ProjectResponse)
-  async updateProjectGroupSize(
-    @Arg("id") id: number,
-    @Arg("groupSize") groupSize: number
-  ) {
-    const project = await Project.findOne(id);
-    if (!project) {
-      console.log("project does not exist");
-      return { errors: "project does not exist" };
-    }
-    await Project.update({ id }, { groupSize });
     return { project };
   }
 

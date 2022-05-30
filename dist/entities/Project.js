@@ -56,11 +56,6 @@ __decorate([
     __metadata("design:type", Array)
 ], Project.prototype, "milestoneProgress", void 0);
 __decorate([
-    (0, type_graphql_1.Field)(() => type_graphql_1.Int),
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", Number)
-], Project.prototype, "groupSize", void 0);
-__decorate([
     (0, typeorm_1.ManyToOne)(() => User_1.User, (user) => user.project),
     __metadata("design:type", User_1.User)
 ], Project.prototype, "user", void 0);

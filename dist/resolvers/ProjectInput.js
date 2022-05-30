@@ -37,10 +37,6 @@ __decorate([
     (0, type_graphql_1.Field)(() => [type_graphql_1.Int]),
     __metadata("design:type", Array)
 ], ProjectInput.prototype, "milestoneProgress", void 0);
-__decorate([
-    (0, type_graphql_1.Field)(),
-    __metadata("design:type", Number)
-], ProjectInput.prototype, "groupSize", void 0);
 ProjectInput = __decorate([
     (0, type_graphql_1.InputType)()
 ], ProjectInput);

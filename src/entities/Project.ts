@@ -45,10 +45,6 @@ export class Project extends BaseEntity {
   @Column("int", { array: true, nullable: true })
   milestoneProgress!: number[];
 
-  @Field(() => Int)
-  @Column()
-  groupSize?: number;
-
   @ManyToOne(() => User, (user) => user.project)
   user: User;
 

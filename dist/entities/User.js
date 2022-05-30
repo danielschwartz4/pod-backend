@@ -13,6 +13,7 @@ exports.User = void 0;
 const type_graphql_1 = require("type-graphql");
 const typeorm_1 = require("typeorm");
 const Project_1 = require("./Project");
+const graphql_type_json_1 = require("graphql-type-json");
 let User = class User extends typeorm_1.BaseEntity {
 };
 __decorate([
@@ -44,8 +45,8 @@ __decorate([
     __metadata("design:type", Array)
 ], User.prototype, "project", void 0);
 __decorate([
-    (0, type_graphql_1.Field)(() => [type_graphql_1.Int], { nullable: true }),
-    (0, typeorm_1.Column)("int", { array: true, nullable: true }),
+    (0, type_graphql_1.Field)(() => [graphql_type_json_1.GraphQLJSONObject], { nullable: true }),
+    (0, typeorm_1.Column)("jsonb", { nullable: true }),
     __metadata("design:type", Array)
 ], User.prototype, "friendRequests", void 0);
 __decorate([

@@ -115,7 +115,7 @@ let UserResolver = class UserResolver {
         await User_1.User.update({ id }, { phone });
         return { user };
     }
-    async updateUserFriendRequests(username, friendRequest, isAdding) {
+    async updateUserFriendRequests(username, projectId, podId, isAdding) {
         const user = await User_1.User.findOne({ where: { username } });
         if (!user) {
             return {
@@ -130,11 +130,11 @@ let UserResolver = class UserResolver {
         let newRequests = [];
         if (isAdding) {
             if (user.friendRequests === null) {
-                newRequests = [friendRequest];
+                newRequests = [{ projectId: projectId, podId: podId }];
             }
             else {
                 newRequests = user.friendRequests;
-                if (newRequests.includes(friendRequest)) {
+                if (newRequests.find((request) => request.projectId === projectId)) {
                     return {
                         errors: [
                             {
@@ -145,7 +145,7 @@ let UserResolver = class UserResolver {
                     };
                 }
                 else {
-                    newRequests.push(friendRequest);
+                    newRequests.push({ projectId: projectId, podId: podId });
                 }
             }
         }
@@ -162,7 +162,7 @@ let UserResolver = class UserResolver {
             }
             else {
                 newRequests = user.friendRequests;
-                if (!newRequests.includes(friendRequest)) {
+                if (!newRequests.find((request) => request.projectId === projectId)) {
                     return {
                         errors: [
                             {
@@ -173,7 +173,7 @@ let UserResolver = class UserResolver {
                     };
                 }
                 else {
-                    newRequests = newRequests.filter((id) => id !== friendRequest);
+                    newRequests = newRequests.filter((req) => req.projectId !== projectId);
                 }
             }
         }
@@ -230,10 +230,11 @@ __decorate([
 __decorate([
     (0, type_graphql_1.Mutation)(() => types_1.UserResponse, { nullable: true }),
     __param(0, (0, type_graphql_1.Arg)("username")),
-    __param(1, (0, type_graphql_1.Arg)("friendRequest", () => type_graphql_1.Int)),
-    __param(2, (0, type_graphql_1.Arg)("isAdding", () => Boolean)),
+    __param(1, (0, type_graphql_1.Arg)("projectId", () => type_graphql_1.Int)),
+    __param(2, (0, type_graphql_1.Arg)("podId", () => type_graphql_1.Int)),
+    __param(3, (0, type_graphql_1.Arg)("isAdding", () => Boolean)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Number, Boolean]),
+    __metadata("design:paramtypes", [String, Number, Number, Boolean]),
     __metadata("design:returntype", Promise)
 ], UserResolver.prototype, "updateUserFriendRequests", null);
 UserResolver = __decorate([

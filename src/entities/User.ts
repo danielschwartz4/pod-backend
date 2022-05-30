@@ -9,6 +9,7 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 import { Project } from "./Project";
+import { GraphQLJSONObject } from "graphql-type-json";
 
 @ObjectType()
 @Entity()
@@ -35,9 +36,13 @@ export class User extends BaseEntity {
   @OneToMany(() => Project, (project) => project.user, { nullable: true })
   project: Project[];
 
-  @Field(() => [Int], { nullable: true })
-  @Column("int", { array: true, nullable: true })
-  friendRequests!: number[];
+  // @Field(() => [Int], { nullable: true })
+  // @Column("int", { array: true, nullable: true })
+  // friendRequests!: number[];
+
+  @Field(() => [GraphQLJSONObject], { nullable: true })
+  @Column("jsonb", { nullable: true })
+  friendRequests!: { projectId: number; podId: number }[];
 
   @Field()
   @CreateDateColumn()

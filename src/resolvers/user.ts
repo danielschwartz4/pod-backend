@@ -135,7 +135,8 @@ export class UserResolver {
   async updateUserFriendRequests(
     // @Arg("id") id: number,
     @Arg("username") username: string,
-    @Arg("friendRequest", () => Int) friendRequest: number,
+    @Arg("projectId", () => Int) projectId: number,
+    @Arg("podId", () => Int) podId: number,
     @Arg("isAdding", () => Boolean) isAdding: boolean
   ) {
     const user = await User.findOne({ where: { username } });
@@ -149,14 +150,16 @@ export class UserResolver {
         ],
       };
     }
-    let newRequests: number[] = [];
+    let newRequests: { projectId: number; podId: number }[] = [];
 
     if (isAdding) {
       if (user.friendRequests === null) {
-        newRequests = [friendRequest];
+        newRequests = [{ projectId: projectId, podId: podId }];
       } else {
         newRequests = user.friendRequests;
-        if (newRequests.includes(friendRequest)) {
+        // !! new
+        if (newRequests.find((request) => request.projectId === projectId)) {
+          // if (newRequests.includes(projectId)) {
           return {
             errors: [
               {
@@ -166,7 +169,7 @@ export class UserResolver {
             ],
           };
         } else {
-          newRequests.push(friendRequest);
+          newRequests.push({ projectId: projectId, podId: podId });
         }
       }
     } else {
@@ -181,7 +184,8 @@ export class UserResolver {
         };
       } else {
         newRequests = user.friendRequests;
-        if (!newRequests.includes(friendRequest)) {
+        if (!newRequests.find((request) => request.projectId === projectId)) {
+          // if (!newRequests.includes(projectId)) {
           return {
             errors: [
               {
@@ -191,7 +195,9 @@ export class UserResolver {
             ],
           };
         } else {
-          newRequests = newRequests.filter((id) => id !== friendRequest);
+          newRequests = newRequests.filter(
+            (req) => req.projectId !== projectId
+          );
         }
       }
     }

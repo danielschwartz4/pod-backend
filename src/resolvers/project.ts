@@ -163,7 +163,7 @@ export class ProjectResolver {
   }
 
   @Mutation(() => ProjectResponse, { nullable: true })
-  async updateProjectFriendProposals2(
+  async updateProjectFriendProposals(
     @Arg("id") id: number,
     @Arg("isAdding", () => Boolean) isAdding: boolean,
     // !! Make the below an array and fix this it's not that hard
@@ -177,39 +177,14 @@ export class ProjectResolver {
     }
     let friendProposals = project.friendProposals;
     if (isAdding) {
-      friendProposals = friendProposals.concat(addedFriends);
+      // !! new
+      friendProposals = friendProposals
+        .concat(addedFriends)
+        .filter((friend) => friend != "");
       await Project.update({ id }, { friendProposals });
     } else {
       if (friendProposals.includes(deletedFriend)) {
         const newProposals = friendProposals.filter(
-          (proposal) => proposal !== deletedFriend
-        );
-        await Project.update({ id }, { friendProposals: newProposals });
-      } else {
-        console.log("friend does not exist");
-        return { errors: "friend does not exist" };
-      }
-    }
-    return { project };
-  }
-
-  @Mutation(() => ProjectResponse, { nullable: true })
-  async updateProjectFriendProposals(
-    @Arg("id") id: number,
-    @Arg("friendProposals", () => [String]) friendProposals: string[],
-    @Arg("isAdding", () => Boolean) isAdding: boolean,
-    @Arg("deletedFriend", () => String) deletedFriend: string
-  ) {
-    const project = await Project.findOne(id);
-    if (!project) {
-      console.log("project does not exist");
-      return { errors: "project does not exist" };
-    }
-    if (isAdding) {
-      await Project.update({ id }, { friendProposals });
-    } else {
-      if (friendProposals.includes(deletedFriend)) {
-        const newProposals = project.friendProposals.filter(
           (proposal) => proposal !== deletedFriend
         );
         await Project.update({ id }, { friendProposals: newProposals });

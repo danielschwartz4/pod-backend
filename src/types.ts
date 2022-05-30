@@ -3,10 +3,12 @@ import { ObjectType, Field } from "type-graphql";
 import { Pod } from "./entities/Pod";
 import { Project } from "./entities/Project";
 import { User } from "./entities/User";
+import { Redis } from "ioredis";
 
 export type MyContext = {
   req: Request;
   res: Response;
+  redis: Redis;
 };
 
 @ObjectType()

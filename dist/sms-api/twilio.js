@@ -48,7 +48,6 @@ app.post("/api/messages", (req, res) => {
     });
 });
 app.get("/api/hello", (_, res) => {
-    console.log("hello");
     res.send({ "Hello World": "Hello World" });
 });
 app.listen(parseInt(process.env.PORT) || 4001, () => {

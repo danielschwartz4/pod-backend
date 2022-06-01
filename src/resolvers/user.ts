@@ -112,7 +112,6 @@ export class UserResolver {
     @Arg("email") email: string,
     @Ctx() { redis }: MyContext
   ) {
-    console.log("HELLO");
     console.log(email);
     const user = await User.findOne({ where: { email } });
     console.log(email);

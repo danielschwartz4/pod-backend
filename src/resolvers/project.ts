@@ -158,7 +158,7 @@ export class ProjectResolver {
         .filter((friend) => friend != "");
       await Project.update({ id }, { friendProposals });
     } else {
-      if (friendProposals.includes(deletedFriend)) {
+      if (friendProposals?.includes(deletedFriend)) {
         const newProposals = friendProposals.filter(
           (proposal) => proposal !== deletedFriend
         );

@@ -46,12 +46,15 @@ export class UserResolver {
       return { errors };
     }
     const hashedPassword = await argon2.hash(options.password);
+    // const avatar = 'https://i.pravatar.cc/300?u=' + options.username;
+    const avatar = Math.floor(Math.random() * 4) + 1;
     let user;
     try {
       user = await User.create({
         username: options.username,
         email: options.email,
         password: hashedPassword,
+        avatar: avatar,
       }).save();
     } catch (err) {
       if (err.code === "23505") {

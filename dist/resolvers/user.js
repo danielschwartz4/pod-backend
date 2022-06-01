@@ -44,12 +44,14 @@ let UserResolver = class UserResolver {
             return { errors };
         }
         const hashedPassword = await argon2_1.default.hash(options.password);
+        const avatar = Math.floor(Math.random() * 4) + 1;
         let user;
         try {
             user = await User_1.User.create({
                 username: options.username,
                 email: options.email,
                 password: hashedPassword,
+                avatar: avatar,
             }).save();
         }
         catch (err) {

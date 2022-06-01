@@ -36,7 +36,7 @@ __decorate([
 ], Pod.prototype, "cap", void 0);
 __decorate([
     (0, type_graphql_1.Field)(),
-    (0, typeorm_1.Column)("boolean", { nullable: true }),
+    (0, typeorm_1.Column)("boolean", { nullable: true, default: false }),
     __metadata("design:type", Boolean)
 ], Pod.prototype, "isPrivate", void 0);
 __decorate([

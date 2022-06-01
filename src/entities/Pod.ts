@@ -31,7 +31,7 @@ export class Pod extends BaseEntity {
   // project: Project[];
 
   @Field()
-  @Column("boolean", { nullable: true })
+  @Column("boolean", { nullable: true, default: false })
   isPrivate!: boolean;
 
   @Field()

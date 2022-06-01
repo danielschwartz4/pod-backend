@@ -44,6 +44,10 @@ export class User extends BaseEntity {
   @Column("jsonb", { nullable: true })
   friendRequests!: { projectId: number; podId: number }[];
 
+  @Field(() => Int, { nullable: true })
+  @Column({ default: 1, nullable: true })
+  avatar!: number;
+
   @Field()
   @CreateDateColumn()
   createdAt: Date;

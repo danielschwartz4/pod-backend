@@ -50,6 +50,11 @@ __decorate([
     __metadata("design:type", Array)
 ], User.prototype, "friendRequests", void 0);
 __decorate([
+    (0, type_graphql_1.Field)(() => type_graphql_1.Int, { nullable: true }),
+    (0, typeorm_1.Column)({ default: 1, nullable: true }),
+    __metadata("design:type", Number)
+], User.prototype, "avatar", void 0);
+__decorate([
     (0, type_graphql_1.Field)(),
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)

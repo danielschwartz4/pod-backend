@@ -243,7 +243,7 @@ export class UserResolver {
       } else {
         newRequests = user.friendRequests;
         // !! new
-        if (newRequests.find((request) => request.projectId === projectId)) {
+        if (newRequests?.find((request) => request.projectId === projectId)) {
           // if (newRequests.includes(projectId)) {
           return {
             errors: [
@@ -254,7 +254,7 @@ export class UserResolver {
             ],
           };
         } else {
-          newRequests.push({ projectId: projectId, podId: podId });
+          newRequests?.push({ projectId: projectId, podId: podId });
         }
       }
     } else {
@@ -269,7 +269,7 @@ export class UserResolver {
         };
       } else {
         newRequests = user.friendRequests;
-        if (!newRequests.find((request) => request.projectId === projectId)) {
+        if (!newRequests?.find((request) => request.projectId === projectId)) {
           // if (!newRequests.includes(projectId)) {
           return {
             errors: [
@@ -280,7 +280,7 @@ export class UserResolver {
             ],
           };
         } else {
-          newRequests = newRequests.filter(
+          newRequests = newRequests?.filter(
             (req) => req.projectId !== projectId
           );
         }

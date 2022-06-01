@@ -154,12 +154,12 @@ export class ProjectResolver {
     if (isAdding) {
       // !! new
       friendProposals = friendProposals
-        .concat(addedFriends)
+        ?.concat(addedFriends)
         .filter((friend) => friend != "");
       await Project.update({ id }, { friendProposals });
     } else {
       if (friendProposals?.includes(deletedFriend)) {
-        const newProposals = friendProposals.filter(
+        const newProposals = friendProposals?.filter(
           (proposal) => proposal !== deletedFriend
         );
         await Project.update({ id }, { friendProposals: newProposals });

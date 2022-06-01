@@ -188,7 +188,7 @@ let UserResolver = class UserResolver {
             }
             else {
                 newRequests = user.friendRequests;
-                if (newRequests.find((request) => request.projectId === projectId)) {
+                if (newRequests === null || newRequests === void 0 ? void 0 : newRequests.find((request) => request.projectId === projectId)) {
                     return {
                         errors: [
                             {
@@ -199,7 +199,7 @@ let UserResolver = class UserResolver {
                     };
                 }
                 else {
-                    newRequests.push({ projectId: projectId, podId: podId });
+                    newRequests === null || newRequests === void 0 ? void 0 : newRequests.push({ projectId: projectId, podId: podId });
                 }
             }
         }
@@ -216,7 +216,7 @@ let UserResolver = class UserResolver {
             }
             else {
                 newRequests = user.friendRequests;
-                if (!newRequests.find((request) => request.projectId === projectId)) {
+                if (!(newRequests === null || newRequests === void 0 ? void 0 : newRequests.find((request) => request.projectId === projectId))) {
                     return {
                         errors: [
                             {
@@ -227,7 +227,7 @@ let UserResolver = class UserResolver {
                     };
                 }
                 else {
-                    newRequests = newRequests.filter((req) => req.projectId !== projectId);
+                    newRequests = newRequests === null || newRequests === void 0 ? void 0 : newRequests.filter((req) => req.projectId !== projectId);
                 }
             }
         }

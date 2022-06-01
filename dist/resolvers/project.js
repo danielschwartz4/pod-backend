@@ -118,14 +118,12 @@ let ProjectResolver = class ProjectResolver {
         }
         let friendProposals = project.friendProposals;
         if (isAdding) {
-            friendProposals = friendProposals
-                .concat(addedFriends)
-                .filter((friend) => friend != "");
+            friendProposals = friendProposals === null || friendProposals === void 0 ? void 0 : friendProposals.concat(addedFriends).filter((friend) => friend != "");
             await Project_1.Project.update({ id }, { friendProposals });
         }
         else {
             if (friendProposals === null || friendProposals === void 0 ? void 0 : friendProposals.includes(deletedFriend)) {
-                const newProposals = friendProposals.filter((proposal) => proposal !== deletedFriend);
+                const newProposals = friendProposals === null || friendProposals === void 0 ? void 0 : friendProposals.filter((proposal) => proposal !== deletedFriend);
                 await Project_1.Project.update({ id }, { friendProposals: newProposals });
             }
             else {

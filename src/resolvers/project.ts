@@ -141,7 +141,6 @@ export class ProjectResolver {
   async updateProjectFriendProposals(
     @Arg("id") id: number,
     @Arg("isAdding", () => Boolean) isAdding: boolean,
-    // !! Make the below an array and fix this it's not that hard
     @Arg("addedFriends", () => [String]) addedFriends: string[],
     @Arg("deletedFriend", () => String) deletedFriend: string
   ) {
@@ -152,7 +151,6 @@ export class ProjectResolver {
     }
     let friendProposals = project.friendProposals;
     if (isAdding) {
-      // !! new
       friendProposals = friendProposals
         ?.concat(addedFriends)
         .filter((friend) => friend != "");

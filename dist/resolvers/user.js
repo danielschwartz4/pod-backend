@@ -168,7 +168,8 @@ let UserResolver = class UserResolver {
             console.log("phone number already being used");
             return { errors: "phone number already being used" };
         }
-        await User_1.User.update({ id }, { phone });
+        const newPhone = phone.split("-").join("");
+        await User_1.User.update({ id }, { phone: newPhone });
         return { user };
     }
     async updateUserFriendRequests(username, projectId, podId, isAdding) {

@@ -215,7 +215,9 @@ export class UserResolver {
       console.log("phone number already being used");
       return { errors: "phone number already being used" };
     }
-    await User.update({ id }, { phone });
+    const newPhone = phone.split("-").join("");
+
+    await User.update({ id }, { phone: newPhone });
     return { user };
   }
 

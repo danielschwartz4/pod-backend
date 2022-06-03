@@ -25,7 +25,7 @@ const getOptions = async () => {
   let connectionOptions: ConnectionOptions;
   connectionOptions = {
     type: "postgres",
-    synchronize: __prod__ ? true : true,
+    synchronize: __prod__ ? false : true,
     logging: true,
     migrations: [path.join(__dirname, "./migrations/*")],
     entities: [User, Project, Pod],

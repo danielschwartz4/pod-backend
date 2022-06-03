@@ -12,7 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Project = void 0;
 const type_graphql_1 = require("type-graphql");
 const typeorm_1 = require("typeorm");
-const User_1 = require("./User");
 let Project = class Project extends typeorm_1.BaseEntity {
 };
 __decorate([
@@ -55,10 +54,6 @@ __decorate([
     (0, typeorm_1.Column)("int", { array: true, nullable: true }),
     __metadata("design:type", Array)
 ], Project.prototype, "milestoneProgress", void 0);
-__decorate([
-    (0, typeorm_1.ManyToOne)(() => User_1.User, (user) => user.project),
-    __metadata("design:type", User_1.User)
-], Project.prototype, "user", void 0);
 __decorate([
     (0, type_graphql_1.Field)(() => [String], { nullable: true }),
     (0, typeorm_1.Column)("text", { array: true, nullable: true }),

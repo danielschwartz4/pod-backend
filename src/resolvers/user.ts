@@ -250,7 +250,6 @@ export class UserResolver {
         newRequests = [{ projectId: projectId, podId: podId }];
       } else {
         newRequests = user.friendRequests;
-        // !! new
         if (newRequests?.find((request) => request.projectId === projectId)) {
           // if (newRequests.includes(projectId)) {
           return {
@@ -278,7 +277,6 @@ export class UserResolver {
       } else {
         newRequests = user.friendRequests;
         if (!newRequests?.find((request) => request.projectId === projectId)) {
-          // if (!newRequests.includes(projectId)) {
           return {
             errors: [
               {

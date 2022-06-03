@@ -1,3 +1,4 @@
+import { QueryPage } from "twilio/lib/rest/preview/understand/assistant/query";
 import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql";
 import { getConnection } from "typeorm";
 import { Pod } from "../entities/Pod";
@@ -120,7 +121,6 @@ export class PodResolver {
       return { errors: "no available pods at the moment" };
     }
     console.log(pods);
-
     return { pod: pods[0] };
   }
 }

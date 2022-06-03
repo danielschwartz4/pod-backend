@@ -163,12 +163,15 @@ let UserResolver = class UserResolver {
         }));
     }
     async updatePhone(id, phone) {
+        console.log("HEREE");
         const user = await User_1.User.findOne(id);
         if (!user) {
             console.log("phone number already being used");
             return { errors: "phone number already being used" };
         }
         const newPhone = phone.split("-").join("");
+        console.log("NEW PHONEEE");
+        console.log(newPhone);
         await User_1.User.update({ id }, { phone: newPhone });
         return { user };
     }
@@ -235,6 +238,32 @@ let UserResolver = class UserResolver {
             }
         }
         await User_1.User.update({ username }, { friendRequests: newRequests });
+        return { user };
+    }
+    async deleteUser({ req }) {
+        const userId = req.session.userId;
+        if (!userId) {
+            return {
+                errors: [
+                    {
+                        field: "user",
+                        message: "no user found",
+                    },
+                ],
+            };
+        }
+        const user = await User_1.User.findOne(userId);
+        if (!user) {
+            return {
+                errors: [
+                    {
+                        field: "user",
+                        message: "no user found",
+                    },
+                ],
+            };
+        }
+        await User_1.User.delete(userId);
         return { user };
     }
 };
@@ -311,6 +340,13 @@ __decorate([
     __metadata("design:paramtypes", [String, Number, Number, Boolean]),
     __metadata("design:returntype", Promise)
 ], UserResolver.prototype, "updateUserFriendRequests", null);
+__decorate([
+    (0, type_graphql_1.Mutation)(() => types_1.UserResponse),
+    __param(0, (0, type_graphql_1.Ctx)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], UserResolver.prototype, "deleteUser", null);
 UserResolver = __decorate([
     (0, type_graphql_1.Resolver)()
 ], UserResolver);

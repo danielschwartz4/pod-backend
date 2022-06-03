@@ -210,12 +210,15 @@ export class UserResolver {
 
   @Mutation(() => UserResponse, { nullable: true })
   async updatePhone(@Arg("id") id: number, @Arg("phone") phone: string) {
+    console.log("HEREE");
     const user = await User.findOne(id);
     if (!user) {
       console.log("phone number already being used");
       return { errors: "phone number already being used" };
     }
     const newPhone = phone.split("-").join("");
+    console.log("NEW PHONEEE");
+    console.log(newPhone);
 
     await User.update({ id }, { phone: newPhone });
     return { user };
@@ -294,6 +297,34 @@ export class UserResolver {
 
     await User.update({ username }, { friendRequests: newRequests });
 
+    return { user };
+  }
+
+  @Mutation(() => UserResponse)
+  async deleteUser(@Ctx() { req }: MyContext) {
+    const userId = req.session.userId;
+    if (!userId) {
+      return {
+        errors: [
+          {
+            field: "user",
+            message: "no user found",
+          },
+        ],
+      };
+    }
+    const user = await User.findOne(userId);
+    if (!user) {
+      return {
+        errors: [
+          {
+            field: "user",
+            message: "no user found",
+          },
+        ],
+      };
+    }
+    await User.delete(userId);
     return { user };
   }
 }

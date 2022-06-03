@@ -1,4 +1,3 @@
-import { QueryPage } from "twilio/lib/rest/preview/understand/assistant/query";
 import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql";
 import { getConnection } from "typeorm";
 import { Pod } from "../entities/Pod";

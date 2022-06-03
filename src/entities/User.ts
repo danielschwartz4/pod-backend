@@ -1,15 +1,13 @@
+import { GraphQLJSONObject } from "graphql-type-json";
 import { Field, Int, ObjectType } from "type-graphql";
 import {
   BaseEntity,
   Column,
   CreateDateColumn,
   Entity,
-  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { Project } from "./Project";
-import { GraphQLJSONObject } from "graphql-type-json";
 
 @ObjectType()
 @Entity()
@@ -33,8 +31,8 @@ export class User extends BaseEntity {
   @Column()
   password!: string;
 
-  @OneToMany(() => Project, (project) => project.user, { nullable: true })
-  project: Project[];
+  // @OneToMany(() => Project, (project) => project.user, { nullable: true })
+  // project: Project[];
 
   // @Field(() => [Int], { nullable: true })
   // @Column("int", { array: true, nullable: true })

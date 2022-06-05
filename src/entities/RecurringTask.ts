@@ -4,13 +4,17 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
+import { User } from "./User";
 
 @ObjectType()
 @Entity()
-export class Project extends BaseEntity {
+export class RecurringTask extends BaseEntity {
   @Field(() => Int)
   @PrimaryGeneratedColumn()
   id!: number;
@@ -33,22 +37,19 @@ export class Project extends BaseEntity {
 
   @Field(() => [String])
   @Column("text", { array: true })
-  milestones!: string[];
+  days!: string[];
 
   @Field(() => [String])
   @Column("text", { array: true, nullable: true })
-  milestoneDates!: String[];
+  dayData!: String[];
 
-  @Field(() => [Int])
-  @Column("int", { array: true, nullable: true })
-  milestoneProgress!: number[];
+  @Field(() => Date)
+  @Column()
+  startDate!: Date;
 
-  // @ManyToMany(() => User)
-  // @JoinTable()
-  // users: User[];
-
-  // @ManyToOne(() => User, (user) => user.projects)
-  // user: User;
+  @Field(() => Date)
+  @Column()
+  endDate!: Date;
 
   @Field(() => [String], { nullable: true })
   @Column("text", { array: true, nullable: true })
@@ -61,4 +62,11 @@ export class Project extends BaseEntity {
   @Field()
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @ManyToOne(() => User, (user) => user.recurringTasks)
+  user: User;
+
+  @ManyToMany(() => User)
+  @JoinTable()
+  users: User[];
 }

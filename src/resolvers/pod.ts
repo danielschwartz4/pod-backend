@@ -1,7 +1,7 @@
 import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql";
 import { getConnection } from "typeorm";
 import { Pod } from "../entities/Pod";
-import { MyContext, PodResponse } from "../types";
+import { MyContext, PodResponse } from "../types/types";
 import { removeItemByValue } from "../utils/removeItem";
 
 @Resolver()

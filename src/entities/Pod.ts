@@ -4,9 +4,14 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinTable,
+  ManyToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
+import { Project } from "./Project";
+import { RecurringTask } from "./RecurringTask";
+import { User } from "./User";
 
 @ObjectType()
 @Entity()
@@ -29,6 +34,18 @@ export class Pod extends BaseEntity {
 
   // @OneToMany(() => Project, (project) => project.pod, { nullable: true })
   // project: Project[];
+
+  @ManyToMany(() => User)
+  @JoinTable()
+  users: User[];
+
+  @ManyToMany(() => Project)
+  @JoinTable()
+  projects: Project[];
+
+  @ManyToMany(() => RecurringTask)
+  @JoinTable()
+  recurringTasks: RecurringTask[];
 
   @Field()
   @Column("boolean", { nullable: true, default: false })

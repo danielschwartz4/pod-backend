@@ -15,8 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProjectResolver = void 0;
 const type_graphql_1 = require("type-graphql");
 const Project_1 = require("../entities/Project");
-const types_1 = require("../types");
-const ProjectInput_1 = require("./ProjectInput");
+const types_1 = require("../types/types");
+const ProjectInput_1 = require("../types/ProjectInput");
 let ProjectResolver = class ProjectResolver {
     async project(id) {
         const project = await Project_1.Project.findOne({ where: { id: id } });
@@ -36,16 +36,10 @@ let ProjectResolver = class ProjectResolver {
     }
     async addProjectInfo(projectOptions, { req }) {
         let project;
+        console.log(projectOptions);
+        console.log(req.session.userId);
         try {
-            project = await Project_1.Project.create({
-                podId: 0,
-                userId: req.session.userId,
-                projectName: projectOptions.projectName,
-                overview: projectOptions.overview,
-                milestones: projectOptions.milestones,
-                milestoneDates: projectOptions.milestoneDates,
-                milestoneProgress: projectOptions.milestoneProgress,
-            }).save();
+            project = await Project_1.Project.create(Object.assign({}, projectOptions)).save();
         }
         catch (err) {
             console.log("ERROR");

@@ -11,10 +11,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PodResponse = exports.ProjectInfoResponse = exports.RecurringTaskResponse = exports.ProjectResponse = exports.UserResponse = exports.FieldError = void 0;
 const type_graphql_1 = require("type-graphql");
-const Pod_1 = require("./entities/Pod");
-const Project_1 = require("./entities/Project");
-const User_1 = require("./entities/User");
-const RecurringTask_1 = require("./entities/RecurringTask");
+const Pod_1 = require("../entities/Pod");
+const Project_1 = require("../entities/Project");
+const User_1 = require("../entities/User");
+const RecurringTask_1 = require("../entities/RecurringTask");
 let FieldError = class FieldError {
 };
 __decorate([

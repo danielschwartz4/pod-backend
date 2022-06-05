@@ -5,9 +5,11 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
+import { RecurringTask } from "./RecurringTask";
 
 @ObjectType()
 @Entity()
@@ -31,12 +33,8 @@ export class User extends BaseEntity {
   @Column()
   password!: string;
 
-  // @OneToMany(() => Project, (project) => project.user, { nullable: true })
-  // project: Project[];
-
-  // @Field(() => [Int], { nullable: true })
-  // @Column("int", { array: true, nullable: true })
-  // friendRequests!: number[];
+  @OneToMany(() => RecurringTask, (recurringTask) => recurringTask.user)
+  recurringTasks: RecurringTask[];
 
   @Field(() => [GraphQLJSONObject], { nullable: true })
   @Column("jsonb", { nullable: true })

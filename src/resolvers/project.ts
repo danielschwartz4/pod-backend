@@ -1,7 +1,11 @@
 import { Arg, Ctx, Int, Mutation, Query, Resolver } from "type-graphql";
 import { Project } from "../entities/Project";
-import { MyContext, ProjectInfoResponse, ProjectResponse } from "../types";
-import { ProjectInput } from "./ProjectInput";
+import {
+  MyContext,
+  ProjectInfoResponse,
+  ProjectResponse,
+} from "../types/types";
+import { ProjectInput } from "../types/ProjectInput";
 
 @Resolver()
 export class ProjectResolver {
@@ -39,15 +43,11 @@ export class ProjectResolver {
     @Ctx() { req }: MyContext
   ) {
     let project;
+    console.log(projectOptions);
+    console.log(req.session.userId);
     try {
       project = await Project.create({
-        podId: 0,
-        userId: req.session.userId,
-        projectName: projectOptions.projectName,
-        overview: projectOptions.overview,
-        milestones: projectOptions.milestones,
-        milestoneDates: projectOptions.milestoneDates,
-        milestoneProgress: projectOptions.milestoneProgress,
+        ...projectOptions,
       }).save();
     } catch (err) {
       console.log("ERROR");

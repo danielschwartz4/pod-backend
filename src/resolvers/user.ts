@@ -3,7 +3,7 @@ import { Arg, Ctx, Int, Mutation, Query, Resolver } from "type-graphql";
 import { In } from "typeorm";
 import { COOKIE_NAME, FORGET_PASSWORD_PREFIX } from "../constants";
 import { User } from "../entities/User";
-import { MyContext, UserResponse } from "../types";
+import { MyContext, UserResponse } from "../types/types";
 import { validateRegister } from "../utils/validateRegister";
 import { UsernamePasswordInput } from "./UsernamePasswordInput";
 import { v4 } from "uuid";

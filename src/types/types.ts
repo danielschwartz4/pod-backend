@@ -1,9 +1,10 @@
 import { Request, Response } from "express";
 import { ObjectType, Field } from "type-graphql";
-import { Pod } from "./entities/Pod";
-import { Project } from "./entities/Project";
-import { User } from "./entities/User";
+import { Pod } from "../entities/Pod";
+import { Project } from "../entities/Project";
+import { User } from "../entities/User";
 import { Redis } from "ioredis";
+import { RecurringTask } from "../entities/RecurringTask";
 
 export type MyContext = {
   req: Request;
@@ -36,6 +37,15 @@ export class ProjectResponse {
 
   @Field(() => Project, { nullable: true })
   project?: Project;
+}
+
+@ObjectType()
+export class RecurringTaskResponse {
+  @Field(() => String, { nullable: true })
+  errors?: string;
+
+  @Field(() => RecurringTask, { nullable: true })
+  task?: RecurringTask;
 }
 
 @ObjectType()

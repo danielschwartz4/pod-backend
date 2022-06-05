@@ -12,9 +12,6 @@ import { Twilio } from "twilio";
 import { buildSchema } from "type-graphql";
 import { ConnectionOptions, createConnection } from "typeorm";
 import { COOKIE_NAME, __prod__ } from "./constants";
-import { Pod } from "./entities/Pod";
-import { Project } from "./entities/Project";
-import { User } from "./entities/User";
 import { HelloResolver } from "./resolvers/hello";
 import { PodResolver } from "./resolvers/pod";
 import { ProjectResolver } from "./resolvers/project";
@@ -28,8 +25,7 @@ const getOptions = async () => {
     synchronize: __prod__ ? true : true,
     logging: true,
     migrations: [path.join(__dirname, "./migrations/*")],
-    entities: [User, Project, Pod],
-    // entities: ["dist/entities/*.*"],
+    entities: ["dist/entities/*.*"],
   };
 
   if (process.env.DATABASE_URL && __prod__) {

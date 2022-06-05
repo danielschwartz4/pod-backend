@@ -17,9 +17,6 @@ const twilio_1 = require("twilio");
 const type_graphql_1 = require("type-graphql");
 const typeorm_1 = require("typeorm");
 const constants_1 = require("./constants");
-const Pod_1 = require("./entities/Pod");
-const Project_1 = require("./entities/Project");
-const User_1 = require("./entities/User");
 const hello_1 = require("./resolvers/hello");
 const pod_1 = require("./resolvers/pod");
 const project_1 = require("./resolvers/project");
@@ -32,7 +29,7 @@ const getOptions = async () => {
         synchronize: constants_1.__prod__ ? true : true,
         logging: true,
         migrations: [path_1.default.join(__dirname, "./migrations/*")],
-        entities: [User_1.User, Project_1.Project, Pod_1.Pod],
+        entities: ["dist/entities/*.*"],
     };
     if (process.env.DATABASE_URL && constants_1.__prod__) {
         Object.assign(connectionOptions, {

@@ -16,7 +16,7 @@ exports.PodResolver = void 0;
 const type_graphql_1 = require("type-graphql");
 const typeorm_1 = require("typeorm");
 const Pod_1 = require("../entities/Pod");
-const types_1 = require("../types");
+const types_1 = require("../types/types");
 const removeItem_1 = require("../utils/removeItem");
 let PodResolver = class PodResolver {
     async createPod(isPrivate, cap) {

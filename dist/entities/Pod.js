@@ -12,6 +12,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Pod = void 0;
 const type_graphql_1 = require("type-graphql");
 const typeorm_1 = require("typeorm");
+const Project_1 = require("./Project");
+const RecurringTask_1 = require("./RecurringTask");
+const User_1 = require("./User");
 let Pod = class Pod extends typeorm_1.BaseEntity {
 };
 __decorate([
@@ -34,6 +37,21 @@ __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
 ], Pod.prototype, "cap", void 0);
+__decorate([
+    (0, typeorm_1.ManyToMany)(() => User_1.User),
+    (0, typeorm_1.JoinTable)(),
+    __metadata("design:type", Array)
+], Pod.prototype, "users", void 0);
+__decorate([
+    (0, typeorm_1.ManyToMany)(() => Project_1.Project),
+    (0, typeorm_1.JoinTable)(),
+    __metadata("design:type", Array)
+], Pod.prototype, "projects", void 0);
+__decorate([
+    (0, typeorm_1.ManyToMany)(() => RecurringTask_1.RecurringTask),
+    (0, typeorm_1.JoinTable)(),
+    __metadata("design:type", Array)
+], Pod.prototype, "recurringTasks", void 0);
 __decorate([
     (0, type_graphql_1.Field)(),
     (0, typeorm_1.Column)("boolean", { nullable: true, default: false }),

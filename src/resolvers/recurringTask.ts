@@ -1,5 +1,5 @@
-import { RecurringTask } from "src/entities/RecurringTask";
-import { RecurringTaskInput } from "src/types/RecurringTaskInput";
+import { RecurringTask } from "../entities/RecurringTask";
+import { RecurringTaskInput } from "../types/RecurringTaskInput";
 import { Arg, Int, Mutation, Query, Resolver } from "type-graphql";
 import { RecurringTaskResponse } from "../types/types";
 
@@ -16,25 +16,18 @@ export class RecurringTaskResolver {
     return { task };
   }
 
-  @Mutation(() => RecurringTaskResolver)
-  async addProjectInfo(
+  @Mutation(() => RecurringTaskResponse)
+  async createRecurringTask(
     @Arg("recurringTaskOptions") recurringTaskOptions: RecurringTaskInput
-  ) {
+  ): Promise<RecurringTaskResponse> {
     let task;
     try {
       task = await RecurringTask.create({
         ...recurringTaskOptions,
       }).save();
     } catch (err) {
-      console.log("ERROR");
-      console.log(err);
       return {
-        errors: [
-          {
-            field: "unknown",
-            message: "unknown",
-          },
-        ],
+        errors: "cannot create task",
       };
     }
     return { task };

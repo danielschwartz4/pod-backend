@@ -15,6 +15,7 @@ import { COOKIE_NAME, __prod__ } from "./constants";
 import { HelloResolver } from "./resolvers/hello";
 import { PodResolver } from "./resolvers/pod";
 import { ProjectResolver } from "./resolvers/project";
+import { RecurringTaskResolver } from "./resolvers/recurringTask";
 import { UserResolver } from "./resolvers/user";
 dotenv.config();
 
@@ -133,7 +134,13 @@ const main = async () => {
   // Apollo Server
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [HelloResolver, UserResolver, ProjectResolver, PodResolver],
+      resolvers: [
+        HelloResolver,
+        UserResolver,
+        ProjectResolver,
+        PodResolver,
+        RecurringTaskResolver,
+      ],
       validate: false,
     }),
     context: ({ req, res }) => ({ req, res, redis }),

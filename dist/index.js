@@ -20,6 +20,7 @@ const constants_1 = require("./constants");
 const hello_1 = require("./resolvers/hello");
 const pod_1 = require("./resolvers/pod");
 const project_1 = require("./resolvers/project");
+const recurringTask_1 = require("./resolvers/recurringTask");
 const user_1 = require("./resolvers/user");
 dotenv_1.default.config();
 const getOptions = async () => {
@@ -98,7 +99,13 @@ const main = async () => {
     }));
     const apolloServer = new apollo_server_express_1.ApolloServer({
         schema: await (0, type_graphql_1.buildSchema)({
-            resolvers: [hello_1.HelloResolver, user_1.UserResolver, project_1.ProjectResolver, pod_1.PodResolver],
+            resolvers: [
+                hello_1.HelloResolver,
+                user_1.UserResolver,
+                project_1.ProjectResolver,
+                pod_1.PodResolver,
+                recurringTask_1.RecurringTaskResolver,
+            ],
             validate: false,
         }),
         context: ({ req, res }) => ({ req, res, redis }),

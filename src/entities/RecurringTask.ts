@@ -1,3 +1,4 @@
+import { GraphQLJSONObject } from "graphql-type-json";
 import { Field, Int, ObjectType } from "type-graphql";
 import {
   BaseEntity,
@@ -35,21 +36,17 @@ export class RecurringTask extends BaseEntity {
   @Column()
   overview!: string;
 
-  @Field(() => [String])
-  @Column("text", { array: true })
-  days!: string[];
-
-  @Field(() => [String])
-  @Column("text", { array: true, nullable: true })
-  dayData!: String[];
+  @Field(() => [GraphQLJSONObject], { nullable: true })
+  @Column("jsonb", { nullable: true })
+  days!: { isSelected: number; duration: number }[];
 
   @Field(() => Date)
   @Column()
   startDate!: Date;
 
-  @Field(() => Date)
-  @Column()
-  endDate!: Date;
+  @Field(() => GraphQLJSONObject)
+  @Column("jsonb")
+  endOptions!: { date: Date; repetitions: number; neverEnds: boolean };
 
   @Field(() => [String], { nullable: true })
   @Column("text", { array: true, nullable: true })

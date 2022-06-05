@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RecurringTask = void 0;
+const graphql_type_json_1 = require("graphql-type-json");
 const type_graphql_1 = require("type-graphql");
 const typeorm_1 = require("typeorm");
 const User_1 = require("./User");
@@ -41,25 +42,20 @@ __decorate([
     __metadata("design:type", String)
 ], RecurringTask.prototype, "overview", void 0);
 __decorate([
-    (0, type_graphql_1.Field)(() => [String]),
-    (0, typeorm_1.Column)("text", { array: true }),
+    (0, type_graphql_1.Field)(() => [graphql_type_json_1.GraphQLJSONObject], { nullable: true }),
+    (0, typeorm_1.Column)("jsonb", { nullable: true }),
     __metadata("design:type", Array)
 ], RecurringTask.prototype, "days", void 0);
-__decorate([
-    (0, type_graphql_1.Field)(() => [String]),
-    (0, typeorm_1.Column)("text", { array: true, nullable: true }),
-    __metadata("design:type", Array)
-], RecurringTask.prototype, "dayData", void 0);
 __decorate([
     (0, type_graphql_1.Field)(() => Date),
     (0, typeorm_1.Column)(),
     __metadata("design:type", Date)
 ], RecurringTask.prototype, "startDate", void 0);
 __decorate([
-    (0, type_graphql_1.Field)(() => Date),
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", Date)
-], RecurringTask.prototype, "endDate", void 0);
+    (0, type_graphql_1.Field)(() => graphql_type_json_1.GraphQLJSONObject),
+    (0, typeorm_1.Column)("jsonb"),
+    __metadata("design:type", Object)
+], RecurringTask.prototype, "endOptions", void 0);
 __decorate([
     (0, type_graphql_1.Field)(() => [String], { nullable: true }),
     (0, typeorm_1.Column)("text", { array: true, nullable: true }),

@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RecurringTaskInput = void 0;
+const graphql_type_json_1 = require("graphql-type-json");
 const type_graphql_1 = require("type-graphql");
 let RecurringTaskInput = class RecurringTaskInput {
 };
@@ -26,21 +27,17 @@ __decorate([
     __metadata("design:type", String)
 ], RecurringTaskInput.prototype, "overview", void 0);
 __decorate([
-    (0, type_graphql_1.Field)(() => [String]),
+    (0, type_graphql_1.Field)(() => [graphql_type_json_1.GraphQLJSONObject]),
     __metadata("design:type", Array)
 ], RecurringTaskInput.prototype, "days", void 0);
-__decorate([
-    (0, type_graphql_1.Field)(() => [String]),
-    __metadata("design:type", Array)
-], RecurringTaskInput.prototype, "dayData", void 0);
 __decorate([
     (0, type_graphql_1.Field)(() => Date),
     __metadata("design:type", Date)
 ], RecurringTaskInput.prototype, "startDate", void 0);
 __decorate([
-    (0, type_graphql_1.Field)(() => Date),
-    __metadata("design:type", Date)
-], RecurringTaskInput.prototype, "endDate", void 0);
+    (0, type_graphql_1.Field)(() => [graphql_type_json_1.GraphQLJSONObject]),
+    __metadata("design:type", Object)
+], RecurringTaskInput.prototype, "endOptions", void 0);
 RecurringTaskInput = __decorate([
     (0, type_graphql_1.InputType)()
 ], RecurringTaskInput);

@@ -17,24 +17,22 @@ const RecurringTask_1 = require("../entities/RecurringTask");
 const RecurringTaskInput_1 = require("../types/RecurringTaskInput");
 const type_graphql_1 = require("type-graphql");
 const types_1 = require("../types/types");
+const validateTask_1 = require("../utils/validateTask");
 let RecurringTaskResolver = class RecurringTaskResolver {
     async recurringTask(id) {
         const task = await RecurringTask_1.RecurringTask.findOne({ where: { id: id } });
         if (!task) {
-            return { errors: "No task with this ID" };
+            return { errors: [{ field: "id", message: "Task not found" }] };
         }
         return { task };
     }
     async createRecurringTask(recurringTaskOptions) {
+        const errors = (0, validateTask_1.validateTask)(recurringTaskOptions);
+        if (errors) {
+            return { errors };
+        }
         let task;
-        try {
-            task = await RecurringTask_1.RecurringTask.create(Object.assign({}, recurringTaskOptions)).save();
-        }
-        catch (err) {
-            return {
-                errors: "cannot create task",
-            };
-        }
+        task = await RecurringTask_1.RecurringTask.create(Object.assign({}, recurringTaskOptions)).save();
         return { task };
     }
 };

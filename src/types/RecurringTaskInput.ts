@@ -1,5 +1,6 @@
 import { GraphQLJSONObject } from "graphql-type-json";
 import { Field, InputType } from "type-graphql";
+import { DaysType } from "./types";
 
 @InputType()
 export class RecurringTaskInput {
@@ -12,8 +13,8 @@ export class RecurringTaskInput {
   @Field()
   overview!: string;
 
-  @Field(() => [GraphQLJSONObject])
-  days!: { isSelected: number; duration: number }[];
+  @Field(() => GraphQLJSONObject)
+  days!: DaysType;
 
   @Field(() => Date)
   startDate!: Date;

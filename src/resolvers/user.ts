@@ -5,7 +5,7 @@ import { COOKIE_NAME, FORGET_PASSWORD_PREFIX } from "../constants";
 import { User } from "../entities/User";
 import { MyContext, UserResponse } from "../types/types";
 import { validateRegister } from "../utils/validateRegister";
-import { UsernamePasswordInput } from "./UsernamePasswordInput";
+import { UsernamePasswordInput } from "../types/UsernamePasswordInput";
 import { v4 } from "uuid";
 import { sendEmail } from "../utils/sendEmail";
 

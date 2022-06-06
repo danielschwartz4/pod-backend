@@ -9,37 +9,24 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.RecurringTaskInput = void 0;
-const graphql_type_json_1 = require("graphql-type-json");
+exports.UsernamePasswordInput = void 0;
 const type_graphql_1 = require("type-graphql");
-let RecurringTaskInput = class RecurringTaskInput {
+let UsernamePasswordInput = class UsernamePasswordInput {
 };
 __decorate([
     (0, type_graphql_1.Field)(),
-    __metadata("design:type", Number)
-], RecurringTaskInput.prototype, "userId", void 0);
+    __metadata("design:type", String)
+], UsernamePasswordInput.prototype, "username", void 0);
 __decorate([
     (0, type_graphql_1.Field)(),
     __metadata("design:type", String)
-], RecurringTaskInput.prototype, "projectName", void 0);
+], UsernamePasswordInput.prototype, "email", void 0);
 __decorate([
     (0, type_graphql_1.Field)(),
     __metadata("design:type", String)
-], RecurringTaskInput.prototype, "overview", void 0);
-__decorate([
-    (0, type_graphql_1.Field)(() => graphql_type_json_1.GraphQLJSONObject),
-    __metadata("design:type", Object)
-], RecurringTaskInput.prototype, "days", void 0);
-__decorate([
-    (0, type_graphql_1.Field)(() => Date),
-    __metadata("design:type", Date)
-], RecurringTaskInput.prototype, "startDate", void 0);
-__decorate([
-    (0, type_graphql_1.Field)(() => [graphql_type_json_1.GraphQLJSONObject]),
-    __metadata("design:type", Object)
-], RecurringTaskInput.prototype, "endOptions", void 0);
-RecurringTaskInput = __decorate([
+], UsernamePasswordInput.prototype, "password", void 0);
+UsernamePasswordInput = __decorate([
     (0, type_graphql_1.InputType)()
-], RecurringTaskInput);
-exports.RecurringTaskInput = RecurringTaskInput;
-//# sourceMappingURL=RecurringTaskInput.js.map
+], UsernamePasswordInput);
+exports.UsernamePasswordInput = UsernamePasswordInput;
+//# sourceMappingURL=UsernamePasswordInput.js.map

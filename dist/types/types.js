@@ -60,8 +60,8 @@ exports.ProjectResponse = ProjectResponse;
 let RecurringTaskResponse = class RecurringTaskResponse {
 };
 __decorate([
-    (0, type_graphql_1.Field)(() => String, { nullable: true }),
-    __metadata("design:type", String)
+    (0, type_graphql_1.Field)(() => [FieldError], { nullable: true }),
+    __metadata("design:type", Array)
 ], RecurringTaskResponse.prototype, "errors", void 0);
 __decorate([
     (0, type_graphql_1.Field)(() => RecurringTask_1.RecurringTask, { nullable: true }),

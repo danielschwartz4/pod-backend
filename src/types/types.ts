@@ -41,8 +41,8 @@ export class ProjectResponse {
 
 @ObjectType()
 export class RecurringTaskResponse {
-  @Field(() => String, { nullable: true })
-  errors?: string;
+  @Field(() => [FieldError], { nullable: true })
+  errors?: FieldError[];
 
   @Field(() => RecurringTask, { nullable: true })
   task?: RecurringTask;
@@ -65,3 +65,41 @@ export class PodResponse {
   @Field(() => Pod, { nullable: true })
   pod?: Pod;
 }
+
+export type DaysType = {
+  sunday: {
+    abr?: string;
+    isSelected: boolean;
+    duration: number;
+  };
+  monday: {
+    abr?: string;
+    isSelected: boolean;
+    duration: number;
+  };
+  tuesday: {
+    abr?: string;
+    isSelected: boolean;
+    duration: number;
+  };
+  wednesday: {
+    abr?: string;
+    isSelected: boolean;
+    duration: number;
+  };
+  thursday: {
+    abr?: string;
+    isSelected: boolean;
+    duration: number;
+  };
+  friday: {
+    abr?: string;
+    isSelected: boolean;
+    duration: number;
+  };
+  saturday: {
+    abr?: string;
+    isSelected: boolean;
+    duration: number;
+  };
+};

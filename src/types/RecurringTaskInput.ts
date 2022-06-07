@@ -5,20 +5,20 @@ import { DaysType } from "./types";
 @InputType()
 export class RecurringTaskInput {
   @Field()
-  userId!: number;
+  userId: number;
 
   @Field()
-  projectName!: string;
+  projectName: string;
 
   @Field()
-  overview!: string;
+  overview: string;
 
-  @Field(() => GraphQLJSONObject)
-  days!: DaysType;
+  @Field(() => GraphQLJSONObject, { nullable: true })
+  days: DaysType;
 
-  @Field(() => Date)
-  startDate!: Date;
+  @Field(() => Date, { nullable: true })
+  startDate: Date;
 
-  @Field(() => [GraphQLJSONObject])
-  endOptions!: { date: Date; repetitions: number; neverEnds: boolean };
+  @Field(() => GraphQLJSONObject, { nullable: true })
+  endOptions: { date: Date; repetitions: number; neverEnds: boolean };
 }

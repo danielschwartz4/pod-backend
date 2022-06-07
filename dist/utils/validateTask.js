@@ -6,7 +6,7 @@ const validateTask = (options) => {
         return [
             {
                 field: "overview",
-                message: "overview is required",
+                message: "Overview is required",
             },
         ];
     }
@@ -14,7 +14,7 @@ const validateTask = (options) => {
         return [
             {
                 field: "startDate",
-                message: "start date is required",
+                message: "Start date is required",
             },
         ];
     }
@@ -24,7 +24,7 @@ const validateTask = (options) => {
         return [
             {
                 field: "endOptions",
-                message: "must specify an end date, repetitions, or never ends",
+                message: "Must specify an end date, repetitions, or never ends",
             },
         ];
     }
@@ -32,17 +32,18 @@ const validateTask = (options) => {
         return [
             {
                 field: "startDate",
-                message: "start date must be in the future",
+                message: "Start date must be in the future",
             },
         ];
     }
     if (options.endOptions.date &&
         options.startDate &&
-        options.endOptions.date.getTime() < options.startDate.getTime()) {
+        new Date(options.endOptions.date).getTime() <
+            new Date(options.startDate).getTime()) {
         return [
             {
                 field: "endOptions",
-                message: "end date must be after start date",
+                message: "End date must be after start date",
             },
         ];
     }
@@ -52,7 +53,7 @@ const validateTask = (options) => {
         return [
             {
                 field: "endOptions",
-                message: "repetitions must be greater than 0",
+                message: "Repetitions must be greater than 0",
             },
         ];
     }
@@ -60,7 +61,7 @@ const validateTask = (options) => {
         return [
             {
                 field: "days",
-                message: "must select at least one day",
+                message: "Must select at least one day",
             },
         ];
     }

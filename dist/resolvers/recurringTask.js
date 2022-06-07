@@ -27,7 +27,9 @@ let RecurringTaskResolver = class RecurringTaskResolver {
         return { task };
     }
     async createRecurringTask(recurringTaskOptions) {
+        console.log(recurringTaskOptions);
         const errors = (0, validateTask_1.validateTask)(recurringTaskOptions);
+        console.log(errors);
         if (errors) {
             return { errors };
         }

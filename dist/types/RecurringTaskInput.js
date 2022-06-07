@@ -27,15 +27,15 @@ __decorate([
     __metadata("design:type", String)
 ], RecurringTaskInput.prototype, "overview", void 0);
 __decorate([
-    (0, type_graphql_1.Field)(() => graphql_type_json_1.GraphQLJSONObject),
+    (0, type_graphql_1.Field)(() => graphql_type_json_1.GraphQLJSONObject, { nullable: true }),
     __metadata("design:type", Object)
 ], RecurringTaskInput.prototype, "days", void 0);
 __decorate([
-    (0, type_graphql_1.Field)(() => Date),
+    (0, type_graphql_1.Field)(() => Date, { nullable: true }),
     __metadata("design:type", Date)
 ], RecurringTaskInput.prototype, "startDate", void 0);
 __decorate([
-    (0, type_graphql_1.Field)(() => [graphql_type_json_1.GraphQLJSONObject]),
+    (0, type_graphql_1.Field)(() => graphql_type_json_1.GraphQLJSONObject, { nullable: true }),
     __metadata("design:type", Object)
 ], RecurringTaskInput.prototype, "endOptions", void 0);
 RecurringTaskInput = __decorate([

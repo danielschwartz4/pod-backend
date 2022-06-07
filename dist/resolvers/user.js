@@ -71,7 +71,6 @@ let UserResolver = class UserResolver {
         return { user };
     }
     async login(usernameOrEmail, password, { req }) {
-        console.log(req);
         const user = await User_1.User.findOne(usernameOrEmail.includes("@")
             ? { where: { email: usernameOrEmail } }
             : { where: { username: usernameOrEmail } });

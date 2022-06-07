@@ -39,15 +39,14 @@ export class RecurringTask extends BaseEntity {
 
   @Field(() => GraphQLJSONObject, { nullable: true })
   @Column("jsonb", { nullable: true })
-  // days!: { isSelected: number; duration: number };
   days!: DaysType;
 
-  @Field(() => Date)
-  @Column()
+  @Field(() => Date, { nullable: true })
+  @Column({ nullable: true })
   startDate!: Date;
 
-  @Field(() => GraphQLJSONObject)
-  @Column("jsonb")
+  @Field(() => GraphQLJSONObject, { nullable: true })
+  @Column("jsonb", { nullable: true })
   endOptions!: { date: Date; repetitions: number; neverEnds: boolean };
 
   @Field(() => [String], { nullable: true })

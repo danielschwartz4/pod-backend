@@ -5,7 +5,7 @@ export const validateTask = (options: RecurringTaskInput) => {
     return [
       {
         field: "overview",
-        message: "overview is required",
+        message: "Overview is required",
       },
     ];
   }
@@ -14,7 +14,7 @@ export const validateTask = (options: RecurringTaskInput) => {
     return [
       {
         field: "startDate",
-        message: "start date is required",
+        message: "Start date is required",
       },
     ];
   }
@@ -27,7 +27,7 @@ export const validateTask = (options: RecurringTaskInput) => {
     return [
       {
         field: "endOptions",
-        message: "must specify an end date, repetitions, or never ends",
+        message: "Must specify an end date, repetitions, or never ends",
       },
     ];
   }
@@ -36,7 +36,7 @@ export const validateTask = (options: RecurringTaskInput) => {
     return [
       {
         field: "startDate",
-        message: "start date must be in the future",
+        message: "Start date must be in the future",
       },
     ];
   }
@@ -44,12 +44,13 @@ export const validateTask = (options: RecurringTaskInput) => {
   if (
     options.endOptions.date &&
     options.startDate &&
-    options.endOptions.date.getTime() < options.startDate.getTime()
+    new Date(options.endOptions.date).getTime() <
+      new Date(options.startDate).getTime()
   ) {
     return [
       {
         field: "endOptions",
-        message: "end date must be after start date",
+        message: "End date must be after start date",
       },
     ];
   }
@@ -62,7 +63,7 @@ export const validateTask = (options: RecurringTaskInput) => {
     return [
       {
         field: "endOptions",
-        message: "repetitions must be greater than 0",
+        message: "Repetitions must be greater than 0",
       },
     ];
   }
@@ -71,7 +72,7 @@ export const validateTask = (options: RecurringTaskInput) => {
     return [
       {
         field: "days",
-        message: "must select at least one day",
+        message: "Must select at least one day",
       },
     ];
   }

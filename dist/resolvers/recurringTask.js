@@ -26,6 +26,11 @@ let RecurringTaskResolver = class RecurringTaskResolver {
         }
         return { task };
     }
+    async recurringTasks({ req }) {
+        const userId = req.session.userId;
+        const projects = await RecurringTask_1.RecurringTask.find({ where: { userId: userId } });
+        return projects;
+    }
     async createRecurringTask(recurringTaskOptions) {
         console.log(recurringTaskOptions);
         const errors = (0, validateTask_1.validateTask)(recurringTaskOptions);
@@ -37,6 +42,10 @@ let RecurringTaskResolver = class RecurringTaskResolver {
         task = await RecurringTask_1.RecurringTask.create(Object.assign({}, recurringTaskOptions)).save();
         return { task };
     }
+    async deleteRecurringTask(id) {
+        RecurringTask_1.RecurringTask.delete(id);
+        return true;
+    }
 };
 __decorate([
     (0, type_graphql_1.Query)(() => types_1.RecurringTaskResponse, { nullable: true }),
@@ -46,12 +55,26 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], RecurringTaskResolver.prototype, "recurringTask", null);
 __decorate([
+    (0, type_graphql_1.Query)(() => [RecurringTask_1.RecurringTask], { nullable: true }),
+    __param(0, (0, type_graphql_1.Ctx)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], RecurringTaskResolver.prototype, "recurringTasks", null);
+__decorate([
     (0, type_graphql_1.Mutation)(() => types_1.RecurringTaskResponse),
     __param(0, (0, type_graphql_1.Arg)("recurringTaskOptions")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [RecurringTaskInput_1.RecurringTaskInput]),
     __metadata("design:returntype", Promise)
 ], RecurringTaskResolver.prototype, "createRecurringTask", null);
+__decorate([
+    (0, type_graphql_1.Mutation)(() => Boolean),
+    __param(0, (0, type_graphql_1.Arg)("id")),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], RecurringTaskResolver.prototype, "deleteRecurringTask", null);
 RecurringTaskResolver = __decorate([
     (0, type_graphql_1.Resolver)()
 ], RecurringTaskResolver);

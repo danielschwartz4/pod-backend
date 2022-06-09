@@ -21,7 +21,6 @@ export class ProjectResolver {
   }
 
   @Query(() => [Project], { nullable: true })
-  // !! Add errors
   async projects(@Ctx() { req }: MyContext): Promise<Project[] | undefined> {
     const userId = req.session.userId;
     const projects = await Project.find({ where: { userId: userId } });
@@ -29,7 +28,6 @@ export class ProjectResolver {
   }
 
   @Query(() => [Project], { nullable: true })
-  // !! Add errors
   async podProjects(
     @Arg("podId", () => Int) podId: number
   ): Promise<Project[] | undefined> {

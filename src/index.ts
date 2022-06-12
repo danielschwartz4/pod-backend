@@ -16,6 +16,7 @@ import { HelloResolver } from "./resolvers/hello";
 import { PodResolver } from "./resolvers/pod";
 import { ProjectResolver } from "./resolvers/project";
 import { RecurringTaskResolver } from "./resolvers/recurringTask";
+import { SingleTasksResolver } from "./resolvers/singleTask";
 import { UserResolver } from "./resolvers/user";
 dotenv.config();
 
@@ -140,6 +141,7 @@ const main = async () => {
         ProjectResolver,
         PodResolver,
         RecurringTaskResolver,
+        SingleTasksResolver,
       ],
       validate: false,
     }),

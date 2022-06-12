@@ -21,6 +21,7 @@ const hello_1 = require("./resolvers/hello");
 const pod_1 = require("./resolvers/pod");
 const project_1 = require("./resolvers/project");
 const recurringTask_1 = require("./resolvers/recurringTask");
+const singleTask_1 = require("./resolvers/singleTask");
 const user_1 = require("./resolvers/user");
 dotenv_1.default.config();
 const getOptions = async () => {
@@ -105,6 +106,7 @@ const main = async () => {
                 project_1.ProjectResolver,
                 pod_1.PodResolver,
                 recurringTask_1.RecurringTaskResolver,
+                singleTask_1.SingleTasksResolver,
             ],
             validate: false,
         }),

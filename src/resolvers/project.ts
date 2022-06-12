@@ -36,13 +36,8 @@ export class ProjectResolver {
   }
 
   @Mutation(() => ProjectInfoResponse)
-  async addProjectInfo(
-    @Arg("projectOptions") projectOptions: ProjectInput,
-    @Ctx() { req }: MyContext
-  ) {
+  async addProjectInfo(@Arg("projectOptions") projectOptions: ProjectInput) {
     let project;
-    console.log(projectOptions);
-    console.log(req.session.userId);
     try {
       project = await Project.create({
         ...projectOptions,

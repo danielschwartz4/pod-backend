@@ -10,6 +10,7 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 import { RecurringTask } from "./RecurringTask";
+import { SingleTask } from "./SingleTask";
 
 @ObjectType()
 @Entity()
@@ -33,9 +34,6 @@ export class User extends BaseEntity {
   @Column()
   password!: string;
 
-  @OneToMany(() => RecurringTask, (recurringTask) => recurringTask.user)
-  recurringTasks: RecurringTask[];
-
   @Field(() => [GraphQLJSONObject], { nullable: true })
   @Column("jsonb", { nullable: true })
   friendRequests!: { projectId: number; podId: number }[];
@@ -51,4 +49,10 @@ export class User extends BaseEntity {
   @Field()
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @OneToMany(() => RecurringTask, (recurringTask) => recurringTask.user)
+  recurringTasks: RecurringTask[];
+
+  @OneToMany(() => SingleTask, (singleTask) => singleTask.user)
+  singleTasks: SingleTask[];
 }

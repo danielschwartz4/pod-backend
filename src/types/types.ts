@@ -5,6 +5,7 @@ import { Project } from "../entities/Project";
 import { User } from "../entities/User";
 import { Redis } from "ioredis";
 import { RecurringTask } from "../entities/RecurringTask";
+import { SingleTask } from "../entities/SingleTask";
 
 export type MyContext = {
   req: Request;
@@ -49,6 +50,24 @@ export class RecurringTaskResponse {
 }
 
 @ObjectType()
+export class SingleTasksResponse {
+  @Field(() => String, { nullable: true })
+  errors?: string;
+
+  @Field(() => [SingleTask], { nullable: true })
+  singleTasks?: SingleTask[];
+}
+
+@ObjectType()
+export class SingleTaskResponse {
+  @Field(() => String, { nullable: true })
+  errors?: string;
+
+  @Field(() => SingleTask, { nullable: true })
+  singleTask?: SingleTask;
+}
+
+@ObjectType()
 export class ProjectInfoResponse {
   @Field(() => [FieldError], { nullable: true })
   errors?: FieldError[];
@@ -66,38 +85,43 @@ export class PodResponse {
   pod?: Pod;
 }
 
+export type DayType = {
+  day: string;
+  duration: number;
+};
+
 export type DaysType = {
-  sunday: {
+  0: {
     abr?: string;
     isSelected: boolean;
     duration: number;
   };
-  monday: {
+  1: {
     abr?: string;
     isSelected: boolean;
     duration: number;
   };
-  tuesday: {
+  2: {
     abr?: string;
     isSelected: boolean;
     duration: number;
   };
-  wednesday: {
+  3: {
     abr?: string;
     isSelected: boolean;
     duration: number;
   };
-  thursday: {
+  4: {
     abr?: string;
     isSelected: boolean;
     duration: number;
   };
-  friday: {
+  5: {
     abr?: string;
     isSelected: boolean;
     duration: number;
   };
-  saturday: {
+  6: {
     abr?: string;
     isSelected: boolean;
     duration: number;

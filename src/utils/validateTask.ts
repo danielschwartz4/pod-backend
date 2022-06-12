@@ -1,4 +1,4 @@
-import { RecurringTaskInput } from "src/types/RecurringTaskInput";
+import { RecurringTaskInput } from "../types/RecurringTaskInput";
 
 export const validateTask = (options: RecurringTaskInput) => {
   if (!options.overview) {

@@ -30,9 +30,7 @@ export class RecurringTaskResolver {
   async createRecurringTask(
     @Arg("recurringTaskOptions") recurringTaskOptions: RecurringTaskInput
   ): Promise<RecurringTaskResponse> {
-    console.log(recurringTaskOptions);
     const errors = validateTask(recurringTaskOptions);
-    console.log(errors);
     if (errors) {
       return { errors };
     }

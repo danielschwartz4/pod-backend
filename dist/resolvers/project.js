@@ -34,10 +34,8 @@ let ProjectResolver = class ProjectResolver {
         const projects = await Project_1.Project.find({ where: { podId: podId } });
         return projects;
     }
-    async addProjectInfo(projectOptions, { req }) {
+    async addProjectInfo(projectOptions) {
         let project;
-        console.log(projectOptions);
-        console.log(req.session.userId);
         try {
             project = await Project_1.Project.create(Object.assign({}, projectOptions)).save();
         }
@@ -152,9 +150,8 @@ __decorate([
 __decorate([
     (0, type_graphql_1.Mutation)(() => types_1.ProjectInfoResponse),
     __param(0, (0, type_graphql_1.Arg)("projectOptions")),
-    __param(1, (0, type_graphql_1.Ctx)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [ProjectInput_1.ProjectInput, Object]),
+    __metadata("design:paramtypes", [ProjectInput_1.ProjectInput]),
     __metadata("design:returntype", Promise)
 ], ProjectResolver.prototype, "addProjectInfo", null);
 __decorate([

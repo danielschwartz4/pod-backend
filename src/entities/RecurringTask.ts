@@ -1,5 +1,5 @@
 import { GraphQLJSONObject } from "graphql-type-json";
-import { DaysType } from "src/types/types";
+import { DaysType } from "../types/types";
 import { Field, Int, ObjectType } from "type-graphql";
 import {
   BaseEntity,

@@ -10,9 +10,6 @@ export class SingleTaskInput {
   @Field()
   taskId!: number;
 
-  @Field(() => Int, { nullable: true })
-  podId!: number;
-
   @Field()
   notes!: string;
 

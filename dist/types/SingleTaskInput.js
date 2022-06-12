@@ -23,10 +23,6 @@ __decorate([
     __metadata("design:type", Number)
 ], SingleTaskInput.prototype, "taskId", void 0);
 __decorate([
-    (0, type_graphql_1.Field)(() => type_graphql_1.Int, { nullable: true }),
-    __metadata("design:type", Number)
-], SingleTaskInput.prototype, "podId", void 0);
-__decorate([
     (0, type_graphql_1.Field)(),
     __metadata("design:type", String)
 ], SingleTaskInput.prototype, "notes", void 0);

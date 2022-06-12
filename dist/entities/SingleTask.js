@@ -12,7 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.SingleTask = void 0;
 const type_graphql_1 = require("type-graphql");
 const typeorm_1 = require("typeorm");
-const RecurringTask_1 = require("./RecurringTask");
 const User_1 = require("./User");
 let SingleTask = class SingleTask extends typeorm_1.BaseEntity {
 };
@@ -60,12 +59,6 @@ __decorate([
     (0, typeorm_1.ManyToOne)(() => User_1.User, (user) => user.singleTasks),
     __metadata("design:type", User_1.User)
 ], SingleTask.prototype, "user", void 0);
-__decorate([
-    (0, typeorm_1.ManyToOne)(() => RecurringTask_1.RecurringTask, (rc) => rc.singleTasks, {
-        onDelete: "CASCADE",
-    }),
-    __metadata("design:type", RecurringTask_1.RecurringTask)
-], SingleTask.prototype, "recurringTask", void 0);
 SingleTask = __decorate([
     (0, type_graphql_1.ObjectType)(),
     (0, typeorm_1.Entity)()

@@ -18,8 +18,10 @@ const type_graphql_1 = require("type-graphql");
 const types_1 = require("../types/types");
 const SingleTaskInput_1 = require("../types/SingleTaskInput");
 let SingleTasksResolver = class SingleTasksResolver {
-    async singleTasks(projectId) {
-        const tasks = await SingleTask_1.SingleTask.find({ where: { projectId: projectId } });
+    async singleTasks(taskId) {
+        const tasks = await SingleTask_1.SingleTask.find({
+            where: { taskId: taskId },
+        });
         if (!tasks) {
             return { errors: "Project not found" };
         }
@@ -48,7 +50,7 @@ let SingleTasksResolver = class SingleTasksResolver {
 };
 __decorate([
     (0, type_graphql_1.Query)(() => types_1.SingleTasksResponse, { nullable: true }),
-    __param(0, (0, type_graphql_1.Arg)("projectId", () => type_graphql_1.Int)),
+    __param(0, (0, type_graphql_1.Arg)("taskId", () => type_graphql_1.Int)),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)

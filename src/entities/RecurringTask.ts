@@ -70,6 +70,6 @@ export class RecurringTask extends BaseEntity {
   @JoinTable()
   users: User[];
 
-  @OneToMany(() => SingleTask, (st) => st.recurringTask)
-  singleTasks: SingleTask[];
+  // @OneToMany(() => SingleTask, (st) => st.recurringTask)
+  // singleTasks: SingleTask[];
 }

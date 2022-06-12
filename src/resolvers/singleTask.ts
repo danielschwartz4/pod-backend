@@ -7,9 +7,11 @@ import { SingleTaskInput } from "../types/SingleTaskInput";
 export class SingleTasksResolver {
   @Query(() => SingleTasksResponse, { nullable: true })
   async singleTasks(
-    @Arg("projectId", () => Int) projectId: number
+    @Arg("taskId", () => Int) taskId: number
   ): Promise<SingleTasksResponse | undefined> {
-    const tasks = await SingleTask.find({ where: { projectId: projectId } });
+    const tasks = await SingleTask.find({
+      where: { taskId: taskId },
+    });
     if (!tasks) {
       return { errors: "Project not found" };
     }

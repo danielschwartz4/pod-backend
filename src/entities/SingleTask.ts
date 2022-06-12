@@ -4,12 +4,10 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { RecurringTask } from "./RecurringTask";
 import { User } from "./User";
 
 @ObjectType()
@@ -39,10 +37,6 @@ export class SingleTask extends BaseEntity {
   @Column()
   notes: string;
 
-  // @Field(() => GraphQLJSONObject, { nullable: true })
-  // @Column("jsonb", { nullable: true })
-  // day!: DayType;
-
   @Field()
   @CreateDateColumn()
   createdAt: Date;
@@ -55,8 +49,8 @@ export class SingleTask extends BaseEntity {
   user: User;
 
   // Don't think this is doing anything just doing it in the resolver
-  @ManyToOne(() => RecurringTask, (rc) => rc.singleTasks, {
-    onDelete: "CASCADE",
-  })
-  recurringTask: RecurringTask;
+  // @ManyToOne(() => RecurringTask, (rc) => rc.singleTasks, {
+  //   onDelete: "CASCADE",
+  // })
+  // recurringTask: RecurringTask;
 }

@@ -18,6 +18,7 @@ const RecurringTaskInput_1 = require("../types/RecurringTaskInput");
 const type_graphql_1 = require("type-graphql");
 const types_1 = require("../types/types");
 const validateTask_1 = require("../utils/validateTask");
+const SingleTask_1 = require("../entities/SingleTask");
 let RecurringTaskResolver = class RecurringTaskResolver {
     async recurringTask(id) {
         const task = await RecurringTask_1.RecurringTask.findOne({ where: { id: id } });
@@ -41,6 +42,7 @@ let RecurringTaskResolver = class RecurringTaskResolver {
         return { task };
     }
     async deleteRecurringTask(id) {
+        SingleTask_1.SingleTask.delete({ taskId: id });
         RecurringTask_1.RecurringTask.delete(id);
         return true;
     }

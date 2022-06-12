@@ -4,10 +4,12 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
+import { RecurringTask } from "./RecurringTask";
 import { User } from "./User";
 
 @ObjectType()
@@ -20,6 +22,10 @@ export class SingleTask extends BaseEntity {
   @Field(() => Int)
   @Column()
   userId!: number;
+
+  @Field(() => Int)
+  @Column()
+  taskId!: number;
 
   @Field(() => Date, { nullable: true })
   @Column({ nullable: true })
@@ -47,4 +53,10 @@ export class SingleTask extends BaseEntity {
 
   @ManyToOne(() => User, (user) => user.singleTasks)
   user: User;
+
+  // Don't think this is doing anything just doing it in the resolver
+  @ManyToOne(() => RecurringTask, (rc) => rc.singleTasks, {
+    onDelete: "CASCADE",
+  })
+  recurringTask: RecurringTask;
 }

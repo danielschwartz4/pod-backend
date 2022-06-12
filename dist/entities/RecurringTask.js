@@ -14,6 +14,7 @@ const graphql_type_json_1 = require("graphql-type-json");
 const type_graphql_1 = require("type-graphql");
 const typeorm_1 = require("typeorm");
 const User_1 = require("./User");
+const SingleTask_1 = require("./SingleTask");
 let RecurringTask = class RecurringTask extends typeorm_1.BaseEntity {
 };
 __decorate([
@@ -80,6 +81,10 @@ __decorate([
     (0, typeorm_1.JoinTable)(),
     __metadata("design:type", Array)
 ], RecurringTask.prototype, "users", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => SingleTask_1.SingleTask, (st) => st.recurringTask),
+    __metadata("design:type", Array)
+], RecurringTask.prototype, "singleTasks", void 0);
 RecurringTask = __decorate([
     (0, type_graphql_1.ObjectType)(),
     (0, typeorm_1.Entity)()

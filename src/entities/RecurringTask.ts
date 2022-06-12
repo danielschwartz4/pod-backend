@@ -9,10 +9,12 @@ import {
   JoinTable,
   ManyToMany,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
 import { User } from "./User";
+import { SingleTask } from "./SingleTask";
 
 @ObjectType()
 @Entity()
@@ -67,4 +69,7 @@ export class RecurringTask extends BaseEntity {
   @ManyToMany(() => User)
   @JoinTable()
   users: User[];
+
+  @OneToMany(() => SingleTask, (st) => st.recurringTask)
+  singleTasks: SingleTask[];
 }

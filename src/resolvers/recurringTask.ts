@@ -3,6 +3,7 @@ import { RecurringTaskInput } from "../types/RecurringTaskInput";
 import { Arg, Ctx, Int, Mutation, Query, Resolver } from "type-graphql";
 import { MyContext, RecurringTaskResponse } from "../types/types";
 import { validateTask } from "../utils/validateTask";
+import { SingleTask } from "../entities/SingleTask";
 
 @Resolver()
 export class RecurringTaskResolver {
@@ -44,6 +45,7 @@ export class RecurringTaskResolver {
 
   @Mutation(() => Boolean)
   async deleteRecurringTask(@Arg("id") id: number): Promise<boolean> {
+    SingleTask.delete({ taskId: id });
     RecurringTask.delete(id);
     return true;
   }

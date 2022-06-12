@@ -1,6 +1,4 @@
-import { GraphQLJSONObject } from "graphql-type-json";
-import { Field, InputType, Int } from "type-graphql";
-import { DayType } from "./types";
+import { Field, InputType } from "type-graphql";
 
 @InputType()
 export class SingleTaskInput {
@@ -13,12 +11,12 @@ export class SingleTaskInput {
   @Field()
   notes!: string;
 
-  @Field(() => GraphQLJSONObject, { nullable: true })
-  day!: DayType;
-
   @Field()
   completed: boolean;
 
   @Field(() => Date, { nullable: true })
   actionDate: Date;
+
+  @Field({ nullable: true })
+  actionDay: number;
 }

@@ -1,5 +1,4 @@
 import { GraphQLJSONObject } from "graphql-type-json";
-import { DaysType } from "../types/types";
 import { Field, Int, ObjectType } from "type-graphql";
 import {
   BaseEntity,
@@ -9,12 +8,11 @@ import {
   JoinTable,
   ManyToMany,
   ManyToOne,
-  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
+import { DaysType } from "../types/types";
 import { User } from "./User";
-import { SingleTask } from "./SingleTask";
 
 @ObjectType()
 @Entity()
@@ -63,12 +61,12 @@ export class RecurringTask extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @ManyToOne(() => User, (user) => user.recurringTasks)
-  user: User;
+  // @ManyToOne(() => User, (user) => user.recurringTasks)
+  // user: User;
 
-  @ManyToMany(() => User)
-  @JoinTable()
-  users: User[];
+  // @ManyToMany(() => User)
+  // @JoinTable()
+  // users: User[];
 
   // @OneToMany(() => SingleTask, (st) => st.recurringTask)
   // singleTasks: SingleTask[];

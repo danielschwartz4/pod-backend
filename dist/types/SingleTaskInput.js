@@ -10,7 +10,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SingleTaskInput = void 0;
-const graphql_type_json_1 = require("graphql-type-json");
 const type_graphql_1 = require("type-graphql");
 let SingleTaskInput = class SingleTaskInput {
 };
@@ -27,10 +26,6 @@ __decorate([
     __metadata("design:type", String)
 ], SingleTaskInput.prototype, "notes", void 0);
 __decorate([
-    (0, type_graphql_1.Field)(() => graphql_type_json_1.GraphQLJSONObject, { nullable: true }),
-    __metadata("design:type", Object)
-], SingleTaskInput.prototype, "day", void 0);
-__decorate([
     (0, type_graphql_1.Field)(),
     __metadata("design:type", Boolean)
 ], SingleTaskInput.prototype, "completed", void 0);
@@ -38,6 +33,10 @@ __decorate([
     (0, type_graphql_1.Field)(() => Date, { nullable: true }),
     __metadata("design:type", Date)
 ], SingleTaskInput.prototype, "actionDate", void 0);
+__decorate([
+    (0, type_graphql_1.Field)({ nullable: true }),
+    __metadata("design:type", Number)
+], SingleTaskInput.prototype, "actionDay", void 0);
 SingleTaskInput = __decorate([
     (0, type_graphql_1.InputType)()
 ], SingleTaskInput);

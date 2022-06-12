@@ -4,30 +4,32 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { User } from "./User";
 
 @ObjectType()
 @Entity()
 export class SingleTask extends BaseEntity {
   @Field(() => Int)
   @PrimaryGeneratedColumn()
-  id!: number;
+  id: number;
 
   @Field(() => Int)
   @Column()
-  userId!: number;
+  userId: number;
 
   @Field(() => Int)
-  @Column()
-  taskId!: number;
+  @Column({ nullable: true })
+  taskId: number;
 
   @Field(() => Date, { nullable: true })
   @Column({ nullable: true })
   actionDate: Date;
+
+  @Field(() => Int, { nullable: true })
+  @Column({ nullable: true })
+  actionDay: number;
 
   @Field()
   @Column("boolean", { nullable: true, default: false })
@@ -45,8 +47,8 @@ export class SingleTask extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @ManyToOne(() => User, (user) => user.singleTasks)
-  user: User;
+  // @ManyToOne(() => User, (user) => user.singleTasks)
+  // user: User;
 
   // Don't think this is doing anything just doing it in the resolver
   // @ManyToOne(() => RecurringTask, (rc) => rc.singleTasks, {

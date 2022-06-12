@@ -85,11 +85,6 @@ export class PodResponse {
   pod?: Pod;
 }
 
-export type DayType = {
-  day: string;
-  duration: number;
-};
-
 export type DaysType = {
   0: {
     abr?: string;

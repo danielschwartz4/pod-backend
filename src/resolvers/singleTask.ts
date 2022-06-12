@@ -2,6 +2,7 @@ import { SingleTask } from "../entities/SingleTask";
 import { Arg, Int, Mutation, Query, Resolver } from "type-graphql";
 import { SingleTaskResponse, SingleTasksResponse } from "../types/types";
 import { SingleTaskInput } from "../types/SingleTaskInput";
+import { sortTasksByDate } from "../utils/sortTasksByDate";
 
 @Resolver()
 export class SingleTasksResolver {
@@ -13,9 +14,21 @@ export class SingleTasksResolver {
       where: { taskId: taskId },
     });
     if (!tasks) {
-      return { errors: "Project not found" };
+      return { errors: "Can't find any tasks" };
     }
-    return { singleTasks: tasks };
+    const sortedTasks = sortTasksByDate(tasks);
+    return { singleTasks: sortedTasks };
+  }
+
+  @Query(() => SingleTaskResponse, { nullable: true })
+  async singleTask(
+    @Arg("id", () => Int) id: number
+  ): Promise<SingleTaskResponse | undefined> {
+    const task = await SingleTask.findOne({ id });
+    if (!task) {
+      return { errors: "Task does not exist" };
+    }
+    return { singleTask: task };
   }
 
   @Mutation(() => SingleTaskResponse)

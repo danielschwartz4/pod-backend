@@ -12,6 +12,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.SingleTask = void 0;
 const type_graphql_1 = require("type-graphql");
 const typeorm_1 = require("typeorm");
+var Status;
+(function (Status) {
+    Status[Status["completed"] = 0] = "completed";
+    Status[Status["missed"] = 1] = "missed";
+    Status[Status["overdue"] = 2] = "overdue";
+    Status[Status["tbd"] = 3] = "tbd";
+})(Status || (Status = {}));
 let SingleTask = class SingleTask extends typeorm_1.BaseEntity {
 };
 __decorate([
@@ -41,9 +48,13 @@ __decorate([
 ], SingleTask.prototype, "actionDay", void 0);
 __decorate([
     (0, type_graphql_1.Field)(),
-    (0, typeorm_1.Column)("boolean", { nullable: true, default: false }),
-    __metadata("design:type", Boolean)
-], SingleTask.prototype, "completed", void 0);
+    (0, typeorm_1.Column)({
+        type: "enum",
+        enum: ["completed", "missed", "overdue", "tbd"],
+        default: "tbd",
+    }),
+    __metadata("design:type", String)
+], SingleTask.prototype, "status", void 0);
 __decorate([
     (0, type_graphql_1.Field)(),
     (0, typeorm_1.Column)(),

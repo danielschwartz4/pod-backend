@@ -36,12 +36,12 @@ let SingleTasksResolver = class SingleTasksResolver {
         }
         return { singleTask: task };
     }
-    async updateSingleTaskStatus(id) {
+    async updateSingleTaskCompletionStatus(status, id) {
         const task = await SingleTask_1.SingleTask.findOne(id);
         if (!task) {
             console.log("task does not exist");
         }
-        await SingleTask_1.SingleTask.update({ id }, { id });
+        await SingleTask_1.SingleTask.update({ id }, { status });
         return { task };
     }
     async addSingleTask(singleTaskOptions) {
@@ -73,11 +73,12 @@ __decorate([
 ], SingleTasksResolver.prototype, "singleTask", null);
 __decorate([
     (0, type_graphql_1.Mutation)(() => types_1.SingleTaskResponse),
-    __param(0, (0, type_graphql_1.Arg)("id", () => type_graphql_1.Int)),
+    __param(0, (0, type_graphql_1.Arg)("status")),
+    __param(1, (0, type_graphql_1.Arg)("id", () => type_graphql_1.Int)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
+    __metadata("design:paramtypes", [String, Number]),
     __metadata("design:returntype", Promise)
-], SingleTasksResolver.prototype, "updateSingleTaskStatus", null);
+], SingleTasksResolver.prototype, "updateSingleTaskCompletionStatus", null);
 __decorate([
     (0, type_graphql_1.Mutation)(() => types_1.SingleTaskResponse),
     __param(0, (0, type_graphql_1.Arg)("singleTaskOptions")),

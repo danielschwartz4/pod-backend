@@ -1,3 +1,4 @@
+import { TaskStatus } from "../types/types";
 import { Field, Int, ObjectType } from "type-graphql";
 import {
   BaseEntity,
@@ -7,6 +8,13 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
+
+enum Status {
+  "completed",
+  "missed",
+  "overdue",
+  "tbd",
+}
 
 @ObjectType()
 @Entity()
@@ -20,6 +28,7 @@ export class SingleTask extends BaseEntity {
   userId: number;
 
   @Field(() => Int)
+  // @Column()
   @Column({ nullable: true })
   taskId: number;
 
@@ -32,8 +41,12 @@ export class SingleTask extends BaseEntity {
   actionDay: number;
 
   @Field()
-  @Column("boolean", { nullable: true, default: false })
-  completed: boolean;
+  @Column({
+    type: "enum",
+    enum: ["completed", "missed", "overdue", "tbd"],
+    default: "tbd",
+  })
+  status: TaskStatus;
 
   @Field()
   @Column()

@@ -1,3 +1,4 @@
+import { TaskStatus } from "./types";
 import { Field, InputType } from "type-graphql";
 
 @InputType()
@@ -12,7 +13,7 @@ export class SingleTaskInput {
   notes!: string;
 
   @Field()
-  completed: boolean;
+  status: TaskStatus;
 
   @Field(() => Date, { nullable: true })
   actionDate: Date;

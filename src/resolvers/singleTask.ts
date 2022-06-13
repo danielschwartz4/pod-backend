@@ -1,6 +1,10 @@
 import { SingleTask } from "../entities/SingleTask";
-import { Arg, Int, Mutation, Query, Resolver } from "type-graphql";
-import { SingleTaskResponse, SingleTasksResponse } from "../types/types";
+import { Arg, ID, Int, Mutation, Query, Resolver } from "type-graphql";
+import {
+  SingleTaskResponse,
+  SingleTasksResponse,
+  TaskStatus,
+} from "../types/types";
 import { SingleTaskInput } from "../types/SingleTaskInput";
 import { sortTasksByDate } from "../utils/sortTasksByDate";
 
@@ -32,12 +36,15 @@ export class SingleTasksResolver {
   }
 
   @Mutation(() => SingleTaskResponse)
-  async updateSingleTaskStatus(@Arg("id", () => Int) id: number) {
+  async updateSingleTaskCompletionStatus(
+    @Arg("status") status: TaskStatus,
+    @Arg("id", () => Int) id: number
+  ) {
     const task = await SingleTask.findOne(id);
     if (!task) {
       console.log("task does not exist");
     }
-    await SingleTask.update({ id }, { id });
+    await SingleTask.update({ id }, { status });
     return { task };
   }
 
@@ -57,4 +64,16 @@ export class SingleTasksResolver {
     }
     return { task };
   }
+
+  // @Mutation(() => SingleTaskResponse)
+  // async updateSingleTaskCompletion(
+  //   @Arg("completed") completed: boolean,
+  //   @Arg("id") id: number
+  // ) {
+  //   const task = await SingleTask.findOne(id);
+  //   if (!task) {
+  //     console.log("task does not exist");
+  //   }
+  //   await SingleTask.update({});
+  // }
 }

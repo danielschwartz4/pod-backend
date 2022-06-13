@@ -27,8 +27,8 @@ __decorate([
 ], SingleTaskInput.prototype, "notes", void 0);
 __decorate([
     (0, type_graphql_1.Field)(),
-    __metadata("design:type", Boolean)
-], SingleTaskInput.prototype, "completed", void 0);
+    __metadata("design:type", String)
+], SingleTaskInput.prototype, "status", void 0);
 __decorate([
     (0, type_graphql_1.Field)(() => Date, { nullable: true }),
     __metadata("design:type", Date)

@@ -28,7 +28,8 @@ const validateTask = (options) => {
             },
         ];
     }
-    if (options.startDate && options.startDate < new Date()) {
+    const yesterday = new Date(new Date().setDate(new Date().getDate() - 1));
+    if (options.startDate && options.startDate < yesterday) {
         return [
             {
                 field: "startDate",

@@ -12,13 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.SingleTask = void 0;
 const type_graphql_1 = require("type-graphql");
 const typeorm_1 = require("typeorm");
-var Status;
-(function (Status) {
-    Status[Status["completed"] = 0] = "completed";
-    Status[Status["missed"] = 1] = "missed";
-    Status[Status["overdue"] = 2] = "overdue";
-    Status[Status["tbd"] = 3] = "tbd";
-})(Status || (Status = {}));
 let SingleTask = class SingleTask extends typeorm_1.BaseEntity {
 };
 __decorate([
@@ -33,7 +26,7 @@ __decorate([
 ], SingleTask.prototype, "userId", void 0);
 __decorate([
     (0, type_graphql_1.Field)(() => type_graphql_1.Int),
-    (0, typeorm_1.Column)({ nullable: true }),
+    (0, typeorm_1.Column)({ default: -1 }),
     __metadata("design:type", Number)
 ], SingleTask.prototype, "taskId", void 0);
 __decorate([

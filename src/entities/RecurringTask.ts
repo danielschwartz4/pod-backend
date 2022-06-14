@@ -5,14 +5,10 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinTable,
-  ManyToMany,
-  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
 import { DaysType } from "../types/types";
-import { User } from "./User";
 
 @ObjectType()
 @Entity()

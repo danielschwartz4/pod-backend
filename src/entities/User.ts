@@ -5,12 +5,9 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { RecurringTask } from "./RecurringTask";
-import { SingleTask } from "./SingleTask";
 
 @ObjectType()
 @Entity()
@@ -50,9 +47,9 @@ export class User extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToMany(() => RecurringTask, (recurringTask) => recurringTask.user)
-  recurringTasks: RecurringTask[];
+  // @OneToMany(() => RecurringTask, (recurringTask) => recurringTask.user)
+  // recurringTasks: RecurringTask[];
 
-  @OneToMany(() => SingleTask, (singleTask) => singleTask.user)
-  singleTasks: SingleTask[];
+  // @OneToMany(() => SingleTask, (singleTask) => singleTask.user)
+  // singleTasks: SingleTask[];
 }

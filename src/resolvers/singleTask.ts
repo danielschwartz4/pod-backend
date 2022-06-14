@@ -1,11 +1,11 @@
+import { Arg, Int, Mutation, Query, Resolver } from "type-graphql";
 import { SingleTask } from "../entities/SingleTask";
-import { Arg, ID, Int, Mutation, Query, Resolver } from "type-graphql";
+import { SingleTaskInput } from "../types/SingleTaskInput";
 import {
   SingleTaskResponse,
   SingleTasksResponse,
   TaskStatus,
 } from "../types/types";
-import { SingleTaskInput } from "../types/SingleTaskInput";
 import { sortTasksByDate } from "../utils/sortTasksByDate";
 
 @Resolver()
@@ -45,6 +45,19 @@ export class SingleTasksResolver {
       console.log("task does not exist");
     }
     await SingleTask.update({ id }, { status });
+    return { task };
+  }
+
+  @Mutation(() => SingleTaskResponse)
+  async updateSingleTaskNotes(
+    @Arg("notes") notes: string,
+    @Arg("id", () => Int) id: number
+  ) {
+    const task = await SingleTask.findOne(id);
+    if (!task) {
+      console.log("task does not exist");
+    }
+    await SingleTask.update({ id }, { notes });
     return { task };
   }
 

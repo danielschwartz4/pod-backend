@@ -13,10 +13,10 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SingleTasksResolver = void 0;
-const SingleTask_1 = require("../entities/SingleTask");
 const type_graphql_1 = require("type-graphql");
-const types_1 = require("../types/types");
+const SingleTask_1 = require("../entities/SingleTask");
 const SingleTaskInput_1 = require("../types/SingleTaskInput");
+const types_1 = require("../types/types");
 const sortTasksByDate_1 = require("../utils/sortTasksByDate");
 let SingleTasksResolver = class SingleTasksResolver {
     async singleTasks(taskId) {
@@ -42,6 +42,14 @@ let SingleTasksResolver = class SingleTasksResolver {
             console.log("task does not exist");
         }
         await SingleTask_1.SingleTask.update({ id }, { status });
+        return { task };
+    }
+    async updateSingleTaskNotes(notes, id) {
+        const task = await SingleTask_1.SingleTask.findOne(id);
+        if (!task) {
+            console.log("task does not exist");
+        }
+        await SingleTask_1.SingleTask.update({ id }, { notes });
         return { task };
     }
     async addSingleTask(singleTaskOptions) {
@@ -79,6 +87,14 @@ __decorate([
     __metadata("design:paramtypes", [String, Number]),
     __metadata("design:returntype", Promise)
 ], SingleTasksResolver.prototype, "updateSingleTaskCompletionStatus", null);
+__decorate([
+    (0, type_graphql_1.Mutation)(() => types_1.SingleTaskResponse),
+    __param(0, (0, type_graphql_1.Arg)("notes")),
+    __param(1, (0, type_graphql_1.Arg)("id", () => type_graphql_1.Int)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Number]),
+    __metadata("design:returntype", Promise)
+], SingleTasksResolver.prototype, "updateSingleTaskNotes", null);
 __decorate([
     (0, type_graphql_1.Mutation)(() => types_1.SingleTaskResponse),
     __param(0, (0, type_graphql_1.Arg)("singleTaskOptions")),

@@ -19,7 +19,7 @@ const Pod_1 = require("../entities/Pod");
 const types_1 = require("../types/types");
 const removeItem_1 = require("../utils/removeItem");
 let PodResolver = class PodResolver {
-    async createPod(isPrivate, cap) {
+    async createPod(isPrivate, cap, sessionType) {
         let pod;
         try {
             pod = await Pod_1.Pod.create({
@@ -27,6 +27,7 @@ let PodResolver = class PodResolver {
                 projectIds: [],
                 userIds: [],
                 isPrivate: isPrivate,
+                sessionType: sessionType,
             }).save();
         }
         catch (err) {
@@ -79,20 +80,24 @@ let PodResolver = class PodResolver {
         }
         return { pod };
     }
-    async findPublicPod(cap, projectId, { req }) {
+    async findPublicPod(cap, projectId, sessionType, { req }) {
         const userId = req.session.userId;
         const pods = await (0, typeorm_1.getConnection)().query(`SELECT * FROM public.pod 
 			WHERE (${userId} != ANY(pod."userIds") AND
             ${projectId} != ANY(pod."projectIds") AND 
 						${cap} = pod.cap AND
             pod."isPrivate" = false AND
-						cardinality(pod."projectIds") < ${cap}) OR
+						cardinality(pod."projectIds") < ${cap} AND
+            pod."sessionType" = '${sessionType}') OR
             (${cap} = pod.cap AND
             cardinality(pod."projectIds") = 0 AND
-            cardinality(pod."userIds") = 0)
+            cardinality(pod."userIds") = 0 AND
+            pod."sessionType" = '${sessionType}')
             ORDER BY cardinality(pod."projectIds") DESC
             LIMIT 1
 			`);
+        console.log("PODDDDDDDS");
+        console.log(pods);
         if (pods.length == 0) {
             return { errors: "no available pods at the moment" };
         }
@@ -104,8 +109,9 @@ __decorate([
     (0, type_graphql_1.Mutation)(() => Pod_1.Pod),
     __param(0, (0, type_graphql_1.Arg)("isPrivate")),
     __param(1, (0, type_graphql_1.Arg)("cap")),
+    __param(2, (0, type_graphql_1.Arg)("sessionType")),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Boolean, Number]),
+    __metadata("design:paramtypes", [Boolean, Number, String]),
     __metadata("design:returntype", Promise)
 ], PodResolver.prototype, "createPod", null);
 __decorate([
@@ -143,9 +149,10 @@ __decorate([
     (0, type_graphql_1.Query)(() => types_1.PodResponse),
     __param(0, (0, type_graphql_1.Arg)("cap")),
     __param(1, (0, type_graphql_1.Arg)("projectId")),
-    __param(2, (0, type_graphql_1.Ctx)()),
+    __param(2, (0, type_graphql_1.Arg)("sessionType")),
+    __param(3, (0, type_graphql_1.Ctx)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number, Number, Object]),
+    __metadata("design:paramtypes", [Number, Number, String, Object]),
     __metadata("design:returntype", Promise)
 ], PodResolver.prototype, "findPublicPod", null);
 PodResolver = __decorate([

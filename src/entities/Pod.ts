@@ -1,3 +1,4 @@
+import { SessionType } from "src/types/types";
 import { Field, Int, ObjectType } from "type-graphql";
 import {
   BaseEntity,
@@ -50,6 +51,14 @@ export class Pod extends BaseEntity {
   @Field()
   @Column("boolean", { nullable: true, default: false })
   isPrivate!: boolean;
+
+  @Field()
+  @Column({
+    type: "enum",
+    enum: ["project", "task"],
+    default: "project",
+  })
+  sessionType: SessionType;
 
   @Field()
   @CreateDateColumn()

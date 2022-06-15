@@ -1,7 +1,7 @@
 import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql";
 import { getConnection } from "typeorm";
 import { Pod } from "../entities/Pod";
-import { MyContext, PodResponse } from "../types/types";
+import { MyContext, PodResponse, SessionType } from "../types/types";
 import { removeItemByValue } from "../utils/removeItem";
 
 @Resolver()
@@ -9,7 +9,8 @@ export class PodResolver {
   @Mutation(() => Pod)
   async createPod(
     @Arg("isPrivate") isPrivate: boolean,
-    @Arg("cap") cap: number
+    @Arg("cap") cap: number,
+    @Arg("sessionType") sessionType: SessionType
   ): Promise<Pod | undefined> {
     let pod;
     try {
@@ -18,6 +19,7 @@ export class PodResolver {
         projectIds: [],
         userIds: [],
         isPrivate: isPrivate,
+        sessionType: sessionType,
       }).save();
     } catch (err) {
       console.log("POD CREATION ERROR");
@@ -97,6 +99,7 @@ export class PodResolver {
   async findPublicPod(
     @Arg("cap") cap: number,
     @Arg("projectId") projectId: number,
+    @Arg("sessionType") sessionType: SessionType,
     // @Arg("userId") userId: number,
     @Ctx() { req }: MyContext
   ) {
@@ -107,15 +110,19 @@ export class PodResolver {
             ${projectId} != ANY(pod."projectIds") AND 
 						${cap} = pod.cap AND
             pod."isPrivate" = false AND
-						cardinality(pod."projectIds") < ${cap}) OR
+						cardinality(pod."projectIds") < ${cap} AND
+            pod."sessionType" = '${sessionType}') OR
             (${cap} = pod.cap AND
             cardinality(pod."projectIds") = 0 AND
-            cardinality(pod."userIds") = 0)
+            cardinality(pod."userIds") = 0 AND
+            pod."sessionType" = '${sessionType}')
             ORDER BY cardinality(pod."projectIds") DESC
             LIMIT 1
 			`
     );
-
+    // pod."sessionType" = ${sessionType}
+    console.log("PODDDDDDDS");
+    console.log(pods);
     if (pods.length == 0) {
       return { errors: "no available pods at the moment" };
     }

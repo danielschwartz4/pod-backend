@@ -87,6 +87,8 @@ export class PodResponse {
 
 export type TaskStatus = "completed" | "missed" | "overdue" | "tbd";
 
+export type SessionType = "project" | "task";
+
 export type DaysType = {
   0: {
     abr?: string;

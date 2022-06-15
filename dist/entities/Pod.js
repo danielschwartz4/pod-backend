@@ -59,6 +59,15 @@ __decorate([
 ], Pod.prototype, "isPrivate", void 0);
 __decorate([
     (0, type_graphql_1.Field)(),
+    (0, typeorm_1.Column)({
+        type: "enum",
+        enum: ["project", "task"],
+        default: "project",
+    }),
+    __metadata("design:type", String)
+], Pod.prototype, "sessionType", void 0);
+__decorate([
+    (0, type_graphql_1.Field)(),
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)
 ], Pod.prototype, "createdAt", void 0);

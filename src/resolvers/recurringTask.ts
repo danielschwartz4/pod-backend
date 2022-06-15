@@ -23,8 +23,16 @@ export class RecurringTaskResolver {
     @Ctx() { req }: MyContext
   ): Promise<RecurringTask[] | undefined> {
     const userId = req.session.userId;
-    const projects = await RecurringTask.find({ where: { userId: userId } });
-    return projects;
+    const tasks = await RecurringTask.find({ where: { userId: userId } });
+    return tasks;
+  }
+
+  @Query(() => [RecurringTask], { nullable: true })
+  async podTasks(
+    @Arg("podId", () => Int) podId: number
+  ): Promise<RecurringTask[] | undefined> {
+    const tasks = await RecurringTask.find({ where: { podId: podId } });
+    return tasks;
   }
 
   @Mutation(() => RecurringTaskResponse)
@@ -48,5 +56,16 @@ export class RecurringTaskResolver {
     SingleTask.delete({ taskId: id });
     RecurringTask.delete(id);
     return true;
+  }
+
+  @Mutation(() => RecurringTaskResponse)
+  async updateTaskPod(@Arg("id") id: number, @Arg("podId") podId: number) {
+    const task = await RecurringTask.findOne(id);
+    if (!task) {
+      console.log("task does not exist");
+      return { errors: "task does not exist" };
+    }
+    await RecurringTask.update({ id }, { podId });
+    return { task };
   }
 }

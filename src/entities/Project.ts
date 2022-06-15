@@ -24,7 +24,7 @@ export class Project extends BaseEntity {
   userId!: number;
 
   @Field()
-  @Column()
+  @Column({ default: "Click here to name project" })
   projectName!: string;
 
   @Field()

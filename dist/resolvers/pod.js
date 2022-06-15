@@ -96,8 +96,6 @@ let PodResolver = class PodResolver {
             ORDER BY cardinality(pod."projectIds") DESC
             LIMIT 1
 			`);
-        console.log("PODDDDDDDS");
-        console.log(pods);
         if (pods.length == 0) {
             return { errors: "no available pods at the moment" };
         }

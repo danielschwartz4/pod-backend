@@ -120,9 +120,6 @@ export class PodResolver {
             LIMIT 1
 			`
     );
-    // pod."sessionType" = ${sessionType}
-    console.log("PODDDDDDDS");
-    console.log(pods);
     if (pods.length == 0) {
       return { errors: "no available pods at the moment" };
     }

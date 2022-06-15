@@ -31,7 +31,7 @@ __decorate([
 ], Project.prototype, "userId", void 0);
 __decorate([
     (0, type_graphql_1.Field)(),
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ default: "Click here to name project" }),
     __metadata("design:type", String)
 ], Project.prototype, "projectName", void 0);
 __decorate([

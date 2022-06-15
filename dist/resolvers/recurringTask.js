@@ -45,6 +45,15 @@ let RecurringTaskResolver = class RecurringTaskResolver {
         task = await RecurringTask_1.RecurringTask.create(Object.assign({}, recurringTaskOptions)).save();
         return { task };
     }
+    async updateTaskName(id, taskName) {
+        const task = await RecurringTask_1.RecurringTask.findOne(id);
+        if (!task) {
+            console.log("task does not exist");
+            return { errors: "task does not exist" };
+        }
+        await RecurringTask_1.RecurringTask.update({ id }, { taskName });
+        return { task };
+    }
     async deleteRecurringTask(id) {
         SingleTask_1.SingleTask.delete({ taskId: id });
         RecurringTask_1.RecurringTask.delete(id);
@@ -88,6 +97,14 @@ __decorate([
     __metadata("design:paramtypes", [RecurringTaskInput_1.RecurringTaskInput]),
     __metadata("design:returntype", Promise)
 ], RecurringTaskResolver.prototype, "createRecurringTask", null);
+__decorate([
+    (0, type_graphql_1.Mutation)(() => types_1.RecurringTaskResponse),
+    __param(0, (0, type_graphql_1.Arg)("id")),
+    __param(1, (0, type_graphql_1.Arg)("taskName", () => String)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, String]),
+    __metadata("design:returntype", Promise)
+], RecurringTaskResolver.prototype, "updateTaskName", null);
 __decorate([
     (0, type_graphql_1.Mutation)(() => Boolean),
     __param(0, (0, type_graphql_1.Arg)("id")),

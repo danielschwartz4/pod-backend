@@ -51,6 +51,20 @@ export class RecurringTaskResolver {
     return { task };
   }
 
+  @Mutation(() => RecurringTaskResponse)
+  async updateTaskName(
+    @Arg("id") id: number,
+    @Arg("taskName", () => String) taskName: string
+  ) {
+    const task = await RecurringTask.findOne(id);
+    if (!task) {
+      console.log("task does not exist");
+      return { errors: "task does not exist" };
+    }
+    await RecurringTask.update({ id }, { taskName });
+    return { task };
+  }
+
   @Mutation(() => Boolean)
   async deleteRecurringTask(@Arg("id") id: number): Promise<boolean> {
     SingleTask.delete({ taskId: id });

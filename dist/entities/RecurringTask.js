@@ -41,20 +41,25 @@ __decorate([
     __metadata("design:type", String)
 ], RecurringTask.prototype, "overview", void 0);
 __decorate([
-    (0, type_graphql_1.Field)(() => graphql_type_json_1.GraphQLJSONObject, { nullable: true }),
-    (0, typeorm_1.Column)("jsonb", { nullable: true }),
+    (0, type_graphql_1.Field)(() => graphql_type_json_1.GraphQLJSONObject),
+    (0, typeorm_1.Column)("jsonb"),
     __metadata("design:type", Object)
 ], RecurringTask.prototype, "days", void 0);
+__decorate([
+    (0, type_graphql_1.Field)(() => Date),
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Date)
+], RecurringTask.prototype, "startDate", void 0);
+__decorate([
+    (0, type_graphql_1.Field)(() => graphql_type_json_1.GraphQLJSONObject),
+    (0, typeorm_1.Column)("jsonb"),
+    __metadata("design:type", Object)
+], RecurringTask.prototype, "endOptions", void 0);
 __decorate([
     (0, type_graphql_1.Field)(() => Date, { nullable: true }),
     (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", Date)
-], RecurringTask.prototype, "startDate", void 0);
-__decorate([
-    (0, type_graphql_1.Field)(() => graphql_type_json_1.GraphQLJSONObject, { nullable: true }),
-    (0, typeorm_1.Column)("jsonb", { nullable: true }),
-    __metadata("design:type", Object)
-], RecurringTask.prototype, "endOptions", void 0);
+], RecurringTask.prototype, "cursorDate", void 0);
 __decorate([
     (0, type_graphql_1.Field)(() => [String], { nullable: true }),
     (0, typeorm_1.Column)("text", { array: true, nullable: true }),

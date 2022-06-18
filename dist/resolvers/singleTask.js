@@ -13,13 +13,13 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SingleTasksResolver = void 0;
-const RecurringTask_1 = require("../entities/RecurringTask");
 const type_graphql_1 = require("type-graphql");
+const RecurringTask_1 = require("../entities/RecurringTask");
 const SingleTask_1 = require("../entities/SingleTask");
 const SingleTaskInput_1 = require("../types/SingleTaskInput");
 const types_1 = require("../types/types");
-const sortTasksByDate_1 = require("../utils/sortTasksByDate");
 const singleTaskUtils_1 = require("../utils/singleTaskUtils");
+const sortTasksByDate_1 = require("../utils/sortTasksByDate");
 let SingleTasksResolver = class SingleTasksResolver {
     async singleTasks(taskId) {
         const tasks = await SingleTask_1.SingleTask.find({
@@ -97,14 +97,30 @@ let SingleTasksResolver = class SingleTasksResolver {
         }
         const selectedDays = recurringTask === null || recurringTask === void 0 ? void 0 : recurringTask.days;
         const selectedDaysIdxs = (0, singleTaskUtils_1.extractDaysIdxs)(selectedDays);
-        const singleTasksByDay = (0, singleTaskUtils_1.convertToSingleTasks)(recurringTask, selectedDaysIdxs, cursorDate, endDate);
+        const singleTasksByDay = (0, singleTaskUtils_1.dataBetweenTwoDates)(cursorDate, endDate, selectedDaysIdxs);
         const nextDay = (0, singleTaskUtils_1.addDays)(1, endDate);
+        let singleTasksArr = [];
         if ((0, singleTaskUtils_1.daysEqual)((0, singleTaskUtils_1.minDate)(realEndDate, nextDay), nextDay)) {
-            await RecurringTask_1.RecurringTask.update({ id: recTaskId }, { cursorDate: (0, singleTaskUtils_1.addDays)(1, endDate) });
-            console.log(singleTasksByDay);
+            Object.keys(singleTasksByDay).forEach((key) => {
+                if (selectedDaysIdxs.has(parseInt(key))) {
+                    const arr = singleTasksByDay[parseInt(key)];
+                    arr.forEach(async (ele) => {
+                        await SingleTask_1.SingleTask.create({
+                            actionDate: ele.actionDate,
+                            actionDay: ele.actionDay,
+                            status: "tbd",
+                            notes: "",
+                            taskId: recurringTask === null || recurringTask === void 0 ? void 0 : recurringTask.id,
+                            userId: recurringTask === null || recurringTask === void 0 ? void 0 : recurringTask.userId,
+                        }).save();
+                    });
+                }
+            });
+            await RecurringTask_1.RecurringTask.update({ id: recurringTask.id }, { cursorDate: (0, singleTaskUtils_1.addDays)(1, endDate) });
+            const sortedTasks = (0, sortTasksByDate_1.sortTasksByDate)(singleTasksArr);
+            return { singleTasks: sortedTasks };
         }
-        else if ((0, singleTaskUtils_1.daysEqual)(realEndDate, endDate)) {
-            console.log(singleTasksByDay);
+        else {
             return { errors: "reached end date" };
         }
     }

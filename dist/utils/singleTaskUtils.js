@@ -1,14 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.daysEqual = exports.minDate = exports.addDays = exports.extractDaysIdxs = exports.convertToSingleTasks = void 0;
-function convertToSingleTasks(recurringTask, selectedDaysIdxs, startDate, endDate) {
-    if (recurringTask == undefined) {
-        return;
-    }
-    const singleTasksData = dataBetweenTwoDates(startDate, endDate, selectedDaysIdxs);
-    return singleTasksData;
-}
-exports.convertToSingleTasks = convertToSingleTasks;
+exports.daysEqual = exports.minDate = exports.addDays = exports.extractDaysIdxs = exports.dataBetweenTwoDates = void 0;
 function dataBetweenTwoDates(start, end, dayIdxs) {
     let dayDict = {
         0: [],
@@ -37,10 +29,11 @@ function dataBetweenTwoDates(start, end, dayIdxs) {
     }
     return dayDict;
 }
+exports.dataBetweenTwoDates = dataBetweenTwoDates;
 function extractDaysIdxs(days) {
     let idxs = new Set();
     Object.keys(days).forEach((day) => {
-        if (days[day].isSelected) {
+        if (days[parseInt(day)].isSelected) {
             idxs.add(parseInt(day));
         }
     });

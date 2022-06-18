@@ -1,22 +1,22 @@
-import { RecurringTask } from "../entities/RecurringTask";
 import { Arg, Int, Mutation, Query, Resolver } from "type-graphql";
+import { RecurringTask } from "../entities/RecurringTask";
 import { SingleTask } from "../entities/SingleTask";
 import { SingleTaskInput } from "../types/SingleTaskInput";
 import {
   DaysType,
-  RecurringTaskResponse,
   SingleTaskResponse,
   SingleTasksResponse,
   TaskStatus,
 } from "../types/types";
-import { sortTasksByDate } from "../utils/sortTasksByDate";
 import {
   addDays,
-  convertToSingleTasks,
+  dataBetweenTwoDates,
   daysEqual,
+  EntryType,
   extractDaysIdxs,
   minDate,
 } from "../utils/singleTaskUtils";
+import { sortTasksByDate } from "../utils/sortTasksByDate";
 
 @Resolver()
 export class SingleTasksResolver {
@@ -92,6 +92,7 @@ export class SingleTasksResolver {
   @Mutation(() => SingleTasksResponse)
   async addSingleTasksChunk(
     @Arg("recTaskId") recTaskId: number,
+    // @Arg("recurringTask") recurringTask: RecurringTask,
     @Arg("limit") limit: number
   ) {
     const recurringTask = await RecurringTask.findOne({
@@ -100,6 +101,7 @@ export class SingleTasksResolver {
     if (!recurringTask) {
       return { errors: "must provide a recurring task as argument" };
     }
+    // !! prob can get rid of this eventually
     if (recurringTask?.startDate == undefined) {
       return { errors: "must provide start date" };
     }
@@ -111,6 +113,7 @@ export class SingleTasksResolver {
       cursorDate = recurringTask?.startDate;
     }
 
+    // Might have to add days to end date
     if (recurringTask?.endOptions?.date != null) {
       realEndDate = new Date(recurringTask?.endOptions?.date);
       endDate = minDate(addDays(limit, cursorDate), realEndDate);
@@ -127,28 +130,37 @@ export class SingleTasksResolver {
 
     const selectedDays = recurringTask?.days as DaysType;
     const selectedDaysIdxs = extractDaysIdxs(selectedDays);
-    const singleTasksByDay = convertToSingleTasks(
-      recurringTask,
-      selectedDaysIdxs,
+    const singleTasksByDay = dataBetweenTwoDates(
       cursorDate,
-      endDate
+      endDate,
+      selectedDaysIdxs
     );
-
     const nextDay = addDays(1, endDate);
+    let singleTasksArr = [] as SingleTask[];
     if (daysEqual(minDate(realEndDate, nextDay), nextDay)) {
+      Object.keys(singleTasksByDay).forEach((key) => {
+        if (selectedDaysIdxs.has(parseInt(key))) {
+          const arr = singleTasksByDay[parseInt(key)];
+          arr.forEach(async (ele: EntryType) => {
+            await SingleTask.create({
+              actionDate: ele.actionDate,
+              actionDay: ele.actionDay,
+              status: "tbd",
+              notes: "",
+              taskId: recurringTask?.id,
+              userId: recurringTask?.userId,
+            }).save();
+          });
+        }
+      });
       await RecurringTask.update(
-        { id: recTaskId },
+        { id: recurringTask.id },
         { cursorDate: addDays(1, endDate) }
       );
-      console.log(singleTasksByDay);
-      // !! Then add to singleTasks table
-    }
-    // !! if they are equal don't add anything
-    else if (daysEqual(realEndDate, endDate)) {
-      console.log(singleTasksByDay);
+      const sortedTasks = sortTasksByDate(singleTasksArr);
+      return { singleTasks: sortedTasks };
+    } else {
       return { errors: "reached end date" };
     }
-
-    // return { errors: "reached end date" };
   }
 }

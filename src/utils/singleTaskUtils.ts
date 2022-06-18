@@ -1,6 +1,3 @@
-import { RecurringTask } from "../entities/RecurringTask";
-import { DaysType } from "../types/types";
-
 export type EntryType = {
   idx: number;
   actionDate: Date;
@@ -19,51 +16,14 @@ type DayDictType = {
   6: EntriesType;
 };
 
-export function convertToSingleTasks(
-  recurringTask: RecurringTask | undefined,
-  selectedDaysIdxs: Set<number>,
-  startDate: Date,
-  endDate: Date
+
+
+export function dataBetweenTwoDates(
+  start: Date,
+  end: Date,
+  dayIdxs: Set<number>
 ) {
-  if (recurringTask == undefined) {
-    return;
-  }
-  // ---------------
-  // let numTasks: number;
-  // let singleTasksData: DayDictType;
-  // if (recurringTask.endOptions.neverEnds) {
-  //   // let endDate = addDays(28, recurringTask.startDate);
-  //   singleTasksData = dataBetweenTwoDates(
-  //     new Date(recurringTask.startDate),
-  //     endDate,
-  //     selectedDaysIdxs
-
-  //   );
-  // } else if (recurringTask.endOptions.date) {
-  //   singleTasksData = dataBetweenTwoDates(
-  //     new Date(recurringTask.startDate),
-  //     new Date(recurringTask.endOptions.date),
-  //     selectedDaysIdxs
-  //   );
-  // } else {
-  // numTasks = recurringTask.endOptions.repetitions;
-  // let endDate = addDays(numTasks * 7, recurringTask.startDate);
-  //   singleTasksData = dataBetweenTwoDates(
-  //     new Date(recurringTask.startDate),
-  //     endDate,
-  //     selectedDaysIdxs
-  //   );
-  // }
-  const singleTasksData = dataBetweenTwoDates(
-    startDate,
-    endDate,
-    selectedDaysIdxs
-  );
-  return singleTasksData;
-}
-
-function dataBetweenTwoDates(start: Date, end: Date, dayIdxs: Set<number>) {
-  let dayDict = {
+  let dayDict: { [key: number]: EntriesType } = {
     0: [] as EntriesType,
     1: [] as EntriesType,
     2: [] as EntriesType,
@@ -91,10 +51,16 @@ function dataBetweenTwoDates(start: Date, end: Date, dayIdxs: Set<number>) {
   return dayDict;
 }
 
-export function extractDaysIdxs(days: DaysType) {
+export function extractDaysIdxs(days: {
+  [key: number]: {
+    abr?: string;
+    isSelected: boolean;
+    duration: number;
+  };
+}) {
   let idxs = new Set<number>();
   Object.keys(days).forEach((day) => {
-    if (days[day].isSelected) {
+    if (days[parseInt(day)].isSelected) {
       idxs.add(parseInt(day));
     }
   });

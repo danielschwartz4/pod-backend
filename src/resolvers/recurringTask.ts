@@ -1,16 +1,21 @@
-import { RecurringTask } from "../entities/RecurringTask";
-import { RecurringTaskInput } from "../types/RecurringTaskInput";
 import { Arg, Ctx, Int, Mutation, Query, Resolver } from "type-graphql";
-import { MyContext, RecurringTaskResponse } from "../types/types";
-import { validateTask } from "../utils/validateTask";
+import { RecurringTask } from "../entities/RecurringTask";
 import { SingleTask } from "../entities/SingleTask";
+import { CompletedCountInput } from "../types/CompletedCountInput";
+import { RecurringTaskInput } from "../types/RecurringTaskInput";
+import {
+  MyContext,
+  RecurringTaskFieldResponse,
+  RecurringTaskResponse,
+} from "../types/types";
+import { validateTask } from "../utils/validateTask";
 
 @Resolver()
 export class RecurringTaskResolver {
-  @Query(() => RecurringTaskResponse, { nullable: true })
+  @Query(() => RecurringTaskFieldResponse, { nullable: true })
   async recurringTask(
     @Arg("id", () => Int) id: number
-  ): Promise<RecurringTaskResponse | undefined> {
+  ): Promise<RecurringTaskFieldResponse | undefined> {
     const task = await RecurringTask.findOne({ where: { id: id } });
     if (!task) {
       return { errors: [{ field: "id", message: "Task not found" }] };
@@ -35,10 +40,10 @@ export class RecurringTaskResolver {
     return tasks;
   }
 
-  @Mutation(() => RecurringTaskResponse)
+  @Mutation(() => RecurringTaskFieldResponse)
   async createRecurringTask(
     @Arg("recurringTaskOptions") recurringTaskOptions: RecurringTaskInput
-  ): Promise<RecurringTaskResponse> {
+  ): Promise<RecurringTaskFieldResponse> {
     const errors = validateTask(recurringTaskOptions);
     if (errors) {
       return { errors };
@@ -51,7 +56,7 @@ export class RecurringTaskResolver {
     return { task };
   }
 
-  @Mutation(() => RecurringTaskResponse)
+  @Mutation(() => RecurringTaskFieldResponse)
   async updateTaskName(
     @Arg("id") id: number,
     @Arg("taskName", () => String) taskName: string
@@ -72,7 +77,7 @@ export class RecurringTaskResolver {
     return true;
   }
 
-  @Mutation(() => RecurringTaskResponse)
+  @Mutation(() => RecurringTaskFieldResponse)
   async updateTaskPod(@Arg("id") id: number, @Arg("podId") podId: number) {
     const task = await RecurringTask.findOne(id);
     if (!task) {
@@ -80,6 +85,21 @@ export class RecurringTaskResolver {
       return { errors: "task does not exist" };
     }
     await RecurringTask.update({ id }, { podId });
+    return { task };
+  }
+
+  @Mutation(() => RecurringTaskResponse)
+  async updateCompletedCount(
+    @Arg("id") id: number,
+    @Arg("completedCount")
+    completedCount: CompletedCountInput
+  ) {
+    const task = await RecurringTask.findOne(id);
+    if (!task) {
+      console.log("task does not exist");
+      return { errors: "task does not exist" };
+    }
+    await RecurringTask.update({ id }, { completedCount });
     return { task };
   }
 }

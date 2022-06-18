@@ -41,9 +41,18 @@ export class ProjectResponse {
 }
 
 @ObjectType()
-export class RecurringTaskResponse {
+export class RecurringTaskFieldResponse {
   @Field(() => [FieldError], { nullable: true })
   errors?: FieldError[];
+
+  @Field(() => RecurringTask, { nullable: true })
+  task?: RecurringTask;
+}
+
+@ObjectType()
+export class RecurringTaskResponse {
+  @Field(() => String, { nullable: true })
+  errors?: string;
 
   @Field(() => RecurringTask, { nullable: true })
   task?: RecurringTask;
@@ -125,4 +134,11 @@ export type DaysType = {
     isSelected: boolean;
     duration: number;
   };
+};
+
+export type CompletedCount = {
+  allTime: number;
+  fourDays: number;
+  week: number;
+  month: number;
 };

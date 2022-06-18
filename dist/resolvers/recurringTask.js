@@ -13,12 +13,13 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RecurringTaskResolver = void 0;
-const RecurringTask_1 = require("../entities/RecurringTask");
-const RecurringTaskInput_1 = require("../types/RecurringTaskInput");
 const type_graphql_1 = require("type-graphql");
+const RecurringTask_1 = require("../entities/RecurringTask");
+const SingleTask_1 = require("../entities/SingleTask");
+const CompletedCountInput_1 = require("../types/CompletedCountInput");
+const RecurringTaskInput_1 = require("../types/RecurringTaskInput");
 const types_1 = require("../types/types");
 const validateTask_1 = require("../utils/validateTask");
-const SingleTask_1 = require("../entities/SingleTask");
 let RecurringTaskResolver = class RecurringTaskResolver {
     async recurringTask(id) {
         const task = await RecurringTask_1.RecurringTask.findOne({ where: { id: id } });
@@ -68,9 +69,18 @@ let RecurringTaskResolver = class RecurringTaskResolver {
         await RecurringTask_1.RecurringTask.update({ id }, { podId });
         return { task };
     }
+    async updateCompletedCount(id, completedCount) {
+        const task = await RecurringTask_1.RecurringTask.findOne(id);
+        if (!task) {
+            console.log("task does not exist");
+            return { errors: "task does not exist" };
+        }
+        await RecurringTask_1.RecurringTask.update({ id }, { completedCount });
+        return { task };
+    }
 };
 __decorate([
-    (0, type_graphql_1.Query)(() => types_1.RecurringTaskResponse, { nullable: true }),
+    (0, type_graphql_1.Query)(() => types_1.RecurringTaskFieldResponse, { nullable: true }),
     __param(0, (0, type_graphql_1.Arg)("id", () => type_graphql_1.Int)),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),
@@ -91,14 +101,14 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], RecurringTaskResolver.prototype, "podTasks", null);
 __decorate([
-    (0, type_graphql_1.Mutation)(() => types_1.RecurringTaskResponse),
+    (0, type_graphql_1.Mutation)(() => types_1.RecurringTaskFieldResponse),
     __param(0, (0, type_graphql_1.Arg)("recurringTaskOptions")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [RecurringTaskInput_1.RecurringTaskInput]),
     __metadata("design:returntype", Promise)
 ], RecurringTaskResolver.prototype, "createRecurringTask", null);
 __decorate([
-    (0, type_graphql_1.Mutation)(() => types_1.RecurringTaskResponse),
+    (0, type_graphql_1.Mutation)(() => types_1.RecurringTaskFieldResponse),
     __param(0, (0, type_graphql_1.Arg)("id")),
     __param(1, (0, type_graphql_1.Arg)("taskName", () => String)),
     __metadata("design:type", Function),
@@ -113,13 +123,21 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], RecurringTaskResolver.prototype, "deleteRecurringTask", null);
 __decorate([
-    (0, type_graphql_1.Mutation)(() => types_1.RecurringTaskResponse),
+    (0, type_graphql_1.Mutation)(() => types_1.RecurringTaskFieldResponse),
     __param(0, (0, type_graphql_1.Arg)("id")),
     __param(1, (0, type_graphql_1.Arg)("podId")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number, Number]),
     __metadata("design:returntype", Promise)
 ], RecurringTaskResolver.prototype, "updateTaskPod", null);
+__decorate([
+    (0, type_graphql_1.Mutation)(() => types_1.RecurringTaskResponse),
+    __param(0, (0, type_graphql_1.Arg)("id")),
+    __param(1, (0, type_graphql_1.Arg)("completedCount")),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, CompletedCountInput_1.CompletedCountInput]),
+    __metadata("design:returntype", Promise)
+], RecurringTaskResolver.prototype, "updateCompletedCount", null);
 RecurringTaskResolver = __decorate([
     (0, type_graphql_1.Resolver)()
 ], RecurringTaskResolver);

@@ -8,7 +8,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { DaysType } from "../types/types";
+import { CompletedCount, DaysType } from "../types/types";
 
 @ObjectType()
 @Entity()
@@ -48,6 +48,17 @@ export class RecurringTask extends BaseEntity {
   @Field(() => Date, { nullable: true })
   @Column({ nullable: true })
   cursorDate!: Date;
+
+  @Field(() => GraphQLJSONObject)
+  @Column("jsonb", {
+    default: {
+      allTime: 0,
+      fourDays: 0,
+      week: 0,
+      month: 0,
+    },
+  })
+  completedCount!: CompletedCount;
 
   @Field(() => [String], { nullable: true })
   @Column("text", { array: true, nullable: true })

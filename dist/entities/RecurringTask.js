@@ -61,6 +61,18 @@ __decorate([
     __metadata("design:type", Date)
 ], RecurringTask.prototype, "cursorDate", void 0);
 __decorate([
+    (0, type_graphql_1.Field)(() => graphql_type_json_1.GraphQLJSONObject),
+    (0, typeorm_1.Column)("jsonb", {
+        default: {
+            allTime: 0,
+            fourDays: 0,
+            week: 0,
+            month: 0,
+        },
+    }),
+    __metadata("design:type", Object)
+], RecurringTask.prototype, "completedCount", void 0);
+__decorate([
     (0, type_graphql_1.Field)(() => [String], { nullable: true }),
     (0, typeorm_1.Column)("text", { array: true, nullable: true }),
     __metadata("design:type", Array)

@@ -225,7 +225,6 @@ export class UserResolver {
 
   @Mutation(() => UserResponse, { nullable: true })
   async updateUserFriendRequests(
-    // @Arg("id") id: number,
     @Arg("username") username: string,
     @Arg("projectId", () => Int) projectId: number,
     @Arg("podId", () => Int) podId: number,
@@ -250,7 +249,6 @@ export class UserResolver {
       } else {
         newRequests = user.friendRequests;
         if (newRequests?.find((request) => request.projectId === projectId)) {
-          // if (newRequests.includes(projectId)) {
           return {
             errors: [
               {

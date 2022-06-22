@@ -102,4 +102,36 @@ export class RecurringTaskResolver {
     await RecurringTask.update({ id }, { completedCount });
     return { task };
   }
+
+  @Mutation(() => RecurringTaskResponse, { nullable: true })
+  async updateTaskFriendProposals(
+    @Arg("id") id: number,
+    @Arg("isAdding", () => Boolean) isAdding: boolean,
+    @Arg("addedFriends", () => [String]) addedFriends: string[],
+    @Arg("deletedFriend", () => String) deletedFriend: string
+  ) {
+    const task = await RecurringTask.findOne(id);
+    if (!task) {
+      console.log("task does not exist");
+      return { errors: "task does not exist" };
+    }
+    let friendProposals = task.friendProposals;
+    if (isAdding) {
+      friendProposals = friendProposals
+        ?.concat(addedFriends)
+        .filter((friend) => friend != "");
+      await RecurringTask.update({ id }, { friendProposals });
+    } else {
+      if (friendProposals?.includes(deletedFriend)) {
+        const newProposals = friendProposals?.filter(
+          (proposal) => proposal !== deletedFriend
+        );
+        await RecurringTask.update({ id }, { friendProposals: newProposals });
+      } else {
+        console.log("friend does not exist");
+        return { errors: "friend does not exist" };
+      }
+    }
+    return { task };
+  }
 }

@@ -6,6 +6,7 @@ import {
   ProjectResponse,
 } from "../types/types";
 import { ProjectInput } from "../types/ProjectInput";
+import { getConnection, SelectQueryBuilder } from "typeorm";
 
 @Resolver()
 export class ProjectResolver {
@@ -31,7 +32,17 @@ export class ProjectResolver {
   async podProjects(
     @Arg("podId", () => Int) podId: number
   ): Promise<Project[] | undefined> {
-    const projects = await Project.find({ where: { podId: podId } });
+    // ): Promise<SelectQueryBuilder<Project> | undefined> {
+    // ) {
+    // const projects = await Project.find({ where: { podId: podId } });
+    const qb = getConnection()
+      .getRepository(Project)
+      .createQueryBuilder("p")
+      .innerJoinAndSelect("p.user", "u", 'u.id=p."userId"')
+      .orderBy('p."createdAt"')
+      .where("p.podId = :podId", { podId });
+
+    const projects = await qb.getMany();
     return projects;
   }
 

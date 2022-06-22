@@ -53,9 +53,7 @@ export class RecurringTask extends BaseEntity {
   @Column("jsonb", {
     default: {
       allTime: 0,
-      fourDays: 0,
       week: 0,
-      month: 0,
     },
   })
   completedCount!: CompletedCount;

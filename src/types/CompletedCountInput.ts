@@ -1,16 +1,10 @@
-import { Field, InputType, Int } from "type-graphql";
+import { Field, InputType } from "type-graphql";
 
 @InputType()
 export class CompletedCountInput {
   @Field()
-  allTime!: number;
+  allTime?: number;
 
   @Field()
-  fourDays!: number;
-
-  @Field()
-  week!: number;
-
-  @Field()
-  month!: number;
+  week?: number;
 }

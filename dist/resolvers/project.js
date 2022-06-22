@@ -17,6 +17,7 @@ const type_graphql_1 = require("type-graphql");
 const Project_1 = require("../entities/Project");
 const types_1 = require("../types/types");
 const ProjectInput_1 = require("../types/ProjectInput");
+const typeorm_1 = require("typeorm");
 let ProjectResolver = class ProjectResolver {
     async project(id) {
         const project = await Project_1.Project.findOne({ where: { id: id } });
@@ -31,7 +32,13 @@ let ProjectResolver = class ProjectResolver {
         return projects;
     }
     async podProjects(podId) {
-        const projects = await Project_1.Project.find({ where: { podId: podId } });
+        const qb = (0, typeorm_1.getConnection)()
+            .getRepository(Project_1.Project)
+            .createQueryBuilder("p")
+            .innerJoinAndSelect("p.user", "u", 'u.id=p."userId"')
+            .orderBy('p."createdAt"')
+            .where("p.podId = :podId", { podId });
+        const projects = await qb.getMany();
         return projects;
     }
     async addProjectInfo(projectOptions) {

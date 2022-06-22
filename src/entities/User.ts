@@ -5,9 +5,11 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
+import { Project } from "./Project";
 
 @ObjectType()
 @Entity()
@@ -46,6 +48,9 @@ export class User extends BaseEntity {
   @Field()
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @OneToMany(() => Project, (project) => project.user)
+  projects: Project[];
 
   // @OneToMany(() => RecurringTask, (recurringTask) => recurringTask.user)
   // recurringTasks: RecurringTask[];

@@ -78,6 +78,29 @@ let RecurringTaskResolver = class RecurringTaskResolver {
         await RecurringTask_1.RecurringTask.update({ id }, { completedCount });
         return { task };
     }
+    async updateTaskFriendProposals(id, isAdding, addedFriends, deletedFriend) {
+        const task = await RecurringTask_1.RecurringTask.findOne(id);
+        if (!task) {
+            console.log("task does not exist");
+            return { errors: "task does not exist" };
+        }
+        let friendProposals = task.friendProposals;
+        if (isAdding) {
+            friendProposals = friendProposals === null || friendProposals === void 0 ? void 0 : friendProposals.concat(addedFriends).filter((friend) => friend != "");
+            await RecurringTask_1.RecurringTask.update({ id }, { friendProposals });
+        }
+        else {
+            if (friendProposals === null || friendProposals === void 0 ? void 0 : friendProposals.includes(deletedFriend)) {
+                const newProposals = friendProposals === null || friendProposals === void 0 ? void 0 : friendProposals.filter((proposal) => proposal !== deletedFriend);
+                await RecurringTask_1.RecurringTask.update({ id }, { friendProposals: newProposals });
+            }
+            else {
+                console.log("friend does not exist");
+                return { errors: "friend does not exist" };
+            }
+        }
+        return { task };
+    }
 };
 __decorate([
     (0, type_graphql_1.Query)(() => types_1.RecurringTaskFieldResponse, { nullable: true }),
@@ -138,6 +161,16 @@ __decorate([
     __metadata("design:paramtypes", [Number, CompletedCountInput_1.CompletedCountInput]),
     __metadata("design:returntype", Promise)
 ], RecurringTaskResolver.prototype, "updateCompletedCount", null);
+__decorate([
+    (0, type_graphql_1.Mutation)(() => types_1.RecurringTaskResponse, { nullable: true }),
+    __param(0, (0, type_graphql_1.Arg)("id")),
+    __param(1, (0, type_graphql_1.Arg)("isAdding", () => Boolean)),
+    __param(2, (0, type_graphql_1.Arg)("addedFriends", () => [String])),
+    __param(3, (0, type_graphql_1.Arg)("deletedFriend", () => String)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, Boolean, Array, String]),
+    __metadata("design:returntype", Promise)
+], RecurringTaskResolver.prototype, "updateTaskFriendProposals", null);
 RecurringTaskResolver = __decorate([
     (0, type_graphql_1.Resolver)()
 ], RecurringTaskResolver);

@@ -137,8 +137,6 @@ export type DaysType = {
 };
 
 export type CompletedCount = {
-  allTime: number;
-  fourDays: number;
-  week: number;
-  month: number;
+  allTime?: number;
+  week?: number;
 };

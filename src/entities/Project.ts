@@ -4,9 +4,12 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinTable,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
+import { User } from "./User";
 
 @ObjectType()
 @Entity()
@@ -47,8 +50,10 @@ export class Project extends BaseEntity {
   // @JoinTable()
   // users: User[];
 
-  // @ManyToOne(() => User, (user) => user.projects)
-  // user: User;
+  @Field(() => User)
+  @ManyToOne(() => User, (user) => user.projects)
+  // @JoinTable()
+  user!: User;
 
   @Field(() => [String], { nullable: true })
   @Column("text", { array: true, nullable: true })

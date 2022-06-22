@@ -20,15 +20,7 @@ __decorate([
 __decorate([
     (0, type_graphql_1.Field)(),
     __metadata("design:type", Number)
-], CompletedCountInput.prototype, "fourDays", void 0);
-__decorate([
-    (0, type_graphql_1.Field)(),
-    __metadata("design:type", Number)
 ], CompletedCountInput.prototype, "week", void 0);
-__decorate([
-    (0, type_graphql_1.Field)(),
-    __metadata("design:type", Number)
-], CompletedCountInput.prototype, "month", void 0);
 CompletedCountInput = __decorate([
     (0, type_graphql_1.InputType)()
 ], CompletedCountInput);

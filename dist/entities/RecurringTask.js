@@ -65,9 +65,7 @@ __decorate([
     (0, typeorm_1.Column)("jsonb", {
         default: {
             allTime: 0,
-            fourDays: 0,
             week: 0,
-            month: 0,
         },
     }),
     __metadata("design:type", Object)

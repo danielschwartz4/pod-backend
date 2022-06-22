@@ -4,7 +4,6 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinTable,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -46,14 +45,9 @@ export class Project extends BaseEntity {
   @Column("int", { array: true, nullable: true })
   milestoneProgress!: number[];
 
-  // @ManyToMany(() => User)
-  // @JoinTable()
-  // users: User[];
-
   @Field(() => User)
   @ManyToOne(() => User, (user) => user.projects)
-  // @JoinTable()
-  user!: User;
+  user?: User;
 
   @Field(() => [String], { nullable: true })
   @Column("text", { array: true, nullable: true })

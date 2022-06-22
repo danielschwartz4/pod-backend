@@ -14,10 +14,10 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProjectResolver = void 0;
 const type_graphql_1 = require("type-graphql");
-const Project_1 = require("../entities/Project");
-const types_1 = require("../types/types");
-const ProjectInput_1 = require("../types/ProjectInput");
 const typeorm_1 = require("typeorm");
+const Project_1 = require("../entities/Project");
+const ProjectInput_1 = require("../types/ProjectInput");
+const types_1 = require("../types/types");
 let ProjectResolver = class ProjectResolver {
     async project(id) {
         const project = await Project_1.Project.findOne({ where: { id: id } });
@@ -47,7 +47,6 @@ let ProjectResolver = class ProjectResolver {
             project = await Project_1.Project.create(Object.assign({}, projectOptions)).save();
         }
         catch (err) {
-            console.log("ERROR");
             console.log(err);
             return {
                 errors: [

@@ -14,6 +14,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RecurringTaskResolver = void 0;
 const type_graphql_1 = require("type-graphql");
+const typeorm_1 = require("typeorm");
 const RecurringTask_1 = require("../entities/RecurringTask");
 const SingleTask_1 = require("../entities/SingleTask");
 const CompletedCountInput_1 = require("../types/CompletedCountInput");
@@ -34,7 +35,13 @@ let RecurringTaskResolver = class RecurringTaskResolver {
         return tasks;
     }
     async podTasks(podId) {
-        const tasks = await RecurringTask_1.RecurringTask.find({ where: { podId: podId } });
+        const qb = (0, typeorm_1.getConnection)()
+            .getRepository(RecurringTask_1.RecurringTask)
+            .createQueryBuilder("t")
+            .innerJoinAndSelect("t.user", "u", 'u.id=t."userId"')
+            .orderBy('t."createdAt"')
+            .where("t.podId = :podId", { podId });
+        const tasks = await qb.getMany();
         return tasks;
     }
     async createRecurringTask(recurringTaskOptions) {

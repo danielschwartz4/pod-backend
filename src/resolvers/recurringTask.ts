@@ -1,4 +1,5 @@
 import { Arg, Ctx, Int, Mutation, Query, Resolver } from "type-graphql";
+import { getConnection } from "typeorm";
 import { RecurringTask } from "../entities/RecurringTask";
 import { SingleTask } from "../entities/SingleTask";
 import { CompletedCountInput } from "../types/CompletedCountInput";
@@ -36,7 +37,14 @@ export class RecurringTaskResolver {
   async podTasks(
     @Arg("podId", () => Int) podId: number
   ): Promise<RecurringTask[] | undefined> {
-    const tasks = await RecurringTask.find({ where: { podId: podId } });
+    const qb = getConnection()
+      .getRepository(RecurringTask)
+      .createQueryBuilder("t")
+      .innerJoinAndSelect("t.user", "u", 'u.id=t."userId"')
+      .orderBy('t."createdAt"')
+      .where("t.podId = :podId", { podId });
+
+    const tasks = await qb.getMany();
     return tasks;
   }
 

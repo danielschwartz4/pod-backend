@@ -5,10 +5,12 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
 import { CompletedCount, DaysType } from "../types/types";
+import { User } from "./User";
 
 @ObjectType()
 @Entity()
@@ -70,12 +72,9 @@ export class RecurringTask extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  // @ManyToOne(() => User, (user) => user.recurringTasks)
-  // user: User;
-
-  // @ManyToMany(() => User)
-  // @JoinTable()
-  // users: User[];
+  @Field(() => User)
+  @ManyToOne(() => User, (user) => user.recurringTasks)
+  user?: User;
 
   // @OneToMany(() => SingleTask, (st) => st.recurringTask)
   // singleTasks: SingleTask[];

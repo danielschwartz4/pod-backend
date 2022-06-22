@@ -1,12 +1,12 @@
 import { Arg, Ctx, Int, Mutation, Query, Resolver } from "type-graphql";
+import { getConnection } from "typeorm";
 import { Project } from "../entities/Project";
+import { ProjectInput } from "../types/ProjectInput";
 import {
   MyContext,
   ProjectInfoResponse,
   ProjectResponse,
 } from "../types/types";
-import { ProjectInput } from "../types/ProjectInput";
-import { getConnection, SelectQueryBuilder } from "typeorm";
 
 @Resolver()
 export class ProjectResolver {
@@ -32,9 +32,6 @@ export class ProjectResolver {
   async podProjects(
     @Arg("podId", () => Int) podId: number
   ): Promise<Project[] | undefined> {
-    // ): Promise<SelectQueryBuilder<Project> | undefined> {
-    // ) {
-    // const projects = await Project.find({ where: { podId: podId } });
     const qb = getConnection()
       .getRepository(Project)
       .createQueryBuilder("p")
@@ -54,7 +51,6 @@ export class ProjectResolver {
         ...projectOptions,
       }).save();
     } catch (err) {
-      console.log("ERROR");
       console.log(err);
       return {
         errors: [

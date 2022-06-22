@@ -11,6 +11,7 @@ import {
 } from "typeorm";
 import { Project } from "./Project";
 import { RecurringTask } from "./RecurringTask";
+import { SingleTask } from "./SingleTask";
 
 @ObjectType()
 @Entity()
@@ -53,9 +54,11 @@ export class User extends BaseEntity {
   @OneToMany(() => Project, (project) => project.user)
   projects?: Project[];
 
+  @Field(() => [RecurringTask])
   @OneToMany(() => RecurringTask, (recurringTask) => recurringTask.user)
   recurringTasks: RecurringTask[];
 
-  // @OneToMany(() => SingleTask, (singleTask) => singleTask.user)
-  // singleTasks: SingleTask[];
+  @Field(() => [SingleTask])
+  @OneToMany(() => SingleTask, (singleTask) => singleTask.user)
+  singleTasks: SingleTask[];
 }

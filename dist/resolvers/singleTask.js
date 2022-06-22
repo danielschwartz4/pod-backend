@@ -14,6 +14,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SingleTasksResolver = void 0;
 const type_graphql_1 = require("type-graphql");
+const typeorm_1 = require("typeorm");
 const RecurringTask_1 = require("../entities/RecurringTask");
 const SingleTask_1 = require("../entities/SingleTask");
 const SingleTaskInput_1 = require("../types/SingleTaskInput");
@@ -22,14 +23,31 @@ const singleTaskUtils_1 = require("../utils/singleTaskUtils");
 const sortTasksByDate_1 = require("../utils/sortTasksByDate");
 let SingleTasksResolver = class SingleTasksResolver {
     async singleTasks(taskId) {
-        const tasks = await SingleTask_1.SingleTask.find({
-            where: { taskId: taskId },
-        });
+        const qb = (0, typeorm_1.getConnection)()
+            .getRepository(SingleTask_1.SingleTask)
+            .createQueryBuilder("st")
+            .innerJoinAndSelect("st.user", "u", 'u.id=st."userId"')
+            .orderBy('st."actionDate"')
+            .where('st."taskId"=:taskId', { taskId: taskId });
+        const tasks = await qb.getMany();
         if (!tasks) {
             return { errors: "Can't find any tasks" };
         }
-        const sortedTasks = (0, sortTasksByDate_1.sortTasksByDate)(tasks);
-        return { singleTasks: sortedTasks };
+        return { singleTasks: tasks };
+    }
+    async recentPodSingleTasks(taskIds) {
+        const qb = (0, typeorm_1.getConnection)()
+            .getRepository(SingleTask_1.SingleTask)
+            .createQueryBuilder("st")
+            .innerJoinAndSelect("st.user", "u", 'u.id=st."userId"')
+            .orderBy('st."actionDate"')
+            .where('st."taskId" IN (:...taskIds)', { taskIds: taskIds });
+        const tasks = await qb.getMany();
+        if (!tasks) {
+            return { errors: "Can't find any tasks" };
+        }
+        console.log(tasks);
+        return { singleTasks: tasks };
     }
     async singleTask(id) {
         const task = await SingleTask_1.SingleTask.findOne({ id });
@@ -96,7 +114,6 @@ let SingleTasksResolver = class SingleTasksResolver {
         const selectedDaysIdxs = (0, singleTaskUtils_1.extractDaysIdxs)(selectedDays);
         const singleTasksByDay = (0, singleTaskUtils_1.dataBetweenTwoDates)(cursorDate, chunkEndDate, selectedDaysIdxs);
         const nextDay = (0, singleTaskUtils_1.addDays)(1, chunkEndDate);
-        console.log(nextDay);
         let singleTasksArr = [];
         Object.keys(singleTasksByDay).forEach((key) => {
             if (selectedDaysIdxs.has(parseInt(key))) {
@@ -111,7 +128,6 @@ let SingleTasksResolver = class SingleTasksResolver {
                         taskId: recurringTask === null || recurringTask === void 0 ? void 0 : recurringTask.id,
                         userId: recurringTask === null || recurringTask === void 0 ? void 0 : recurringTask.userId,
                     }).save();
-                    console.log(resp);
                     singleTasksArr.push(resp);
                     console.log("FUCKING FUCK", singleTasksArr);
                 });
@@ -131,6 +147,13 @@ __decorate([
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
 ], SingleTasksResolver.prototype, "singleTasks", null);
+__decorate([
+    (0, type_graphql_1.Query)(() => types_1.SingleTasksResponse, { nullable: true }),
+    __param(0, (0, type_graphql_1.Arg)("taskIds", () => [type_graphql_1.Int])),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Array]),
+    __metadata("design:returntype", Promise)
+], SingleTasksResolver.prototype, "recentPodSingleTasks", null);
 __decorate([
     (0, type_graphql_1.Query)(() => types_1.SingleTaskResponse, { nullable: true }),
     __param(0, (0, type_graphql_1.Arg)("id", () => type_graphql_1.Int)),

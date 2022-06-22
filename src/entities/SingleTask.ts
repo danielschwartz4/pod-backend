@@ -4,17 +4,13 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
 import { TaskStatus } from "../types/types";
-
-// enum Status {
-//   "completed",
-//   "missed",
-//   "overdue",
-//   "tbd",
-// }
+import { RecurringTask } from "./RecurringTask";
+import { User } from "./User";
 
 @ObjectType()
 @Entity()
@@ -64,9 +60,11 @@ export class SingleTask extends BaseEntity {
   // @ManyToOne(() => User, (user) => user.singleTasks)
   // user: User;
 
-  // Don't think this is doing anything just doing it in the resolver
-  // @ManyToOne(() => RecurringTask, (rc) => rc.singleTasks, {
-  //   onDelete: "CASCADE",
-  // })
-  // recurringTask: RecurringTask;
+  @Field(() => RecurringTask, { nullable: true })
+  @ManyToOne(() => RecurringTask, (rc) => rc.singleTasks)
+  recurringTask: RecurringTask;
+
+  @Field(() => User)
+  @ManyToOne(() => User, (rc) => rc.singleTasks)
+  user: User;
 }

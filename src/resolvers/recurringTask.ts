@@ -41,6 +41,8 @@ export class RecurringTaskResolver {
       .getRepository(RecurringTask)
       .createQueryBuilder("t")
       .innerJoinAndSelect("t.user", "u", 'u.id=t."userId"')
+      // !!This is the problem
+      // .innerJoinAndSelect("t.singleTasks", "st", 'st."taskId"=t.id')
       .orderBy('t."createdAt"')
       .where("t.podId = :podId", { podId });
 

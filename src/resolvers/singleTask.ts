@@ -1,4 +1,6 @@
+import { User } from "../entities/User";
 import { Arg, Int, Mutation, Query, Resolver } from "type-graphql";
+import { getConnection } from "typeorm";
 import { RecurringTask } from "../entities/RecurringTask";
 import { SingleTask } from "../entities/SingleTask";
 import { SingleTaskInput } from "../types/SingleTaskInput";
@@ -23,15 +25,43 @@ export class SingleTasksResolver {
   async singleTasks(
     @Arg("taskId", () => Int) taskId: number
   ): Promise<SingleTasksResponse | undefined> {
-    const tasks = await SingleTask.find({
-      where: { taskId: taskId },
-    });
+    // const tasks = await SingleTask.find({
+    //   where: { taskId: taskId },
+    // });
+
+    const qb = getConnection()
+      .getRepository(SingleTask)
+      .createQueryBuilder("st")
+      .innerJoinAndSelect("st.user", "u", 'u.id=st."userId"')
+      .orderBy('st."actionDate"')
+      .where('st."taskId"=:taskId', { taskId: taskId });
+    // !! Sorting with sql instead of function
+    // const sortedTasks = sortTasksByDate(tasks);
+    const tasks = await qb.getMany();
     if (!tasks) {
       return { errors: "Can't find any tasks" };
     }
-    // !! Maybe faster to sort with sql
-    const sortedTasks = sortTasksByDate(tasks);
-    return { singleTasks: sortedTasks };
+    return { singleTasks: tasks };
+  }
+
+  @Query(() => SingleTasksResponse, { nullable: true })
+  async recentPodSingleTasks(
+    @Arg("taskIds", () => [Int]) taskIds: number[]
+  ): Promise<SingleTasksResponse | undefined> {
+    const qb = getConnection()
+      .getRepository(SingleTask)
+      .createQueryBuilder("st")
+      .innerJoinAndSelect("st.user", "u", 'u.id=st."userId"')
+      // .innerJoinAndSelect("st.recurringTask", "t", 't.id=st."taskId"')
+      .orderBy('st."actionDate"')
+      .where('st."taskId" IN (:...taskIds)', { taskIds: taskIds });
+
+    const tasks = await qb.getMany();
+    if (!tasks) {
+      return { errors: "Can't find any tasks" };
+    }
+    console.log(tasks);
+    return { singleTasks: tasks };
   }
 
   @Query(() => SingleTaskResponse, { nullable: true })
@@ -91,7 +121,6 @@ export class SingleTasksResolver {
   @Mutation(() => SingleTasksResponse)
   async addSingleTasksChunk(
     @Arg("recTaskId") recTaskId: number,
-    // @Arg("recurringTask") recurringTask: RecurringTask,
     @Arg("limit") limit: number
   ) {
     const recurringTask = await RecurringTask.findOne({
@@ -100,10 +129,7 @@ export class SingleTasksResolver {
     if (!recurringTask) {
       return { errors: "must provide a recurring task as argument" };
     }
-    // // !! prob can get rid of this eventually
-    // if (recurringTask?.startDate == undefined) {
-    //   return { errors: "must provide start date" };
-    // }
+
     let cursorDate = recurringTask?.cursorDate;
     let chunkEndDate: Date;
     let realEndDate: Date;
@@ -136,7 +162,6 @@ export class SingleTasksResolver {
     );
 
     const nextDay = addDays(1, chunkEndDate);
-    console.log(nextDay);
     let singleTasksArr = [] as SingleTask[];
 
     Object.keys(singleTasksByDay).forEach((key) => {
@@ -152,7 +177,6 @@ export class SingleTasksResolver {
             taskId: recurringTask?.id,
             userId: recurringTask?.userId,
           }).save();
-          console.log(resp);
           singleTasksArr.push(resp);
           console.log("FUCKING FUCK", singleTasksArr);
         });

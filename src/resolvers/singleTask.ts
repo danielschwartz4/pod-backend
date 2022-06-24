@@ -1,4 +1,3 @@
-import { User } from "../entities/User";
 import { Arg, Int, Mutation, Query, Resolver } from "type-graphql";
 import { getConnection } from "typeorm";
 import { RecurringTask } from "../entities/RecurringTask";
@@ -54,13 +53,15 @@ export class SingleTasksResolver {
       .innerJoinAndSelect("st.user", "u", 'u.id=st."userId"')
       // .innerJoinAndSelect("st.recurringTask", "t", 't.id=st."taskId"')
       .orderBy('st."actionDate"')
-      .where('st."taskId" IN (:...taskIds)', { taskIds: taskIds });
+      .where('st."taskId" IN (:...taskIds)', {
+        taskIds: taskIds,
+      })
+      .where("st.notes != ''");
 
     const tasks = await qb.getMany();
     if (!tasks) {
       return { errors: "Can't find any tasks" };
     }
-    console.log(tasks);
     return { singleTasks: tasks };
   }
 
@@ -178,7 +179,6 @@ export class SingleTasksResolver {
             userId: recurringTask?.userId,
           }).save();
           singleTasksArr.push(resp);
-          console.log("FUCKING FUCK", singleTasksArr);
         });
       }
     });

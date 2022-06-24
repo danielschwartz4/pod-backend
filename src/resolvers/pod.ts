@@ -100,7 +100,6 @@ export class PodResolver {
     @Arg("cap") cap: number,
     @Arg("projectId") projectId: number,
     @Arg("sessionType") sessionType: SessionType,
-    // @Arg("userId") userId: number,
     @Ctx() { req }: MyContext
   ) {
     const userId = req.session.userId;

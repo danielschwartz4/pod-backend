@@ -41,12 +41,14 @@ let SingleTasksResolver = class SingleTasksResolver {
             .createQueryBuilder("st")
             .innerJoinAndSelect("st.user", "u", 'u.id=st."userId"')
             .orderBy('st."actionDate"')
-            .where('st."taskId" IN (:...taskIds)', { taskIds: taskIds });
+            .where('st."taskId" IN (:...taskIds)', {
+            taskIds: taskIds,
+        })
+            .where("st.notes != ''");
         const tasks = await qb.getMany();
         if (!tasks) {
             return { errors: "Can't find any tasks" };
         }
-        console.log(tasks);
         return { singleTasks: tasks };
     }
     async singleTask(id) {
@@ -129,7 +131,6 @@ let SingleTasksResolver = class SingleTasksResolver {
                         userId: recurringTask === null || recurringTask === void 0 ? void 0 : recurringTask.userId,
                     }).save();
                     singleTasksArr.push(resp);
-                    console.log("FUCKING FUCK", singleTasksArr);
                 });
             }
         });

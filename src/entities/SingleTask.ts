@@ -45,8 +45,8 @@ export class SingleTask extends BaseEntity {
   })
   status: TaskStatus;
 
-  @Field()
-  @Column()
+  @Field({ nullable: true })
+  @Column({ nullable: true })
   notes: string;
 
   @Field()

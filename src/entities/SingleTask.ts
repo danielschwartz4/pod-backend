@@ -25,7 +25,6 @@ export class SingleTask extends BaseEntity {
 
   @Field(() => Int)
   @Column({ default: -1 })
-  // @Column({ nullable: true })
   taskId: number;
 
   @Field(() => Date, { nullable: true })
@@ -36,7 +35,6 @@ export class SingleTask extends BaseEntity {
   @Column({ nullable: true })
   actionDay: number;
 
-  // @Field(() => Status)
   @Field()
   @Column({
     type: "enum",
@@ -57,14 +55,11 @@ export class SingleTask extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  // @ManyToOne(() => User, (user) => user.singleTasks)
-  // user: User;
-
   @Field(() => RecurringTask, { nullable: true })
-  @ManyToOne(() => RecurringTask, (rc) => rc.singleTasks)
+  @ManyToOne(() => RecurringTask, (rc) => rc.singleTasks, { nullable: true })
   recurringTask: RecurringTask;
 
-  @Field(() => User)
-  @ManyToOne(() => User, (rc) => rc.singleTasks)
+  @Field(() => User, { nullable: true })
+  @ManyToOne(() => User, (rc) => rc.singleTasks, { nullable: true })
   user: User;
 }

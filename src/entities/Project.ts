@@ -45,8 +45,8 @@ export class Project extends BaseEntity {
   @Column("int", { array: true, nullable: true })
   milestoneProgress!: number[];
 
-  @Field(() => User)
-  @ManyToOne(() => User, (user) => user.projects)
+  @Field(() => User, { nullable: true })
+  @ManyToOne(() => User, (user) => user.projects, { nullable: true })
   user?: User;
 
   @Field(() => [String], { nullable: true })

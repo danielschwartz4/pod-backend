@@ -74,11 +74,11 @@ export class RecurringTask extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @Field(() => User)
-  @ManyToOne(() => User, (user) => user.recurringTasks)
+  @Field(() => User, { nullable: true })
+  @ManyToOne(() => User, (user) => user.recurringTasks, { nullable: true })
   user?: User;
 
   @Field(() => [SingleTask], { nullable: true })
-  @OneToMany(() => SingleTask, (st) => st.recurringTask)
+  @OneToMany(() => SingleTask, (st) => st.recurringTask, { nullable: true })
   singleTasks?: SingleTask[];
 }

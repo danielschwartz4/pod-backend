@@ -88,13 +88,13 @@ __decorate([
     __metadata("design:type", Date)
 ], RecurringTask.prototype, "updatedAt", void 0);
 __decorate([
-    (0, type_graphql_1.Field)(() => User_1.User),
-    (0, typeorm_1.ManyToOne)(() => User_1.User, (user) => user.recurringTasks),
+    (0, type_graphql_1.Field)(() => User_1.User, { nullable: true }),
+    (0, typeorm_1.ManyToOne)(() => User_1.User, (user) => user.recurringTasks, { nullable: true }),
     __metadata("design:type", User_1.User)
 ], RecurringTask.prototype, "user", void 0);
 __decorate([
     (0, type_graphql_1.Field)(() => [SingleTask_1.SingleTask], { nullable: true }),
-    (0, typeorm_1.OneToMany)(() => SingleTask_1.SingleTask, (st) => st.recurringTask),
+    (0, typeorm_1.OneToMany)(() => SingleTask_1.SingleTask, (st) => st.recurringTask, { nullable: true }),
     __metadata("design:type", Array)
 ], RecurringTask.prototype, "singleTasks", void 0);
 RecurringTask = __decorate([

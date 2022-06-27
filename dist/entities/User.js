@@ -63,7 +63,7 @@ __decorate([
     __metadata("design:type", Date)
 ], User.prototype, "updatedAt", void 0);
 __decorate([
-    (0, type_graphql_1.Field)({ nullable: true }),
+    (0, type_graphql_1.Field)(() => [Project_1.Project], { nullable: true }),
     (0, typeorm_1.OneToMany)(() => Project_1.Project, (project) => project.user, { nullable: true }),
     __metadata("design:type", Array)
 ], User.prototype, "projects", void 0);

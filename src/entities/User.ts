@@ -51,7 +51,7 @@ export class User extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @Field({ nullable: true })
+  @Field(() => [Project], { nullable: true })
   @OneToMany(() => Project, (project) => project.user, { nullable: true })
   projects?: Project[];
 

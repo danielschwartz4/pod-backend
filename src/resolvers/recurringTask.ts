@@ -41,9 +41,7 @@ export class RecurringTaskResolver {
       .getRepository(RecurringTask)
       .createQueryBuilder("t")
       .innerJoinAndSelect("t.user", "u", 'u.id=t."userId"')
-      // !!This is the problem
-      // .innerJoinAndSelect("t.singleTasks", "st", 'st."taskId"=t.id')
-      .orderBy('t."createdAt"')
+      .orderBy('t."updatedAt"', "DESC")
       .where("t.podId = :podId", { podId });
 
     const tasks = await qb.getMany();

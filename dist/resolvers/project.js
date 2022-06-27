@@ -36,9 +36,10 @@ let ProjectResolver = class ProjectResolver {
             .getRepository(Project_1.Project)
             .createQueryBuilder("p")
             .innerJoinAndSelect("p.user", "u", 'u.id=p."userId"')
-            .orderBy('p."createdAt"')
+            .orderBy('p."updatedAt"', "DESC")
             .where("p.podId = :podId", { podId });
         const projects = await qb.getMany();
+        console.log("YOOOOOO", projects);
         return projects;
     }
     async addProjectInfo(projectOptions) {

@@ -51,7 +51,8 @@ export class User extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToMany(() => Project, (project) => project.user)
+  @Field({ nullable: true })
+  @OneToMany(() => Project, (project) => project.user, { nullable: true })
   projects?: Project[];
 
   @Field(() => [RecurringTask])

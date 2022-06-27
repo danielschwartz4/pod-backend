@@ -39,7 +39,7 @@ let RecurringTaskResolver = class RecurringTaskResolver {
             .getRepository(RecurringTask_1.RecurringTask)
             .createQueryBuilder("t")
             .innerJoinAndSelect("t.user", "u", 'u.id=t."userId"')
-            .orderBy('t."createdAt"')
+            .orderBy('t."updatedAt"', "DESC")
             .where("t.podId = :podId", { podId });
         const tasks = await qb.getMany();
         return tasks;

@@ -1,4 +1,5 @@
 import { GraphQLJSONObject } from "graphql-type-json";
+import { MessagingSettings } from "../types/types";
 import { Field, Int, ObjectType } from "type-graphql";
 import {
   BaseEntity,
@@ -42,6 +43,24 @@ export class User extends BaseEntity {
   @Field(() => Int, { nullable: true })
   @Column({ default: 1, nullable: true })
   avatar!: number;
+
+  @Field(() => GraphQLJSONObject, { nullable: true })
+  @Column("jsonb", {
+    nullable: true,
+    default: {
+      email: {
+        podMilestonCompletion: false,
+        milestoneApproaching: false,
+        websiteUpdates: true,
+      },
+      phone: {
+        podMilestonCompletion: true,
+        milestoneApproaching: true,
+        websiteUpdates: false,
+      },
+    },
+  })
+  messagingSettings!: MessagingSettings;
 
   @Field()
   @CreateDateColumn()

@@ -140,3 +140,16 @@ export type CompletedCount = {
   allTime?: number;
   week?: number;
 };
+
+export type MessagingSettings = {
+  email: {
+    podMilestonCompletion: boolean;
+    milestoneApproaching: boolean;
+    websiteUpdates: boolean;
+  };
+  phone: {
+    podMilestonCompletion: boolean;
+    milestoneApproaching: boolean;
+    websiteUpdates: boolean;
+  };
+};

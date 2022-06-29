@@ -53,6 +53,25 @@ __decorate([
     __metadata("design:type", Number)
 ], User.prototype, "avatar", void 0);
 __decorate([
+    (0, type_graphql_1.Field)(() => graphql_type_json_1.GraphQLJSONObject, { nullable: true }),
+    (0, typeorm_1.Column)("jsonb", {
+        nullable: true,
+        default: {
+            email: {
+                podMilestonCompletion: false,
+                milestoneApproaching: false,
+                websiteUpdates: true,
+            },
+            phone: {
+                podMilestonCompletion: true,
+                milestoneApproaching: true,
+                websiteUpdates: false,
+            },
+        },
+    }),
+    __metadata("design:type", Object)
+], User.prototype, "messagingSettings", void 0);
+__decorate([
     (0, type_graphql_1.Field)(),
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)

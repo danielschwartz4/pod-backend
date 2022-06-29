@@ -26,6 +26,7 @@ const validateRegister_1 = require("../utils/validateRegister");
 const UsernamePasswordInput_1 = require("../types/UsernamePasswordInput");
 const uuid_1 = require("uuid");
 const sendEmail_1 = require("../utils/sendEmail");
+const graphql_type_json_1 = require("graphql-type-json");
 let UserResolver = class UserResolver {
     async me({ req }) {
         if (!req.session.userId) {
@@ -162,7 +163,6 @@ let UserResolver = class UserResolver {
         }));
     }
     async updatePhone(id, phone) {
-        console.log("HEREE");
         const user = await User_1.User.findOne(id);
         if (!user) {
             console.log("phone number already being used");
@@ -265,6 +265,33 @@ let UserResolver = class UserResolver {
         await User_1.User.delete(userId);
         return { user };
     }
+    async updateMessagingSettings({ req }, messagingSettings) {
+        const userId = req.session.userId;
+        if (!userId) {
+            return {
+                errors: [
+                    {
+                        field: "user",
+                        message: "no user found",
+                    },
+                ],
+            };
+        }
+        const user = await User_1.User.findOne(userId);
+        if (!user) {
+            return {
+                errors: [
+                    {
+                        field: "user",
+                        message: "no user found",
+                    },
+                ],
+            };
+        }
+        await User_1.User.update({ id: userId }, { messagingSettings });
+        return { user };
+        ``;
+    }
 };
 __decorate([
     (0, type_graphql_1.Query)(() => User_1.User, { nullable: true }),
@@ -346,6 +373,14 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], UserResolver.prototype, "deleteUser", null);
+__decorate([
+    (0, type_graphql_1.Mutation)(() => types_1.UserResponse),
+    __param(0, (0, type_graphql_1.Ctx)()),
+    __param(1, (0, type_graphql_1.Arg)("messagingSettings", () => graphql_type_json_1.GraphQLJSONObject)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], UserResolver.prototype, "updateMessagingSettings", null);
 UserResolver = __decorate([
     (0, type_graphql_1.Resolver)()
 ], UserResolver);

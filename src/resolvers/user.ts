@@ -3,11 +3,12 @@ import { Arg, Ctx, Int, Mutation, Query, Resolver } from "type-graphql";
 import { In } from "typeorm";
 import { COOKIE_NAME, FORGET_PASSWORD_PREFIX } from "../constants";
 import { User } from "../entities/User";
-import { MyContext, UserResponse } from "../types/types";
+import { MessagingSettings, MyContext, UserResponse } from "../types/types";
 import { validateRegister } from "../utils/validateRegister";
 import { UsernamePasswordInput } from "../types/UsernamePasswordInput";
 import { v4 } from "uuid";
 import { sendEmail } from "../utils/sendEmail";
+import { GraphQLJSONObject } from "graphql-type-json";
 
 declare module "express-session" {
   interface SessionData {
@@ -209,7 +210,6 @@ export class UserResolver {
 
   @Mutation(() => UserResponse, { nullable: true })
   async updatePhone(@Arg("id") id: number, @Arg("phone") phone: string) {
-    console.log("HEREE");
     const user = await User.findOne(id);
     if (!user) {
       console.log("phone number already being used");
@@ -321,5 +321,38 @@ export class UserResolver {
     }
     await User.delete(userId);
     return { user };
+  }
+
+  @Mutation(() => UserResponse)
+  async updateMessagingSettings(
+    @Ctx() { req }: MyContext,
+    @Arg("messagingSettings", () => GraphQLJSONObject)
+    messagingSettings: MessagingSettings
+  ) {
+    const userId = req.session.userId;
+    if (!userId) {
+      return {
+        errors: [
+          {
+            field: "user",
+            message: "no user found",
+          },
+        ],
+      };
+    }
+    const user = await User.findOne(userId);
+    if (!user) {
+      return {
+        errors: [
+          {
+            field: "user",
+            message: "no user found",
+          },
+        ],
+      };
+    }
+    await User.update({ id: userId }, { messagingSettings });
+    return { user };
+    ``;
   }
 }

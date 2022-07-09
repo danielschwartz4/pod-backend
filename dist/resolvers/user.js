@@ -39,6 +39,17 @@ let UserResolver = class UserResolver {
         const users = await User_1.User.find({ where: { id: (0, typeorm_1.In)(ids) } });
         return users;
     }
+    async sendEmails(userEmails, message) {
+        if (!userEmails) {
+            return "no emails provided";
+        }
+        else {
+            userEmails.forEach((email) => {
+                (0, sendEmail_1.sendEmail)(email, message);
+            });
+        }
+        return "success";
+    }
     async register(options, { req }) {
         const errors = (0, validateRegister_1.validateRegister)(options);
         if (errors) {
@@ -308,7 +319,15 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserResolver.prototype, "podUsers", null);
 __decorate([
-    (0, type_graphql_1.Mutation)(() => types_1.UserResponse),
+    (0, type_graphql_1.Query)(() => String, { nullable: true }),
+    __param(0, (0, type_graphql_1.Arg)("userEmails", () => [String])),
+    __param(1, (0, type_graphql_1.Arg)("message", () => String)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Array, String]),
+    __metadata("design:returntype", Promise)
+], UserResolver.prototype, "sendEmails", null);
+__decorate([
+    (0, type_graphql_1.Mutation)(() => User_1.User),
     __param(0, (0, type_graphql_1.Arg)("options")),
     __param(1, (0, type_graphql_1.Ctx)()),
     __metadata("design:type", Function),

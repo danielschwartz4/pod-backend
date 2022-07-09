@@ -36,7 +36,22 @@ export class UserResolver {
     return users;
   }
 
-  @Mutation(() => UserResponse)
+  @Query(() => String, { nullable: true })
+  async sendEmails(
+    @Arg("userEmails", () => [String]) userEmails: string[],
+    @Arg("message", () => String) message: string
+  ): Promise<String> {
+    if (!userEmails) {
+      return "no emails provided";
+    } else {
+      userEmails.forEach((email) => {
+        sendEmail(email, message);
+      });
+    }
+    return "success";
+  }
+
+  @Mutation(() => User)
   // !! Add isAuth middlewear
   async register(
     @Arg("options") options: UsernamePasswordInput,

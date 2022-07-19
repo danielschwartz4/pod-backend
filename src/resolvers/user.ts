@@ -51,7 +51,7 @@ export class UserResolver {
     return "success";
   }
 
-  @Mutation(() => User)
+  @Mutation(() => UserResponse)
   // !! Add isAuth middlewear
   async register(
     @Arg("options") options: UsernamePasswordInput,
@@ -368,6 +368,5 @@ export class UserResolver {
     }
     await User.update({ id: userId }, { messagingSettings });
     return { user };
-    ``;
   }
 }

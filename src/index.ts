@@ -42,9 +42,9 @@ const getOptions = async () => {
     Object.assign(connectionOptions, { url: process.env.DATABASE_URL });
   } else {
     Object.assign(connectionOptions, {
-      database: "project-planner",
-      username: "postgres",
-      password: "Cessnap1",
+      database: "podsdb",
+      username: "testuser",
+      password: "testpassword",
       extra: {
         ssl: __prod__ ? true : false,
         rejectUnauthorized: __prod__ ? true : false,

@@ -301,7 +301,6 @@ let UserResolver = class UserResolver {
         }
         await User_1.User.update({ id: userId }, { messagingSettings });
         return { user };
-        ``;
     }
 };
 __decorate([
@@ -327,7 +326,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserResolver.prototype, "sendEmails", null);
 __decorate([
-    (0, type_graphql_1.Mutation)(() => User_1.User),
+    (0, type_graphql_1.Mutation)(() => types_1.UserResponse),
     __param(0, (0, type_graphql_1.Arg)("options")),
     __param(1, (0, type_graphql_1.Ctx)()),
     __metadata("design:type", Function),

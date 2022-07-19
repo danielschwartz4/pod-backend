@@ -46,9 +46,9 @@ const getOptions = async () => {
     }
     else {
         Object.assign(connectionOptions, {
-            database: "project-planner",
-            username: "postgres",
-            password: "Cessnap1",
+            database: "podsdb",
+            username: "testuser",
+            password: "testpassword",
             extra: {
                 ssl: constants_1.__prod__ ? true : false,
                 rejectUnauthorized: constants_1.__prod__ ? true : false,

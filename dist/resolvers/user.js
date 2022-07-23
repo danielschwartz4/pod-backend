@@ -74,31 +74,19 @@ let UserResolver = class UserResolver {
             }).save();
         }
         catch (err) {
-            if (err.code === "23505") {
-                return {
-                    errors: [
-                        {
-                            field: "username",
-                            message: "username already taken",
-                        },
-                    ],
-                };
-            }
             console.log("Error:", err.message);
         }
         req.session.userId = user === null || user === void 0 ? void 0 : user.id;
         return { user };
     }
-    async login(usernameOrEmail, password, { req }) {
-        const user = await User_1.User.findOne(usernameOrEmail.includes("@")
-            ? { where: { email: usernameOrEmail } }
-            : { where: { username: usernameOrEmail } });
+    async login(email, password, { req }) {
+        const user = await User_1.User.findOne({ where: { email } });
         if (!user) {
             return {
                 errors: [
                     {
-                        field: "usernameOrEmail",
-                        message: "that username doesn't exist",
+                        field: "email",
+                        message: "that email doesn't exist",
                     },
                 ],
             };
@@ -344,7 +332,7 @@ __decorate([
 ], UserResolver.prototype, "register", null);
 __decorate([
     (0, type_graphql_1.Mutation)(() => types_1.UserResponse),
-    __param(0, (0, type_graphql_1.Arg)("usernameOrEmail")),
+    __param(0, (0, type_graphql_1.Arg)("email")),
     __param(1, (0, type_graphql_1.Arg)("password")),
     __param(2, (0, type_graphql_1.Ctx)()),
     __metadata("design:type", Function),

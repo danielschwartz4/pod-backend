@@ -59,7 +59,6 @@ export class UserResolver {
   }
 
   @Mutation(() => UserResponse)
-  // !! Add isAuth middlewear
   async register(
     @Arg("options") options: UsernamePasswordInput,
     @Ctx() { req }: MyContext
@@ -80,16 +79,6 @@ export class UserResolver {
         avatar: avatar,
       }).save();
     } catch (err) {
-      if (err.code === "23505") {
-        return {
-          errors: [
-            {
-              field: "username",
-              message: "username already taken",
-            },
-          ],
-        };
-      }
       console.log("Error:", err.message);
     }
     req.session!.userId = user?.id;
@@ -98,21 +87,23 @@ export class UserResolver {
 
   @Mutation(() => UserResponse)
   async login(
-    @Arg("usernameOrEmail") usernameOrEmail: string,
+    // @Arg("usernameOrEmail") usernameOrEmail: string,
+    @Arg("email") email: string,
     @Arg("password") password: string,
     @Ctx() { req }: MyContext
   ): Promise<UserResponse> {
-    const user = await User.findOne(
-      usernameOrEmail.includes("@")
-        ? { where: { email: usernameOrEmail } }
-        : { where: { username: usernameOrEmail } }
-    );
+    // const user = await User.findOne(
+    //   usernameOrEmail.includes("@")
+    //     ? { where: { email: usernameOrEmail } }
+    //     : { where: { username: usernameOrEmail } }
+    // );
+    const user = await User.findOne({ where: { email } });
     if (!user) {
       return {
         errors: [
           {
-            field: "usernameOrEmail",
-            message: "that username doesn't exist",
+            field: "email",
+            message: "that email doesn't exist",
           },
         ],
       };

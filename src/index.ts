@@ -24,7 +24,7 @@ const getOptions = async () => {
   let connectionOptions: ConnectionOptions;
   connectionOptions = {
     type: "postgres",
-    synchronize: __prod__ ? false : true,
+    synchronize: __prod__ ? true : true,
     logging: true,
     migrations: [path.join(__dirname, "./migrations/*")],
     entities: ["dist/entities/*.*"],
@@ -80,7 +80,8 @@ const getOptions = async () => {
 
 const connect2Database = async (): Promise<void> => {
   const typeormconfig = await getOptions();
-  await createConnection(typeormconfig);
+  const conn = await createConnection(typeormconfig);
+  conn.runMigrations();
 };
 
 const main = async () => {

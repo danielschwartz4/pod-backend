@@ -28,7 +28,6 @@ export class UserResolver {
   }
 
   @Query(() => [User], { nullable: true })
-  // !! Add errors
   async podUsers(
     @Arg("ids", () => [Int]) ids: number[]
   ): Promise<User[] | undefined> {
@@ -38,20 +37,28 @@ export class UserResolver {
 
   @Query(() => String, { nullable: true })
   async sendEmails(
-    @Arg("userEmails", () => [String]) userEmails: string[],
-    @Arg("message", () => String) message: string
+    @Arg("userIds", () => [Int]) userIds: number[],
+    @Arg("message", () => String) message: string,
+    @Arg("subject", () => String) subject: string
   ): Promise<String> {
-    if (!userEmails) {
+    if (!userIds) {
       return "no emails provided";
     } else {
-      userEmails.forEach((email) => {
-        sendEmail(email, message);
+      let emails = [] as string[];
+      userIds.forEach(async (id) => {
+        let user = await User.findOne({ id: id });
+        if (user?.email) {
+          emails.push(user?.email);
+        }
+      });
+      emails.forEach((email) => {
+        sendEmail(email, message, subject);
       });
     }
     return "success";
   }
 
-  @Mutation(() => User)
+  @Mutation(() => UserResponse)
   // !! Add isAuth middlewear
   async register(
     @Arg("options") options: UsernamePasswordInput,
@@ -147,7 +154,8 @@ export class UserResolver {
 
     await sendEmail(
       email,
-      `<a href="http://localhost:3000/change-password/${token}">reset password</a>`
+      `<a href="http://localhost:3000/change-password/${token}">reset password</a>`,
+      "password change"
     );
     return true;
   }

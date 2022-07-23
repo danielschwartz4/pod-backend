@@ -14,13 +14,21 @@ export class PodResolver {
   ): Promise<Pod | undefined> {
     let pod;
     try {
-      pod = await Pod.create({
-        cap: cap,
-        projectIds: [],
-        userIds: [],
-        isPrivate: isPrivate,
-        sessionType: sessionType,
-      }).save();
+      sessionType == "task"
+        ? (pod = await Pod.create({
+            cap: cap,
+            projectIds: [65],
+            userIds: [93],
+            isPrivate: isPrivate,
+            sessionType: sessionType,
+          }).save())
+        : (pod = await Pod.create({
+            cap: cap,
+            projectIds: [],
+            userIds: [],
+            isPrivate: isPrivate,
+            sessionType: sessionType,
+          }).save());
     } catch (err) {
       console.log("POD CREATION ERROR");
       console.log(err);
@@ -94,7 +102,6 @@ export class PodResolver {
     return { pod };
   }
 
-  // !! Make it so if project already in a pod it can't be in another one
   @Query(() => PodResponse)
   async findPublicPod(
     @Arg("cap") cap: number,

@@ -7,13 +7,13 @@ exports.sendCustomEmail = exports.sendEmail = void 0;
 const dotenv_1 = __importDefault(require("dotenv"));
 const sgMail = require("@sendgrid/mail");
 dotenv_1.default.config();
-async function sendEmail(to, html) {
+async function sendEmail(to, html, subject) {
     await sgMail.setApiKey(process.env.SENDGRID_API_KEY);
     const msg = {
         to: to,
         from: "schwartzray8@gmail.com",
-        subject: "Sending with SendGrid is Fun",
-        text: "My email text",
+        subject: subject,
+        text: "",
         html: html,
     };
     await sgMail

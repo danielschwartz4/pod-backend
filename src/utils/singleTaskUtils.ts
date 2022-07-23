@@ -16,8 +16,6 @@ type DayDictType = {
   6: EntriesType;
 };
 
-
-
 export function dataBetweenTwoDates(
   start: Date,
   end: Date,

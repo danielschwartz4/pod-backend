@@ -22,13 +22,21 @@ let PodResolver = class PodResolver {
     async createPod(isPrivate, cap, sessionType) {
         let pod;
         try {
-            pod = await Pod_1.Pod.create({
-                cap: cap,
-                projectIds: [],
-                userIds: [],
-                isPrivate: isPrivate,
-                sessionType: sessionType,
-            }).save();
+            sessionType == "task"
+                ? (pod = await Pod_1.Pod.create({
+                    cap: cap,
+                    projectIds: [65],
+                    userIds: [93],
+                    isPrivate: isPrivate,
+                    sessionType: sessionType,
+                }).save())
+                : (pod = await Pod_1.Pod.create({
+                    cap: cap,
+                    projectIds: [],
+                    userIds: [],
+                    isPrivate: isPrivate,
+                    sessionType: sessionType,
+                }).save());
         }
         catch (err) {
             console.log("POD CREATION ERROR");

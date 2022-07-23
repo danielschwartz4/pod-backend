@@ -39,13 +39,20 @@ let UserResolver = class UserResolver {
         const users = await User_1.User.find({ where: { id: (0, typeorm_1.In)(ids) } });
         return users;
     }
-    async sendEmails(userEmails, message) {
-        if (!userEmails) {
+    async sendEmails(userIds, message, subject) {
+        if (!userIds) {
             return "no emails provided";
         }
         else {
-            userEmails.forEach((email) => {
-                (0, sendEmail_1.sendEmail)(email, message);
+            let emails = [];
+            userIds.forEach(async (id) => {
+                let user = await User_1.User.findOne({ id: id });
+                if (user === null || user === void 0 ? void 0 : user.email) {
+                    emails.push(user === null || user === void 0 ? void 0 : user.email);
+                }
+            });
+            emails.forEach((email) => {
+                (0, sendEmail_1.sendEmail)(email, message, subject);
             });
         }
         return "success";
@@ -119,7 +126,7 @@ let UserResolver = class UserResolver {
         }
         const token = (0, uuid_1.v4)();
         await redis.set(constants_1.FORGET_PASSWORD_PREFIX + token, user.id, "ex", 1000 * 60 * 60 * 24 * 3);
-        await (0, sendEmail_1.sendEmail)(email, `<a href="http://localhost:3000/change-password/${token}">reset password</a>`);
+        await (0, sendEmail_1.sendEmail)(email, `<a href="http://localhost:3000/change-password/${token}">reset password</a>`, "password change");
         return true;
     }
     async changePassword(token, newPassword, { redis, req }) {
@@ -320,14 +327,15 @@ __decorate([
 ], UserResolver.prototype, "podUsers", null);
 __decorate([
     (0, type_graphql_1.Query)(() => String, { nullable: true }),
-    __param(0, (0, type_graphql_1.Arg)("userEmails", () => [String])),
+    __param(0, (0, type_graphql_1.Arg)("userIds", () => [type_graphql_1.Int])),
     __param(1, (0, type_graphql_1.Arg)("message", () => String)),
+    __param(2, (0, type_graphql_1.Arg)("subject", () => String)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Array, String]),
+    __metadata("design:paramtypes", [Array, String, String]),
     __metadata("design:returntype", Promise)
 ], UserResolver.prototype, "sendEmails", null);
 __decorate([
-    (0, type_graphql_1.Mutation)(() => User_1.User),
+    (0, type_graphql_1.Mutation)(() => types_1.UserResponse),
     __param(0, (0, type_graphql_1.Arg)("options")),
     __param(1, (0, type_graphql_1.Ctx)()),
     __metadata("design:type", Function),

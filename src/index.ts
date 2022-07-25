@@ -9,6 +9,7 @@ import session from "express-session";
 import Redis from "ioredis";
 import path from "path";
 import { Twilio } from "twilio";
+// import Bree from "bree";
 import { buildSchema } from "type-graphql";
 import { ConnectionOptions, createConnection } from "typeorm";
 import { COOKIE_NAME, __prod__ } from "./constants";
@@ -81,7 +82,7 @@ const getOptions = async () => {
 const connect2Database = async (): Promise<void> => {
   const typeormconfig = await getOptions();
   const conn = await createConnection(typeormconfig);
-  conn.runMigrations();
+  // conn.runMigrations();
 };
 
 const main = async () => {
@@ -101,17 +102,17 @@ const main = async () => {
 
   const corsOptions = {
     origin: __prod__
-      ? (process.env.VERCEL_APP as string)
+      ? [process.env.VERCEL_APP as string, "https://google.com"]
       : [
           process.env.LOCALHOST_FRONTEND as string,
           "https://studio.apollographql.com",
+          "https://google.com",
         ],
     credentials: true,
   };
 
   // Add cors
   app.use(cors(corsOptions));
-
   app.use(cookieParser());
 
   // Add redis
@@ -190,6 +191,24 @@ const main = async () => {
         res.send(JSON.stringify({ success: false }));
       });
   });
+
+  // -------------Bree---------------------------------------------
+  // const bree = new Bree({
+  //   jobs: [
+  //     {
+  //       name: "sendEmail",
+  //       // cron: "* * * * *",
+  //       interval: "Every 1 day",
+  //       worker: {
+  //         workerData: {
+  //           description: "This job will send emails.",
+  //         },
+  //       },
+  //     },
+  //   ],
+  // });
+
+  // bree.start();
 
   app.listen(parseInt(process.env.PORT as string) || 4000, () => {
     console.log("server started on port 4000");

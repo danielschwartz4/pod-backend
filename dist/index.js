@@ -60,7 +60,6 @@ const getOptions = async () => {
 const connect2Database = async () => {
     const typeormconfig = await getOptions();
     const conn = await (0, typeorm_1.createConnection)(typeormconfig);
-    conn.runMigrations();
 };
 const main = async () => {
     connect2Database().then(async () => {
@@ -74,10 +73,11 @@ const main = async () => {
         : new ioredis_1.default(6379, "127.0.0.1");
     const corsOptions = {
         origin: constants_1.__prod__
-            ? process.env.VERCEL_APP
+            ? [process.env.VERCEL_APP, "https://google.com"]
             : [
                 process.env.LOCALHOST_FRONTEND,
                 "https://studio.apollographql.com",
+                "https://google.com",
             ],
         credentials: true,
     };

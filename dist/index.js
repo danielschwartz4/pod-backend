@@ -59,7 +59,7 @@ const getOptions = async () => {
 };
 const connect2Database = async () => {
     const typeormconfig = await getOptions();
-    const conn = await (0, typeorm_1.createConnection)(typeormconfig);
+    await (0, typeorm_1.createConnection)(typeormconfig);
 };
 const main = async () => {
     connect2Database().then(async () => {

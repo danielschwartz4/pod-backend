@@ -30,7 +30,7 @@ export async function sendCustomEmail(to: string) {
     from: "schwartzray8@gmail.com", // Change to your verified sender
     subject: "Sending with SendGrid is Fun",
     text: "My email text",
-    html: null,
+    html: "<strong>Poddds first auto email :)</strong>",
   };
 
   await sgMail

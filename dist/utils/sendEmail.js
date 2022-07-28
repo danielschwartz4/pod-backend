@@ -33,7 +33,7 @@ async function sendCustomEmail(to) {
         from: "schwartzray8@gmail.com",
         subject: "Sending with SendGrid is Fun",
         text: "My email text",
-        html: null,
+        html: "<strong>Poddds first auto email :)</strong>",
     };
     await sgMail
         .send(msg)

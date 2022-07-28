@@ -1,5 +1,6 @@
 import { ApolloServer } from "apollo-server-express";
 import bodyParser from "body-parser";
+// import Bree from "bree";
 import connectRedis from "connect-redis";
 import cookieParser from "cookie-parser";
 import cors from "cors";
@@ -9,7 +10,6 @@ import session from "express-session";
 import Redis from "ioredis";
 import path from "path";
 import { Twilio } from "twilio";
-// import Bree from "bree";
 import { buildSchema } from "type-graphql";
 import { ConnectionOptions, createConnection } from "typeorm";
 import { COOKIE_NAME, __prod__ } from "./constants";
@@ -55,30 +55,6 @@ const getOptions = async () => {
   return connectionOptions;
 };
 
-// const getOptions = async () => {
-//   let connectionOptions: ConnectionOptions;
-//   connectionOptions = {
-//     type: "postgres",
-//     synchronize: true,
-//     logging: true,
-//     migrations: [path.join(__dirname, "./migrations/*")],
-//     extra: {
-//       ssl: {
-//         rejectUnauthorized: false,
-//       },
-//     },
-//     entities: [User, Project, Pod],
-//     // entities: ["dist/entities/*.*"],
-//   };
-
-//   if (process.env.DATABASE_URL) {
-//     Object.assign(connectionOptions, { url: process.env.DATABASE_URL });
-//   } else {
-//     connectionOptions = await getConnectionOptions();
-//   }
-//   return connectionOptions;
-// };
-
 const connect2Database = async (): Promise<void> => {
   const typeormconfig = await getOptions();
   // const conn = await createConnection(typeormconfig);
@@ -90,7 +66,6 @@ const main = async () => {
   connect2Database().then(async () => {
     console.log("Connected to database");
   });
-  // await conn.runMigrations();
 
   const app = express();
   app.set("trust proxy", 1);
@@ -149,6 +124,7 @@ const main = async () => {
         RecurringTaskResolver,
         SingleTasksResolver,
       ],
+
       validate: false,
     }),
     context: ({ req, res }) => ({ req, res, redis }),
@@ -195,9 +171,11 @@ const main = async () => {
 
   // -------------Bree---------------------------------------------
   // const bree = new Bree({
+  //   root: "dist/jobs/",
   //   jobs: [
   //     {
-  //       name: "sendEmail",
+  //       name: "sendScheduledEmail",
+  //       path: "./dist/jobs/sendScheduledEmail.js",
   //       // cron: "* * * * *",
   //       interval: "Every 1 day",
   //       worker: {

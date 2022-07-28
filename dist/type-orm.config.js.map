@@ -1,1 +1,1 @@
-{"version":3,"file":"type-orm.config.js","sourceRoot":"","sources":["../src/type-orm.config.ts"],"names":[],"mappings":";;AAAA,wCAAqC;AACrC,gDAA6C;AAC7C,0CAAuC;AAEvC,kBAAe;IACb,IAAI,EAAE,UAAU;IAChB,QAAQ,EAAE,iBAAiB;IAC3B,QAAQ,EAAE,UAAU;IACpB,QAAQ,EAAE,UAAU;IACpB,OAAO,EAAE,IAAI;IACb,WAAW,EAAE,IAAI;IACjB,QAAQ,EAAE,CAAC,WAAI,EAAE,iBAAO,EAAE,SAAG,CAAC;CACxB,CAAC"}
+{"version":3,"file":"type-orm.config.js","sourceRoot":"","sources":["../type-orm.config.ts"],"names":[],"mappings":""}

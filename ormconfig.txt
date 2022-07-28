@@ -1,0 +1,8 @@
+{
+  "name": "poddds",
+  "type": "postgres",
+  "username": "postgres",
+  "password": "Cessnap1",
+  "database": "project-planner",
+  "entities": ["dist/entities/*.*"]
+}

@@ -34,7 +34,7 @@ __decorate([
 ], RecurringTask.prototype, "userId", void 0);
 __decorate([
     (0, type_graphql_1.Field)(),
-    (0, typeorm_1.Column)({ default: "Click here to name project" }),
+    (0, typeorm_1.Column)({ default: "Unnamed task" }),
     __metadata("design:type", String)
 ], RecurringTask.prototype, "taskName", void 0);
 __decorate([

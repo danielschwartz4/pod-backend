@@ -30,7 +30,7 @@ export class RecurringTask extends BaseEntity {
   userId!: number;
 
   @Field()
-  @Column({ default: "Click here to name project" })
+  @Column({ default: "Unnamed task" })
   taskName!: string;
 
   @Field()

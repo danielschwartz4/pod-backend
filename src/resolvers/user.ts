@@ -369,4 +369,36 @@ export class UserResolver {
     return { user };
     ``;
   }
+
+  @Mutation(() => UserResponse)
+  async updateHasCreatedTask(
+    @Ctx() { req }: MyContext,
+    @Arg("hasCreated", () => Boolean)
+    hasCreated: boolean
+  ) {
+    const userId = req.session.userId;
+    if (!userId) {
+      return {
+        errors: [
+          {
+            field: "user",
+            message: "no user found",
+          },
+        ],
+      };
+    }
+    const user = await User.findOne(userId);
+    if (!user) {
+      return {
+        errors: [
+          {
+            field: "user",
+            message: "no user found",
+          },
+        ],
+      };
+    }
+    await User.update({ id: userId }, { hasCreatedTask: hasCreated });
+    return { user };
+  }
 }

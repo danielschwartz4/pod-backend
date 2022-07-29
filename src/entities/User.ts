@@ -63,6 +63,10 @@ export class User extends BaseEntity {
   messagingSettings!: MessagingSettings;
 
   @Field()
+  @Column({ default: false })
+  hasCreatedTask!: boolean;
+
+  @Field()
   @CreateDateColumn()
   createdAt: Date;
 

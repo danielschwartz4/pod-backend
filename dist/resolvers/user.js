@@ -298,6 +298,32 @@ let UserResolver = class UserResolver {
         return { user };
         ``;
     }
+    async updateHasCreatedTask({ req }, hasCreated) {
+        const userId = req.session.userId;
+        if (!userId) {
+            return {
+                errors: [
+                    {
+                        field: "user",
+                        message: "no user found",
+                    },
+                ],
+            };
+        }
+        const user = await User_1.User.findOne(userId);
+        if (!user) {
+            return {
+                errors: [
+                    {
+                        field: "user",
+                        message: "no user found",
+                    },
+                ],
+            };
+        }
+        await User_1.User.update({ id: userId }, { hasCreatedTask: hasCreated });
+        return { user };
+    }
 };
 __decorate([
     (0, type_graphql_1.Query)(() => User_1.User, { nullable: true }),
@@ -396,6 +422,14 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], UserResolver.prototype, "updateMessagingSettings", null);
+__decorate([
+    (0, type_graphql_1.Mutation)(() => types_1.UserResponse),
+    __param(0, (0, type_graphql_1.Ctx)()),
+    __param(1, (0, type_graphql_1.Arg)("hasCreated", () => Boolean)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Boolean]),
+    __metadata("design:returntype", Promise)
+], UserResolver.prototype, "updateHasCreatedTask", null);
 UserResolver = __decorate([
     (0, type_graphql_1.Resolver)()
 ], UserResolver);

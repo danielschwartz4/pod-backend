@@ -1,11 +1,14 @@
 import { GraphQLJSONObject } from "graphql-type-json";
 import { Field, InputType } from "type-graphql";
-import { DaysType } from "./types";
+import { DaysType, TaskType } from "./types";
 
 @InputType()
 export class RecurringTaskInput {
   @Field()
   userId: number;
+
+  @Field()
+  taskType: TaskType;
 
   @Field()
   taskName: string;

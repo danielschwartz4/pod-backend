@@ -10,7 +10,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { CompletedCount, DaysType } from "../types/types";
+import { CompletedCount, DaysType, TaskType } from "../types/types";
 import { SingleTask } from "./SingleTask";
 import { User } from "./User";
 
@@ -32,6 +32,14 @@ export class RecurringTask extends BaseEntity {
   @Field()
   @Column({ default: "Unnamed task" })
   taskName!: string;
+
+  @Field()
+  @Column({
+    type: "enum",
+    enum: ["exercise", "study", "other"],
+    default: "other",
+  })
+  taskType: TaskType;
 
   @Field()
   @Column()

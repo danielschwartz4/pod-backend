@@ -96,6 +96,8 @@ export class PodResponse {
 
 export type TaskStatus = "completed" | "missed" | "overdue" | "tbd";
 
+export type TaskType = "exercise" | "study" | "other";
+
 export type SessionType = "project" | "task";
 
 export type DaysType = {

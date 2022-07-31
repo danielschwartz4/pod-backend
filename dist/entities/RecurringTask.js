@@ -39,6 +39,15 @@ __decorate([
 ], RecurringTask.prototype, "taskName", void 0);
 __decorate([
     (0, type_graphql_1.Field)(),
+    (0, typeorm_1.Column)({
+        type: "enum",
+        enum: ["exercise", "study", "other"],
+        default: "other",
+    }),
+    __metadata("design:type", String)
+], RecurringTask.prototype, "taskType", void 0);
+__decorate([
+    (0, type_graphql_1.Field)(),
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], RecurringTask.prototype, "overview", void 0);

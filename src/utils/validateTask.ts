@@ -10,6 +10,15 @@ export const validateTask = (options: RecurringTaskInput) => {
     ];
   }
 
+  if (!options.taskType) {
+    return [
+      {
+        field: "taskType",
+        message: "task type is required",
+      },
+    ];
+  }
+
   if (!options.overview) {
     return [
       {

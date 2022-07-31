@@ -1,4 +1,4 @@
-import { SessionType } from "src/types/types";
+import { SessionType, TaskType } from "src/types/types";
 import { Field, Int, ObjectType } from "type-graphql";
 import {
   BaseEntity,
@@ -33,8 +33,13 @@ export class Pod extends BaseEntity {
   @Column()
   cap!: number;
 
-  // @OneToMany(() => Project, (project) => project.pod, { nullable: true })
-  // project: Project[];
+  @Field()
+  @Column({
+    type: "enum",
+    enum: ["exercise", "study", "other"],
+    default: "other",
+  })
+  taskType: TaskType;
 
   @ManyToMany(() => User)
   @JoinTable()

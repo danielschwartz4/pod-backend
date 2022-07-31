@@ -38,6 +38,15 @@ __decorate([
     __metadata("design:type", Number)
 ], Pod.prototype, "cap", void 0);
 __decorate([
+    (0, type_graphql_1.Field)(),
+    (0, typeorm_1.Column)({
+        type: "enum",
+        enum: ["exercise", "study", "other"],
+        default: "other",
+    }),
+    __metadata("design:type", String)
+], Pod.prototype, "taskType", void 0);
+__decorate([
     (0, typeorm_1.ManyToMany)(() => User_1.User),
     (0, typeorm_1.JoinTable)(),
     __metadata("design:type", Array)

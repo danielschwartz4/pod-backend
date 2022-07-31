@@ -1,7 +1,7 @@
 import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql";
 import { getConnection } from "typeorm";
 import { Pod } from "../entities/Pod";
-import { MyContext, PodResponse, SessionType } from "../types/types";
+import { MyContext, PodResponse, SessionType, TaskType } from "../types/types";
 import { removeItemByValue } from "../utils/removeItem";
 
 @Resolver()
@@ -10,13 +10,15 @@ export class PodResolver {
   async createPod(
     @Arg("isPrivate") isPrivate: boolean,
     @Arg("cap") cap: number,
-    @Arg("sessionType") sessionType: SessionType
+    @Arg("sessionType") sessionType: SessionType,
+    @Arg("taskType") taskType: TaskType
   ): Promise<Pod | undefined> {
     let pod;
     try {
       sessionType == "task"
         ? (pod = await Pod.create({
             cap: cap,
+            taskType: taskType,
             projectIds: [65],
             userIds: [93],
             isPrivate: isPrivate,
@@ -24,6 +26,7 @@ export class PodResolver {
           }).save())
         : (pod = await Pod.create({
             cap: cap,
+            taskType: taskType,
             projectIds: [],
             userIds: [],
             isPrivate: isPrivate,
@@ -45,7 +48,6 @@ export class PodResolver {
   async addProjectToPod(
     @Arg("id") id: number,
     @Arg("projectId") projectId: number,
-    // @Arg("userId") userId: number
     @Ctx() { req }: MyContext
   ) {
     const userId = req.session.userId;
@@ -106,6 +108,7 @@ export class PodResolver {
   async findPublicPod(
     @Arg("cap") cap: number,
     @Arg("projectId") projectId: number,
+    @Arg("taskType") taskType: TaskType,
     @Arg("sessionType") sessionType: SessionType,
     @Ctx() { req }: MyContext
   ) {
@@ -115,10 +118,12 @@ export class PodResolver {
 			WHERE (${userId} != ANY(pod."userIds") AND
             ${projectId} != ANY(pod."projectIds") AND 
 						${cap} = pod.cap AND
+            '${taskType}' = pod."taskType" AND
             pod."isPrivate" = false AND
 						cardinality(pod."projectIds") < ${cap} AND
             pod."sessionType" = '${sessionType}') OR
             (${cap} = pod.cap AND
+              '${taskType}' = pod."taskType" AND
             cardinality(pod."projectIds") = 0 AND
             cardinality(pod."userIds") = 0 AND
             pod."sessionType" = '${sessionType}')

@@ -21,7 +21,7 @@ __decorate([
 __decorate([
     (0, type_graphql_1.Field)(),
     __metadata("design:type", String)
-], RecurringTaskInput.prototype, "projectName", void 0);
+], RecurringTaskInput.prototype, "taskName", void 0);
 __decorate([
     (0, type_graphql_1.Field)(),
     __metadata("design:type", String)

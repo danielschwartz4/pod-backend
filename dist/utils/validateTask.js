@@ -2,6 +2,14 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.validateTask = void 0;
 const validateTask = (options) => {
+    if (!options.taskName) {
+        return [
+            {
+                field: "taskName",
+                message: "task name is required",
+            },
+        ];
+    }
     if (!options.overview) {
         return [
             {

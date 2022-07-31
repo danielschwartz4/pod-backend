@@ -8,7 +8,7 @@ export class RecurringTaskInput {
   userId: number;
 
   @Field()
-  projectName: string;
+  taskName: string;
 
   @Field()
   overview: string;

@@ -1,6 +1,15 @@
 import { RecurringTaskInput } from "../types/RecurringTaskInput";
 
 export const validateTask = (options: RecurringTaskInput) => {
+  if (!options.taskName) {
+    return [
+      {
+        field: "taskName",
+        message: "task name is required",
+      },
+    ];
+  }
+
   if (!options.overview) {
     return [
       {

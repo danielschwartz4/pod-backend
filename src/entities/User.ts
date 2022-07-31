@@ -67,6 +67,10 @@ export class User extends BaseEntity {
   hasCreatedTask!: boolean;
 
   @Field()
+  @Column({ default: "", nullable: true })
+  feedback: string;
+
+  @Field()
   @CreateDateColumn()
   createdAt: Date;
 

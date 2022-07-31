@@ -70,6 +70,7 @@ let UserResolver = class UserResolver {
                 username: options.username,
                 email: options.email,
                 password: hashedPassword,
+                feedback: options.feedback,
                 avatar: avatar,
             }).save();
         }
@@ -324,6 +325,22 @@ let UserResolver = class UserResolver {
         await User_1.User.update({ id: userId }, { hasCreatedTask: hasCreated });
         return { user };
     }
+    async updateFeedback({ req }, feedback) {
+        const id = req.session.userId;
+        const user = await User_1.User.findOne(id);
+        if (!user) {
+            console.log("phone number already being used");
+            return { errors: "phone number already being used" };
+        }
+        if (feedback) {
+            const currFeedback = user === null || user === void 0 ? void 0 : user.feedback;
+            const updateFeedback = currFeedback
+                ? `${currFeedback} | ${feedback}`
+                : feedback;
+            await User_1.User.update({ id }, { feedback: updateFeedback });
+        }
+        return { user };
+    }
 };
 __decorate([
     (0, type_graphql_1.Query)(() => User_1.User, { nullable: true }),
@@ -430,6 +447,14 @@ __decorate([
     __metadata("design:paramtypes", [Object, Boolean]),
     __metadata("design:returntype", Promise)
 ], UserResolver.prototype, "updateHasCreatedTask", null);
+__decorate([
+    (0, type_graphql_1.Mutation)(() => types_1.UserResponse, { nullable: true }),
+    __param(0, (0, type_graphql_1.Ctx)()),
+    __param(1, (0, type_graphql_1.Arg)("feedback")),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String]),
+    __metadata("design:returntype", Promise)
+], UserResolver.prototype, "updateFeedback", null);
 UserResolver = __decorate([
     (0, type_graphql_1.Resolver)()
 ], UserResolver);

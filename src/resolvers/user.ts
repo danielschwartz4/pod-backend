@@ -76,6 +76,7 @@ export class UserResolver {
         username: options.username,
         email: options.email,
         password: hashedPassword,
+        feedback: options.feedback,
         avatar: avatar,
       }).save();
     } catch (err) {
@@ -399,6 +400,28 @@ export class UserResolver {
       };
     }
     await User.update({ id: userId }, { hasCreatedTask: hasCreated });
+    return { user };
+  }
+
+  @Mutation(() => UserResponse, { nullable: true })
+  async updateFeedback(
+    @Ctx() { req }: MyContext,
+    @Arg("feedback") feedback: string
+  ) {
+    const id = req.session.userId;
+    const user = await User.findOne(id);
+    if (!user) {
+      console.log("phone number already being used");
+      return { errors: "phone number already being used" };
+    }
+    if (feedback) {
+      const currFeedback = user?.feedback;
+      const updateFeedback = currFeedback
+        ? `${currFeedback} | ${feedback}`
+        : feedback;
+      await User.update({ id }, { feedback: updateFeedback });
+    }
+
     return { user };
   }
 }

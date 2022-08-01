@@ -40,7 +40,7 @@ let SingleTasksResolver = class SingleTasksResolver {
             .getRepository(SingleTask_1.SingleTask)
             .createQueryBuilder("st")
             .innerJoinAndSelect("st.user", "u", 'u.id=st."userId"')
-            .orderBy('st."actionDate"')
+            .orderBy('st."actionDate"', "DESC")
             .where('st."taskId" IN (:...taskIds)', {
             taskIds: taskIds,
         })

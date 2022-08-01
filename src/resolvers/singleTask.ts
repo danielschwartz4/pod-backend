@@ -52,7 +52,7 @@ export class SingleTasksResolver {
       .createQueryBuilder("st")
       .innerJoinAndSelect("st.user", "u", 'u.id=st."userId"')
       // .innerJoinAndSelect("st.recurringTask", "t", 't.id=st."taskId"')
-      .orderBy('st."actionDate"')
+      .orderBy('st."actionDate"', "DESC")
       .where('st."taskId" IN (:...taskIds)', {
         taskIds: taskIds,
       })

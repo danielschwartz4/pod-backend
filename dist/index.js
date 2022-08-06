@@ -28,7 +28,7 @@ const getOptions = async () => {
     let connectionOptions;
     connectionOptions = {
         type: "postgres",
-        synchronize: constants_1.__prod__ ? true : true,
+        synchronize: constants_1.__prod__ ? false : true,
         logging: true,
         migrations: [path_1.default.join(__dirname, "./migrations/*")],
         entities: ["dist/entities/*.*"],
@@ -73,11 +73,16 @@ const main = async () => {
         : new ioredis_1.default(6379, "127.0.0.1");
     const corsOptions = {
         origin: constants_1.__prod__
-            ? [process.env.VERCEL_APP, "https://google.com"]
+            ? [
+                process.env.VERCEL_APP,
+                "https://google.com",
+                "http://localhost:4000/graphql",
+            ]
             : [
                 process.env.LOCALHOST_FRONTEND,
                 "https://studio.apollographql.com",
                 "https://google.com",
+                "http://localhost:4000/graphql",
             ],
         credentials: true,
     };

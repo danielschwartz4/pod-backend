@@ -20,9 +20,10 @@ export async function sendEmail(to: string, html: string, subject: string) {
     })
     .catch((error: any) => {
       console.error(error);
+      return error
     });
 
-  return sgMailRes
+  return true
 }
 
 export async function sendCustomEmail(to: string) {

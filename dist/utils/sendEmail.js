@@ -24,6 +24,7 @@ async function sendEmail(to, html, subject) {
         .catch((error) => {
         console.error(error);
     });
+    return sgMailRes;
 }
 exports.sendEmail = sendEmail;
 async function sendCustomEmail(to) {

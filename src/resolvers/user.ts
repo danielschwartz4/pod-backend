@@ -144,12 +144,12 @@ export class UserResolver {
       1000 * 60 * 60 * 24 * 3
     );
 
-    await sendEmail(
+    let sendEmailRes = await sendEmail(
       email,
-      `<a href="http://localhost:3000/change-password/${token}">reset password</a>`,
-      "password change"
+      `<a href="http://localhost:3000/change-password/${token}">Reset password</a>`,
+      "Password change for poddds"
     );
-    return true;
+    return sendEmailRes;
   }
 
   @Mutation(() => UserResponse)
@@ -368,7 +368,6 @@ export class UserResolver {
     }
     await User.update({ id: userId }, { messagingSettings });
     return { user };
-    ``;
   }
 
   @Mutation(() => UserResponse)

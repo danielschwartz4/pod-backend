@@ -16,7 +16,7 @@ async function sendEmail(to, html, subject) {
         text: subject,
         html: html,
     };
-    let sgMailRes = await sgMail
+    await sgMail
         .send(msg)
         .then(() => {
         console.log("Email sent");

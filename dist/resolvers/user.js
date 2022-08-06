@@ -115,7 +115,13 @@ let UserResolver = class UserResolver {
         }
         const token = (0, uuid_1.v4)();
         await redis.set(constants_1.FORGET_PASSWORD_PREFIX + token, user.id, "ex", 1000 * 60 * 60 * 24 * 3);
-        let sendEmailRes = await (0, sendEmail_1.sendEmail)(email, `<a href="http://localhost:3000/change-password/${token}">Reset password</a>`, "Password change for poddds");
+        let sendEmailRes;
+        if (constants_1.__prod__) {
+            sendEmailRes = (0, sendEmail_1.sendEmail)(email, `<a href="https://poddds.com/change-password/${token}">Reset password</a>`, "Password change for poddds");
+        }
+        else {
+            sendEmailRes = (0, sendEmail_1.sendEmail)(email, `<a href="http://localhost:3000/change-password/${token}">Reset password</a>`, "Password change for poddds");
+        }
         return sendEmailRes;
     }
     async changePassword(token, newPassword, { redis, req }) {

@@ -1,7 +1,7 @@
 import argon2 from "argon2";
 import { Arg, Ctx, Int, Mutation, Query, Resolver } from "type-graphql";
 import { In } from "typeorm";
-import { COOKIE_NAME, FORGET_PASSWORD_PREFIX } from "../constants";
+import { COOKIE_NAME, FORGET_PASSWORD_PREFIX, __prod__ } from "../constants";
 import { User } from "../entities/User";
 import { MessagingSettings, MyContext, UserResponse } from "../types/types";
 import { validateRegister } from "../utils/validateRegister";
@@ -144,11 +144,22 @@ export class UserResolver {
       1000 * 60 * 60 * 24 * 3
     );
 
-    let sendEmailRes = await sendEmail(
-      email,
-      `<a href="http://localhost:3000/change-password/${token}">Reset password</a>`,
-      "Password change for poddds"
-    );
+    let sendEmailRes;
+
+    if (__prod__) {
+      sendEmailRes = sendEmail(
+        email,
+        `<a href="https://poddds.com/change-password/${token}">Reset password</a>`,
+        "Password change for poddds"
+      );
+    } else {
+      sendEmailRes = sendEmail(
+        email,
+        `<a href="http://localhost:3000/change-password/${token}">Reset password</a>`,
+        "Password change for poddds"
+      );
+    }
+
     return sendEmailRes;
   }
 

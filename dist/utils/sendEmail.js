@@ -13,10 +13,10 @@ async function sendEmail(to, html, subject) {
         to: to,
         from: "schwartzray8@gmail.com",
         subject: subject,
-        text: "",
+        text: subject,
         html: html,
     };
-    await sgMail
+    let sgMailRes = await sgMail
         .send(msg)
         .then(() => {
         console.log("Email sent");

@@ -34,7 +34,7 @@ let MessagesResolver = class MessagesResolver {
         }
         return { messages: messages };
     }
-    async addMessage(userId, taskId, message) {
+    async addMessage({ req }, taskId, message) {
         let messageRes;
         if (message === "") {
             return {
@@ -50,7 +50,7 @@ let MessagesResolver = class MessagesResolver {
             messageRes = await Message_1.Message.create({
                 message: message,
                 taskId: taskId,
-                userId: userId,
+                userId: req.session.userId,
             }).save();
         }
         catch (_a) {
@@ -75,11 +75,11 @@ __decorate([
 ], MessagesResolver.prototype, "messages", null);
 __decorate([
     (0, type_graphql_1.Mutation)(() => types_1.MessageResponse),
-    __param(0, (0, type_graphql_1.Arg)("userId", () => type_graphql_1.Int)),
+    __param(0, (0, type_graphql_1.Ctx)()),
     __param(1, (0, type_graphql_1.Arg)("taskId", () => type_graphql_1.Int)),
     __param(2, (0, type_graphql_1.Arg)("message", () => String)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number, Number, String]),
+    __metadata("design:paramtypes", [Object, Number, String]),
     __metadata("design:returntype", Promise)
 ], MessagesResolver.prototype, "addMessage", null);
 MessagesResolver = __decorate([

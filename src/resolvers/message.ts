@@ -27,8 +27,7 @@ export class MessagesResolver {
 
   @Mutation(() => MessageResponse)
   async addMessage(
-    // @Ctx() { req }: MyContext,
-    @Arg("userId", () => Int) userId: number,
+    @Ctx() { req }: MyContext,
     @Arg("taskId", () => Int) taskId: number,
     @Arg("message", () => String) message: string
   ) {
@@ -47,7 +46,7 @@ export class MessagesResolver {
       messageRes = await Message.create({
         message: message,
         taskId: taskId,
-        userId: userId,
+        userId: req.session.userId,
         // userId: req.session.userId,
       }).save();
     } catch {

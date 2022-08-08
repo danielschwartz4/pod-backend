@@ -17,6 +17,9 @@ import {
   minDate,
 } from "../utils/singleTaskUtils";
 import { sortTasksByDate } from "../utils/sortTasksByDate";
+import DiscordJS, { GatewayIntentBits, TextChannel } from "discord.js";
+import dotenv from 'dotenv'
+dotenv.config()
 
 @Resolver()
 export class SingleTasksResolver {
@@ -193,4 +196,22 @@ export class SingleTasksResolver {
     const sortedTasks = sortTasksByDate(singleTasksArr);
     return { singleTasks: sortedTasks };
   }
+
+@Query(() => String, { nullable: true })
+  async discordBot(
+    @Arg("message", () => String) message: string
+  ): Promise<String | undefined> {
+    const client = new DiscordJS.Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages],});
+    const DISCORD_CHANNEL_ID = "1005957152608899082"
+
+    client.on("ready", () => {
+      console.log("the bot is ready");
+      ( client.channels.cache.get(DISCORD_CHANNEL_ID) as TextChannel).send(message)
+    });
+
+    client.login(process.env.DISCORD_TOKEN);
+
+    return "success"
+  }
 }
+

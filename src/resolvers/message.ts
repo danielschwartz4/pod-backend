@@ -1,3 +1,4 @@
+import { SingleTask } from "../entities/SingleTask";
 import { Arg, Ctx, Int, Mutation, Query, Resolver } from "type-graphql";
 import { getConnection } from "typeorm";
 import { Message } from "../entities/Message";
@@ -14,8 +15,9 @@ export class MessagesResolver {
       .createQueryBuilder("message")
       .innerJoinAndSelect("message.user", "u", 'u.id=message."userId"')
       .innerJoinAndSelect("message.task", "t", 't.id=message."taskId"')
-      .orderBy('message."createdAt"')
+      .orderBy('message."createdAt"', "DESC")
       .where('t."podId"=:podId', { podId: podId });
+
     const messages = await qb.getMany();
     if (!messages) {
       return {

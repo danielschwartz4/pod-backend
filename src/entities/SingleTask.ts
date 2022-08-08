@@ -56,10 +56,10 @@ export class SingleTask extends BaseEntity {
   updatedAt: Date;
 
   @Field(() => RecurringTask, { nullable: true })
-  @ManyToOne(() => RecurringTask, (rc) => rc.singleTasks, { nullable: true })
+  @ManyToOne(() => RecurringTask, (rt) => rt.singleTasks, { nullable: true })
   recurringTask: RecurringTask;
 
   @Field(() => User, { nullable: true })
-  @ManyToOne(() => User, (rc) => rc.singleTasks, { nullable: true })
+  @ManyToOne(() => User, (u) => u.singleTasks, { nullable: true })
   user: User;
 }

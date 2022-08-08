@@ -104,7 +104,7 @@ __decorate([
 ], RecurringTask.prototype, "user", void 0);
 __decorate([
     (0, type_graphql_1.Field)(() => [SingleTask_1.SingleTask], { nullable: true }),
-    (0, typeorm_1.OneToMany)(() => SingleTask_1.SingleTask, (st) => st.recurringTask, { nullable: true }),
+    (0, typeorm_1.OneToMany)(() => SingleTask_1.SingleTask, (st) => st.recurringTask),
     __metadata("design:type", Array)
 ], RecurringTask.prototype, "singleTasks", void 0);
 __decorate([

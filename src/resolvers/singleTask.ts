@@ -17,6 +17,10 @@ import {
   minDate,
 } from "../utils/singleTaskUtils";
 import { sortTasksByDate } from "../utils/sortTasksByDate";
+import DiscordJS, { GatewayIntentBits } from "discord.js";
+import dotenv from "dotenv";
+import { Message } from "../entities/Message";
+dotenv.config();
 
 @Resolver()
 export class SingleTasksResolver {
@@ -34,8 +38,6 @@ export class SingleTasksResolver {
       .innerJoinAndSelect("st.user", "u", 'u.id=st."userId"')
       .orderBy('st."actionDate"')
       .where('st."taskId"=:taskId', { taskId: taskId });
-    // !! Sorting with sql instead of function
-    // const sortedTasks = sortTasksByDate(tasks);
     const tasks = await qb.getMany();
     if (!tasks) {
       return { errors: "Can't find any tasks" };
@@ -43,25 +45,47 @@ export class SingleTasksResolver {
     return { singleTasks: tasks };
   }
 
+  // @Query(() => SingleTasksResponse, { nullable: true })
+  // async recentPodSingleTasks(
+  //   @Arg("taskIds", () => [Int]) taskIds: number[]
+  // ): Promise<SingleTasksResponse | undefined> {
+  //   const qb = getConnection()
+  //     .getRepository(SingleTask)
+  //     .createQueryBuilder("st")
+  //     .innerJoinAndSelect("st.user", "u", 'u.id=st."userId"')
+  //     // .innerJoinAndSelect("st.recurringTask", "t", 't.id=st."taskId"')
+  //     .orderBy('st."actionDate"', "DESC")
+  //     .where('st."taskId" IN (:...taskIds)', {w
+  //       taskIds: taskIds,
+  //     })
+  //     .where("st.notes != ''");
+
+  //   const tasks = await qb.getMany();
+  //   if (!tasks) {
+  //     return { errors: "Can't find any tasks" };
+  //   }
+  //   return { singleTasks: tasks };
+  // }
+
   @Query(() => SingleTasksResponse, { nullable: true })
   async recentPodSingleTasks(
-    @Arg("taskIds", () => [Int]) taskIds: number[]
+    @Arg("podId", () => Int) podId: number
   ): Promise<SingleTasksResponse | undefined> {
     const qb = getConnection()
       .getRepository(SingleTask)
       .createQueryBuilder("st")
       .innerJoinAndSelect("st.user", "u", 'u.id=st."userId"')
-      // .innerJoinAndSelect("st.recurringTask", "t", 't.id=st."taskId"')
-      .orderBy('st."actionDate"', "DESC")
-      .where('st."taskId" IN (:...taskIds)', {
-        taskIds: taskIds,
-      })
+      // .innerJoinAndSelect("st.tsk", "t", 't.id=st."taskId"')
+      .orderBy('st."createdAt"', "DESC")
+      .where('t."podId"=:podId', { podId: podId })
       .where("st.notes != ''");
 
     const tasks = await qb.getMany();
     if (!tasks) {
       return { errors: "Can't find any tasks" };
     }
+    // console.log("YOOO");
+    // console.log(tasks);
     return { singleTasks: tasks };
   }
 
@@ -192,5 +216,34 @@ export class SingleTasksResolver {
 
     const sortedTasks = sortTasksByDate(singleTasksArr);
     return { singleTasks: sortedTasks };
+  }
+
+  @Query(() => String, { nullable: true })
+  async discordBot(): Promise<String | undefined> {
+    const client = new DiscordJS.Client({
+      intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages],
+    });
+    console.log("Connecting to Discord...");
+
+    await client.login(process.env.DISCORD_TOKEN);
+
+    client.on("ready", () => {
+      console.log("the bot is ready");
+    });
+
+    client.on("messageCreate", (message) => {
+      console.log(message);
+      message.reply({
+        content: "pong",
+      });
+      if (message.content === "ping") {
+        console.log("pong");
+        message.reply({
+          content: "pong",
+        });
+      }
+    });
+
+    return "Success";
   }
 }

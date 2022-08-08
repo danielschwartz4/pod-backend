@@ -10,7 +10,6 @@ import {
 } from "typeorm";
 import { RecurringTask } from "./RecurringTask";
 import { User } from "./User";
-
 @ObjectType()
 @Entity()
 export class Message extends BaseEntity {

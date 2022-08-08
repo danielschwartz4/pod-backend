@@ -88,8 +88,8 @@ export class RecurringTask extends BaseEntity {
   user?: User;
 
   @Field(() => [SingleTask], { nullable: true })
-  @OneToMany(() => SingleTask, (st) => st.recurringTask, { nullable: true })
-  singleTasks?: SingleTask[];
+  @OneToMany(() => SingleTask, (st) => st.recurringTask)
+  singleTasks: SingleTask[];
 
   @Field(() => [Message], { nullable: true })
   @OneToMany(() => Message, (message) => message.task)

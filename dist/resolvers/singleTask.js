@@ -162,28 +162,15 @@ let SingleTasksResolver = class SingleTasksResolver {
         const sortedTasks = (0, sortTasksByDate_1.sortTasksByDate)(singleTasksArr);
         return { singleTasks: sortedTasks };
     }
-    async discordBot() {
-        const client = new discord_js_1.default.Client({
-            intents: [discord_js_1.GatewayIntentBits.Guilds, discord_js_1.GatewayIntentBits.GuildMessages],
-        });
-        console.log("Connecting to Discord...");
-        await client.login(process.env.DISCORD_TOKEN);
+    async discordBot(message) {
+        const client = new discord_js_1.default.Client({ intents: [discord_js_1.GatewayIntentBits.Guilds, discord_js_1.GatewayIntentBits.GuildMessages], });
+        const DISCORD_CHANNEL_ID = "1005957152608899082";
         client.on("ready", () => {
             console.log("the bot is ready");
+            client.channels.cache.get(DISCORD_CHANNEL_ID).send(message);
         });
-        client.on("messageCreate", (message) => {
-            console.log(message);
-            message.reply({
-                content: "pong",
-            });
-            if (message.content === "ping") {
-                console.log("pong");
-                message.reply({
-                    content: "pong",
-                });
-            }
-        });
-        return "Success";
+        client.login(process.env.DISCORD_TOKEN);
+        return "success";
     }
 };
 __decorate([
@@ -239,8 +226,9 @@ __decorate([
 ], SingleTasksResolver.prototype, "addSingleTasksChunk", null);
 __decorate([
     (0, type_graphql_1.Query)(() => String, { nullable: true }),
+    __param(0, (0, type_graphql_1.Arg)("message", () => String)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], SingleTasksResolver.prototype, "discordBot", null);
 SingleTasksResolver = __decorate([

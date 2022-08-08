@@ -17,10 +17,9 @@ import {
   minDate,
 } from "../utils/singleTaskUtils";
 import { sortTasksByDate } from "../utils/sortTasksByDate";
-import DiscordJS, { GatewayIntentBits } from "discord.js";
-import dotenv from "dotenv";
-import { Message } from "../entities/Message";
-dotenv.config();
+import DiscordJS, { GatewayIntentBits, TextChannel } from "discord.js";
+import dotenv from 'dotenv'
+dotenv.config()
 
 @Resolver()
 export class SingleTasksResolver {
@@ -216,32 +215,21 @@ export class SingleTasksResolver {
     return { singleTasks: sortedTasks };
   }
 
-  @Query(() => String, { nullable: true })
-  async discordBot(): Promise<String | undefined> {
-    const client = new DiscordJS.Client({
-      intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages],
-    });
-    console.log("Connecting to Discord...");
-
-    await client.login(process.env.DISCORD_TOKEN);
+@Query(() => String, { nullable: true })
+  async discordBot(
+    @Arg("message", () => String) message: string
+  ): Promise<String | undefined> {
+    const client = new DiscordJS.Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages],});
+    const DISCORD_CHANNEL_ID = "1005957152608899082"
 
     client.on("ready", () => {
       console.log("the bot is ready");
+      ( client.channels.cache.get(DISCORD_CHANNEL_ID) as TextChannel).send(message)
     });
 
-    client.on("messageCreate", (message) => {
-      console.log(message);
-      message.reply({
-        content: "pong",
-      });
-      if (message.content === "ping") {
-        console.log("pong");
-        message.reply({
-          content: "pong",
-        });
-      }
-    });
+    client.login(process.env.DISCORD_TOKEN);
 
-    return "Success";
+    return "success"
   }
 }
+

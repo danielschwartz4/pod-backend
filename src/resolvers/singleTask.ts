@@ -68,24 +68,22 @@ export class SingleTasksResolver {
   // }
 
   @Query(() => SingleTasksResponse, { nullable: true })
-  async recentPodSingleTasks(
-    @Arg("podId", () => Int) podId: number
-  ): Promise<SingleTasksResponse | undefined> {
+  async recentPodSingleTasks(): // @Arg("podId", () => Int) podId: number
+  Promise<SingleTasksResponse | undefined> {
     const qb = getConnection()
       .getRepository(SingleTask)
       .createQueryBuilder("st")
       .innerJoinAndSelect("st.user", "u", 'u.id=st."userId"')
       // .innerJoinAndSelect("st.tsk", "t", 't.id=st."taskId"')
       .orderBy('st."createdAt"', "DESC")
-      .where('t."podId"=:podId', { podId: podId })
+      // .where('t."podId"=:podId', { podId: podId })
       .where("st.notes != ''");
 
     const tasks = await qb.getMany();
     if (!tasks) {
       return { errors: "Can't find any tasks" };
     }
-    // console.log("YOOO");
-    // console.log(tasks);
+
     return { singleTasks: tasks };
   }
 

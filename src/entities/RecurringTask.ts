@@ -75,6 +75,10 @@ export class RecurringTask extends BaseEntity {
   @Column("text", { array: true, nullable: true })
   friendProposals!: string[];
 
+  // @Field(() => Int)
+  // @Column()
+  // taskStatusToday!: number;
+
   @Field()
   @CreateDateColumn()
   createdAt: Date;

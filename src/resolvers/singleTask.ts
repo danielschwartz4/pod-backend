@@ -37,8 +37,6 @@ export class SingleTasksResolver {
       .innerJoinAndSelect("st.user", "u", 'u.id=st."userId"')
       .orderBy('st."actionDate"')
       .where('st."taskId"=:taskId', { taskId: taskId });
-    // !! Sorting with sql instead of function
-    // const sortedTasks = sortTasksByDate(tasks);
     const tasks = await qb.getMany();
     if (!tasks) {
       return { errors: "Can't find any tasks" };
@@ -46,25 +44,45 @@ export class SingleTasksResolver {
     return { singleTasks: tasks };
   }
 
+  // @Query(() => SingleTasksResponse, { nullable: true })
+  // async recentPodSingleTasks(
+  //   @Arg("taskIds", () => [Int]) taskIds: number[]
+  // ): Promise<SingleTasksResponse | undefined> {
+  //   const qb = getConnection()
+  //     .getRepository(SingleTask)
+  //     .createQueryBuilder("st")
+  //     .innerJoinAndSelect("st.user", "u", 'u.id=st."userId"')
+  //     // .innerJoinAndSelect("st.recurringTask", "t", 't.id=st."taskId"')
+  //     .orderBy('st."actionDate"', "DESC")
+  //     .where('st."taskId" IN (:...taskIds)', {w
+  //       taskIds: taskIds,
+  //     })
+  //     .where("st.notes != ''");
+
+  //   const tasks = await qb.getMany();
+  //   if (!tasks) {
+  //     return { errors: "Can't find any tasks" };
+  //   }
+  //   return { singleTasks: tasks };
+  // }
+
   @Query(() => SingleTasksResponse, { nullable: true })
-  async recentPodSingleTasks(
-    @Arg("taskIds", () => [Int]) taskIds: number[]
-  ): Promise<SingleTasksResponse | undefined> {
+  async recentPodSingleTasks(): // @Arg("podId", () => Int) podId: number
+  Promise<SingleTasksResponse | undefined> {
     const qb = getConnection()
       .getRepository(SingleTask)
       .createQueryBuilder("st")
       .innerJoinAndSelect("st.user", "u", 'u.id=st."userId"')
-      // .innerJoinAndSelect("st.recurringTask", "t", 't.id=st."taskId"')
-      .orderBy('st."actionDate"', "DESC")
-      .where('st."taskId" IN (:...taskIds)', {
-        taskIds: taskIds,
-      })
+      // .innerJoinAndSelect("st.tsk", "t", 't.id=st."taskId"')
+      .orderBy('st."createdAt"', "DESC")
+      // .where('t."podId"=:podId', { podId: podId })
       .where("st.notes != ''");
 
     const tasks = await qb.getMany();
     if (!tasks) {
       return { errors: "Can't find any tasks" };
     }
+
     return { singleTasks: tasks };
   }
 

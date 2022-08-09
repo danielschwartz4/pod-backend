@@ -16,6 +16,7 @@ const typeorm_1 = require("typeorm");
 const Project_1 = require("./Project");
 const RecurringTask_1 = require("./RecurringTask");
 const SingleTask_1 = require("./SingleTask");
+const Message_1 = require("../entities/Message");
 let User = class User extends typeorm_1.BaseEntity {
 };
 __decorate([
@@ -106,6 +107,11 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => SingleTask_1.SingleTask, (singleTask) => singleTask.user),
     __metadata("design:type", Array)
 ], User.prototype, "singleTasks", void 0);
+__decorate([
+    (0, type_graphql_1.Field)(() => [Message_1.Message]),
+    (0, typeorm_1.OneToMany)(() => Message_1.Message, (message) => message.user),
+    __metadata("design:type", Array)
+], User.prototype, "messages", void 0);
 User = __decorate([
     (0, type_graphql_1.ObjectType)(),
     (0, typeorm_1.Entity)()

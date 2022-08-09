@@ -6,6 +6,7 @@ import { User } from "../entities/User";
 import { Redis } from "ioredis";
 import { RecurringTask } from "../entities/RecurringTask";
 import { SingleTask } from "../entities/SingleTask";
+import { Message } from "../entities/Message";
 
 export type MyContext = {
   req: Request;
@@ -65,6 +66,24 @@ export class SingleTasksResponse {
 
   @Field(() => [SingleTask], { nullable: true })
   singleTasks?: SingleTask[];
+}
+
+@ObjectType()
+export class MessageResponse {
+  @Field(() => [FieldError], { nullable: true })
+  errors?: FieldError[];
+
+  @Field(() => Message, { nullable: true })
+  message?: Message;
+}
+
+@ObjectType()
+export class MessagesResponse {
+  @Field(() => String, { nullable: true })
+  errors?: string;
+
+  @Field(() => [Message], { nullable: true })
+  messages?: Message[];
 }
 
 @ObjectType()

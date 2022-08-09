@@ -8,13 +8,11 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { TaskStatus } from "../types/types";
 import { RecurringTask } from "./RecurringTask";
 import { User } from "./User";
-
 @ObjectType()
 @Entity()
-export class SingleTask extends BaseEntity {
+export class Message extends BaseEntity {
   @Field(() => Int)
   @PrimaryGeneratedColumn()
   id: number;
@@ -27,25 +25,9 @@ export class SingleTask extends BaseEntity {
   @Column({ default: -1 })
   taskId: number;
 
-  @Field(() => Date, { nullable: true })
-  @Column({ nullable: true })
-  actionDate: Date;
-
-  @Field(() => Int, { nullable: true })
-  @Column({ nullable: true })
-  actionDay: number;
-
   @Field()
-  @Column({
-    type: "enum",
-    enum: ["completed", "missed", "overdue", "tbd"],
-    default: "tbd",
-  })
-  status: TaskStatus;
-
-  @Field({ nullable: true })
-  @Column({ nullable: true })
-  notes: string;
+  @Column()
+  message: string;
 
   @Field()
   @CreateDateColumn()
@@ -55,11 +37,11 @@ export class SingleTask extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @Field(() => RecurringTask, { nullable: true })
-  @ManyToOne(() => RecurringTask, (rt) => rt.singleTasks, { nullable: true })
-  recurringTask: RecurringTask;
-
   @Field(() => User, { nullable: true })
   @ManyToOne(() => User, (u) => u.singleTasks, { nullable: true })
   user: User;
+
+  @Field(() => RecurringTask, { nullable: true })
+  @ManyToOne(() => RecurringTask, (rt) => rt.messages, { nullable: true })
+  task: RecurringTask;
 }

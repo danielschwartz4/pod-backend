@@ -60,15 +60,12 @@ let SingleTasksResolver = class SingleTasksResolver {
         }
         return { singleTasks: tasks };
     }
-    async recentPodSingleTasks(taskIds) {
+    async recentPodSingleTasks() {
         const qb = (0, typeorm_1.getConnection)()
             .getRepository(SingleTask_1.SingleTask)
             .createQueryBuilder("st")
             .innerJoinAndSelect("st.user", "u", 'u.id=st."userId"')
-            .orderBy('st."actionDate"', "DESC")
-            .where('st."taskId" IN (:...taskIds)', {
-            taskIds: taskIds,
-        })
+            .orderBy('st."createdAt"', "DESC")
             .where("st.notes != ''");
         const tasks = await qb.getMany();
         if (!tasks) {
@@ -185,9 +182,8 @@ __decorate([
 ], SingleTasksResolver.prototype, "singleTasks", null);
 __decorate([
     (0, type_graphql_1.Query)(() => types_1.SingleTasksResponse, { nullable: true }),
-    __param(0, (0, type_graphql_1.Arg)("taskIds", () => [type_graphql_1.Int])),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Array]),
+    __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], SingleTasksResolver.prototype, "recentPodSingleTasks", null);
 __decorate([

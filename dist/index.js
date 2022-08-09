@@ -18,6 +18,7 @@ const type_graphql_1 = require("type-graphql");
 const typeorm_1 = require("typeorm");
 const constants_1 = require("./constants");
 const hello_1 = require("./resolvers/hello");
+const message_1 = require("./resolvers/message");
 const pod_1 = require("./resolvers/pod");
 const project_1 = require("./resolvers/project");
 const recurringTask_1 = require("./resolvers/recurringTask");
@@ -115,6 +116,7 @@ const main = async () => {
                 pod_1.PodResolver,
                 recurringTask_1.RecurringTaskResolver,
                 singleTask_1.SingleTasksResolver,
+                message_1.MessagesResolver,
             ],
             validate: false,
         }),

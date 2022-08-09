@@ -9,13 +9,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PodResponse = exports.ProjectInfoResponse = exports.SingleTaskResponse = exports.SingleTasksResponse = exports.RecurringTaskResponse = exports.RecurringTaskFieldResponse = exports.ProjectResponse = exports.UserResponse = exports.FieldError = void 0;
+exports.PodResponse = exports.ProjectInfoResponse = exports.SingleTaskResponse = exports.MessagesResponse = exports.MessageResponse = exports.SingleTasksResponse = exports.RecurringTaskResponse = exports.RecurringTaskFieldResponse = exports.ProjectResponse = exports.UserResponse = exports.FieldError = void 0;
 const type_graphql_1 = require("type-graphql");
 const Pod_1 = require("../entities/Pod");
 const Project_1 = require("../entities/Project");
 const User_1 = require("../entities/User");
 const RecurringTask_1 = require("../entities/RecurringTask");
 const SingleTask_1 = require("../entities/SingleTask");
+const Message_1 = require("../entities/Message");
 let FieldError = class FieldError {
 };
 __decorate([
@@ -100,6 +101,34 @@ SingleTasksResponse = __decorate([
     (0, type_graphql_1.ObjectType)()
 ], SingleTasksResponse);
 exports.SingleTasksResponse = SingleTasksResponse;
+let MessageResponse = class MessageResponse {
+};
+__decorate([
+    (0, type_graphql_1.Field)(() => [FieldError], { nullable: true }),
+    __metadata("design:type", Array)
+], MessageResponse.prototype, "errors", void 0);
+__decorate([
+    (0, type_graphql_1.Field)(() => Message_1.Message, { nullable: true }),
+    __metadata("design:type", Message_1.Message)
+], MessageResponse.prototype, "message", void 0);
+MessageResponse = __decorate([
+    (0, type_graphql_1.ObjectType)()
+], MessageResponse);
+exports.MessageResponse = MessageResponse;
+let MessagesResponse = class MessagesResponse {
+};
+__decorate([
+    (0, type_graphql_1.Field)(() => String, { nullable: true }),
+    __metadata("design:type", String)
+], MessagesResponse.prototype, "errors", void 0);
+__decorate([
+    (0, type_graphql_1.Field)(() => [Message_1.Message], { nullable: true }),
+    __metadata("design:type", Array)
+], MessagesResponse.prototype, "messages", void 0);
+MessagesResponse = __decorate([
+    (0, type_graphql_1.ObjectType)()
+], MessagesResponse);
+exports.MessagesResponse = MessagesResponse;
 let SingleTaskResponse = class SingleTaskResponse {
 };
 __decorate([

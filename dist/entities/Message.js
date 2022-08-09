@@ -9,75 +9,56 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SingleTask = void 0;
+exports.Message = void 0;
 const type_graphql_1 = require("type-graphql");
 const typeorm_1 = require("typeorm");
 const RecurringTask_1 = require("./RecurringTask");
 const User_1 = require("./User");
-let SingleTask = class SingleTask extends typeorm_1.BaseEntity {
+let Message = class Message extends typeorm_1.BaseEntity {
 };
 __decorate([
     (0, type_graphql_1.Field)(() => type_graphql_1.Int),
     (0, typeorm_1.PrimaryGeneratedColumn)(),
     __metadata("design:type", Number)
-], SingleTask.prototype, "id", void 0);
+], Message.prototype, "id", void 0);
 __decorate([
     (0, type_graphql_1.Field)(() => type_graphql_1.Int),
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
-], SingleTask.prototype, "userId", void 0);
+], Message.prototype, "userId", void 0);
 __decorate([
     (0, type_graphql_1.Field)(() => type_graphql_1.Int),
     (0, typeorm_1.Column)({ default: -1 }),
     __metadata("design:type", Number)
-], SingleTask.prototype, "taskId", void 0);
-__decorate([
-    (0, type_graphql_1.Field)(() => Date, { nullable: true }),
-    (0, typeorm_1.Column)({ nullable: true }),
-    __metadata("design:type", Date)
-], SingleTask.prototype, "actionDate", void 0);
-__decorate([
-    (0, type_graphql_1.Field)(() => type_graphql_1.Int, { nullable: true }),
-    (0, typeorm_1.Column)({ nullable: true }),
-    __metadata("design:type", Number)
-], SingleTask.prototype, "actionDay", void 0);
+], Message.prototype, "taskId", void 0);
 __decorate([
     (0, type_graphql_1.Field)(),
-    (0, typeorm_1.Column)({
-        type: "enum",
-        enum: ["completed", "missed", "overdue", "tbd"],
-        default: "tbd",
-    }),
+    (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], SingleTask.prototype, "status", void 0);
-__decorate([
-    (0, type_graphql_1.Field)({ nullable: true }),
-    (0, typeorm_1.Column)({ nullable: true }),
-    __metadata("design:type", String)
-], SingleTask.prototype, "notes", void 0);
+], Message.prototype, "message", void 0);
 __decorate([
     (0, type_graphql_1.Field)(),
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)
-], SingleTask.prototype, "createdAt", void 0);
+], Message.prototype, "createdAt", void 0);
 __decorate([
     (0, type_graphql_1.Field)(),
     (0, typeorm_1.UpdateDateColumn)(),
     __metadata("design:type", Date)
-], SingleTask.prototype, "updatedAt", void 0);
-__decorate([
-    (0, type_graphql_1.Field)(() => RecurringTask_1.RecurringTask, { nullable: true }),
-    (0, typeorm_1.ManyToOne)(() => RecurringTask_1.RecurringTask, (rt) => rt.singleTasks, { nullable: true }),
-    __metadata("design:type", RecurringTask_1.RecurringTask)
-], SingleTask.prototype, "recurringTask", void 0);
+], Message.prototype, "updatedAt", void 0);
 __decorate([
     (0, type_graphql_1.Field)(() => User_1.User, { nullable: true }),
     (0, typeorm_1.ManyToOne)(() => User_1.User, (u) => u.singleTasks, { nullable: true }),
     __metadata("design:type", User_1.User)
-], SingleTask.prototype, "user", void 0);
-SingleTask = __decorate([
+], Message.prototype, "user", void 0);
+__decorate([
+    (0, type_graphql_1.Field)(() => RecurringTask_1.RecurringTask, { nullable: true }),
+    (0, typeorm_1.ManyToOne)(() => RecurringTask_1.RecurringTask, (rt) => rt.messages, { nullable: true }),
+    __metadata("design:type", RecurringTask_1.RecurringTask)
+], Message.prototype, "task", void 0);
+Message = __decorate([
     (0, type_graphql_1.ObjectType)(),
     (0, typeorm_1.Entity)()
-], SingleTask);
-exports.SingleTask = SingleTask;
-//# sourceMappingURL=SingleTask.js.map
+], Message);
+exports.Message = Message;
+//# sourceMappingURL=Message.js.map

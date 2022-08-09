@@ -14,6 +14,7 @@ import { buildSchema } from "type-graphql";
 import { ConnectionOptions, createConnection } from "typeorm";
 import { COOKIE_NAME, __prod__ } from "./constants";
 import { HelloResolver } from "./resolvers/hello";
+import { MessagesResolver } from "./resolvers/message";
 import { PodResolver } from "./resolvers/pod";
 import { ProjectResolver } from "./resolvers/project";
 import { RecurringTaskResolver } from "./resolvers/recurringTask";
@@ -128,6 +129,7 @@ const main = async () => {
         PodResolver,
         RecurringTaskResolver,
         SingleTasksResolver,
+        MessagesResolver,
       ],
 
       validate: false,

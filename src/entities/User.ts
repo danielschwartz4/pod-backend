@@ -13,6 +13,7 @@ import {
 import { Project } from "./Project";
 import { RecurringTask } from "./RecurringTask";
 import { SingleTask } from "./SingleTask";
+import { Message } from "../entities/Message";
 
 @ObjectType()
 @Entity()
@@ -89,4 +90,8 @@ export class User extends BaseEntity {
   @Field(() => [SingleTask])
   @OneToMany(() => SingleTask, (singleTask) => singleTask.user)
   singleTasks: SingleTask[];
+
+  @Field(() => [Message])
+  @OneToMany(() => Message, (message) => message.user)
+  messages: Message[];
 }

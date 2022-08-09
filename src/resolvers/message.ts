@@ -1,4 +1,3 @@
-import { SingleTask } from "../entities/SingleTask";
 import { Arg, Ctx, Int, Mutation, Query, Resolver } from "type-graphql";
 import { getConnection } from "typeorm";
 import { Message } from "../entities/Message";

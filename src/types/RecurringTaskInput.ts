@@ -24,4 +24,7 @@ export class RecurringTaskInput {
 
   @Field(() => GraphQLJSONObject, { nullable: true })
   endOptions: { date: Date; repetitions: number; neverEnds: boolean };
+
+  @Field()
+  points: number;
 }

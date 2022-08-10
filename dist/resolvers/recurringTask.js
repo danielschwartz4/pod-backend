@@ -108,6 +108,18 @@ let RecurringTaskResolver = class RecurringTaskResolver {
         }
         return { task };
     }
+    async updatePoints(id, pointsUpdate) {
+        const task = await RecurringTask_1.RecurringTask.findOne(id);
+        if (!task) {
+            console.log("task does not exist");
+            return { errors: "task does not exist" };
+        }
+        const currPoints = task === null || task === void 0 ? void 0 : task.points;
+        const updatedPoints = currPoints + pointsUpdate;
+        console.log("Updated points: " + updatedPoints);
+        await RecurringTask_1.RecurringTask.update({ id }, { points: updatedPoints });
+        return { task };
+    }
 };
 __decorate([
     (0, type_graphql_1.Query)(() => types_1.RecurringTaskFieldResponse, { nullable: true }),
@@ -178,6 +190,14 @@ __decorate([
     __metadata("design:paramtypes", [Number, Boolean, Array, String]),
     __metadata("design:returntype", Promise)
 ], RecurringTaskResolver.prototype, "updateTaskFriendProposals", null);
+__decorate([
+    (0, type_graphql_1.Mutation)(() => types_1.RecurringTaskFieldResponse),
+    __param(0, (0, type_graphql_1.Arg)("id")),
+    __param(1, (0, type_graphql_1.Arg)("pointsUpdate", () => type_graphql_1.Int)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, Number]),
+    __metadata("design:returntype", Promise)
+], RecurringTaskResolver.prototype, "updatePoints", null);
 RecurringTaskResolver = __decorate([
     (0, type_graphql_1.Resolver)()
 ], RecurringTaskResolver);

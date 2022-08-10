@@ -75,6 +75,10 @@ export class RecurringTask extends BaseEntity {
   @Column("text", { array: true, nullable: true })
   friendProposals!: string[];
 
+  @Field(() => Int)
+  @Column({ default: 1 })
+  points: number;
+
   // @Field(() => Int)
   // @Column()
   // taskStatusToday!: number;

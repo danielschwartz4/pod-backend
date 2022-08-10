@@ -88,6 +88,11 @@ __decorate([
     __metadata("design:type", Array)
 ], RecurringTask.prototype, "friendProposals", void 0);
 __decorate([
+    (0, type_graphql_1.Field)(() => type_graphql_1.Int),
+    (0, typeorm_1.Column)({ default: 1 }),
+    __metadata("design:type", Number)
+], RecurringTask.prototype, "points", void 0);
+__decorate([
     (0, type_graphql_1.Field)(),
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)

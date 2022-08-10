@@ -142,4 +142,21 @@ export class RecurringTaskResolver {
     }
     return { task };
   }
+
+  @Mutation(() => RecurringTaskFieldResponse)
+  async updatePoints(
+    @Arg("id") id: number,
+    @Arg("pointsUpdate", () => Int) pointsUpdate: number
+  ) {
+    const task = await RecurringTask.findOne(id);
+    if (!task) {
+      console.log("task does not exist");
+      return { errors: "task does not exist" };
+    }
+    const currPoints = task?.points;
+    const updatedPoints = currPoints + pointsUpdate
+    console.log("Updated points: " + updatedPoints)
+    await RecurringTask.update({ id }, { points: updatedPoints });
+    return { task };
+  }
 }

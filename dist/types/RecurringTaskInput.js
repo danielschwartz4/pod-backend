@@ -42,6 +42,10 @@ __decorate([
     (0, type_graphql_1.Field)(() => graphql_type_json_1.GraphQLJSONObject, { nullable: true }),
     __metadata("design:type", Object)
 ], RecurringTaskInput.prototype, "endOptions", void 0);
+__decorate([
+    (0, type_graphql_1.Field)(),
+    __metadata("design:type", Number)
+], RecurringTaskInput.prototype, "points", void 0);
 RecurringTaskInput = __decorate([
     (0, type_graphql_1.InputType)()
 ], RecurringTaskInput);
